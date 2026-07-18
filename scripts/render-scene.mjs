@@ -61,7 +61,11 @@ export async function renderFrame({ scene: scenePath, out: outPath, t, width = 1
   const tmpHtmlPath = path.join(os.tmpdir(), `into-place-scene-${Date.now()}-${Math.random().toString(36).slice(2)}.html`);
   await writeFile(tmpHtmlPath, html, "utf-8");
 
-  const browser = await puppeteer.launch({ headless: !preview });
+  // 云端容器以 root 运行时 Chromium 拒绝带沙箱启动;只在这种情况下关沙箱(本机开发不受影响)
+  const browser = await puppeteer.launch({
+    headless: !preview,
+    args: typeof process.getuid === "function" && process.getuid() === 0 ? ["--no-sandbox"] : [],
+  });
   try {
     const page = await browser.newPage();
     await page.setViewport({ width, height, deviceScaleFactor: 1 });
