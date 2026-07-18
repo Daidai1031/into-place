@@ -1,0 +1,5 @@
+[mcp_servers.fal-ai]
+url = "https://mcp.fal.ai/mcp"
+
+[mcp_servers.fal-ai.http_headers]
+Authorization = "Bearer 0c721a23-0bf6-4493-b3d0-db2f7eb68394:b354dac901b0a90c32952f9767aa71d4"

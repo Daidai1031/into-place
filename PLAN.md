@@ -7,12 +7,12 @@
 ## Phase 0 · 验证门(H0–H4)⚠️ 未通过前不写任何应用代码
 
 - [x] 在 fal 上核实 spec/04 全部候选端点是否存在 + 当日价格,写入 `lib/models.ts` 草稿
-- [ ] Roosevelt Island 种子档案 v0:12–20 张公共领域图(NYPL Digital Collections / Library of Congress / Wikimedia:天花医院、Octagon、监狱、灯塔、各时期地图、Nellie Bly 报纸版面、石材纹理),含来源与 license → `data/places/roosevelt-island.json`
-- [ ] 手工拼一张测试 collage(Figma,20 分钟):大前景毛边纸片 + 中景档案建筑抠像 + 远景历史地图,层间留缝 + 纸张投影
-- [ ] **实验 A(首尾帧 vs 纯 prompt)**:同一 collage,Kling FLF 与 Kling I2V 各 1 次,5s/720p
+- [x] Roosevelt Island 种子档案 v0:18 张公共领域图(NYPL Digital Collections / Wikimedia,含来源与 license)→ `data/places/roosevelt-island.json`,文件已下载到 `assets/archive/`(NYPL 已升级到 2600–8900px 长边);已知问题见 `data/day0-ri-archive-notes.md`(asset_013 PDF 待人工给页码截图、LOC 未采纳、石材纹理特写待 Phase 0.5 上岛补拍)
+- [ ] 手工拼一张测试 collage(Figma,20 分钟,或用 `scripts/cutout.mjs` 批量抠好几张再手写 `data/scenes/*.json`):大前景毛边纸片 + 中景档案建筑抠像 + 远景历史地图,层间留缝 + 纸张投影 —— 工具已就绪且已用真实素材(asset_002)验证可用,还差手工拼一个真正的多层构图,用法见 `scripts/README.md`
+- [ ] **实验 A(首尾帧 vs 纯 prompt)**:同一 collage,Kling FLF 与 Kling I2V 各 1 次,5s/720p —— `npm run experiment -- --model kling_flf_standard/kling_i2v_weak ...`,见 `scripts/README.md`
 - [ ] **实验 B(弱运动 vs 强运动)**:检查人物/建筑是否漂移、纸边是否扭曲、视差是否成立
-- [ ] **HyperFrames spike(≤2 小时)**:3 层 PNG + CSS 3D 横移渲染 5s MP4;失败 → Puppeteer 截帧 + FFmpeg;再失败 → 全 fal 方案
-- [ ] 结论记录到 `data/day0-findings.md`
+- [x] **HyperFrames spike(≤2 小时)**:装了真的 `hyperframes` CLI(HeyGen 出品,不是要另找的东西),用真实档案图(asset_002 抠图)+ `scripts/scene-to-hyperframes.mjs` 翻译成 composition,`hyperframes render` 实际出片成功(150 帧、5.0s、14.3s 渲染完,ffmpeg 编码正常),`hyperframes preview` live studio 也跑通。**没有走到 Puppeteer 回退**——`scripts/render-scene.mjs` 保留作为 CLAUDE.md 里写的回退方案,不是当前主路径。
+- [x] 结论记录到 `data/day0-findings.md`(HyperFrames spike 结论已补,fal 首尾帧模型调研见文件其余部分)
 
 **门槛:** 至少一个 fal 模型能保住档案内容并产生空间运动,且确定性路径可用。
 

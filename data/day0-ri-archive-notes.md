@@ -23,6 +23,18 @@
 | 17 | Blackwell Island Light, Roosevelt Island(现代照片) | 2026-03-18 | Wikimedia Commons(作者 Kidfly182) | https://commons.wikimedia.org/wiki/File:Roosevelt_Island_Lighthouse.jpg | CC BY 4.0 | 现代对照,**需署名**,进 Journey Book 时标注摄影者 |
 | 18 | Octagon Tower, Roosevelt Island(现代照片) | 2010-06-25 | Wikimedia Commons(作者 Jim.henderson) | https://commons.wikimedia.org/wiki/File:Octagon_Tower_RI_jeh.jpg | CC0 1.0(公有领域贡献) | 现代对照,CC0 无需署名但建议仍标来源 |
 
+## 已知问题与解决方案(下载后发现,持续更新)
+
+| # | 问题 | 影响的资产 | 解决方案 | 状态 |
+|---|---|---|---|---|
+| 1 | NYPL 图片最初只拿到 `t=w` 档位,长边约 760px,是预览级而非母版分辨率(`digitalcollections.nypl.org` 有机器人拦截,只能走 `images.nypl.org` 公开档位) | asset_001–009 | 已解决,无需 API key:`images.nypl.org/index.php?id=...&t=X` 的可用档位因条目类型而异——立体照片/版画类(asset_002, 003)有 JPEG 档位 `t=g`(约 6700–8900px 长边);其余条目(asset_001, 004–009)最高只到 `t=u`(TIFF 母版原图,约 2600–3300px 长边),已转码为高质量 JPEG。已重新下载覆盖全部 9 张,文件名/扩展名不变,长边普遍提升 3–9 倍 | 已解决 |
+| 2 | Wikimedia 对大体积原始文件(尤其 HABS `.tif`)限流,提示改用缩略图 | asset_015, asset_016 | 改用 `Special:FilePath` + 指定宽度的 thumb(已拿到约 3840px 长边的 JPEG 衍生图),collage 图层够用,不再追更高清母版 | 已解决(接受衍生图) |
+| 3 | asset_013 是扫描版 PDF 小册子(*Ten Days in a Mad-House*),不能直接当图片图层用,需要先定位到具体插图页再截取 | asset_013 | 开发者已翻阅并给出候选插图页码:**13, 18, 25, 33, 41, 53, 72**(PDF 位于 `assets/archive/asset_013.pdf`)。**暂缓裁剪**——开发者要先用现有素材跑实验(collage / 实验 A/B),真正要用到某一页插图时再回来做单页渲染+裁剪 | 页码已定,裁剪推迟到需要时 |
+
+**产品笔记(V2,不在本次 MVP 范围内)**:开发者指出,正常用户流程中"翻阅 PDF 挑页码"这一步应该是用户在 UI 里浏览选择,而不是开发者手动读完告诉 agent。当前 MVP 走人工捷径是合理的(单人 72 小时),但值得记录为 Page 1 Research 之后的迭代方向;不在本轮实现,不加入 PLAN.md。
+
+**范围提醒**:个人照片与环境声属于用户上传素材(`contributor: "user"`,spec/01 §3 / spec/06 共创档案机制),不需要现在补,也不需要继续检索机构档案补全——种子档案 18 张 + 已选定的 7 页 PDF 候选插图,对启动实验阶段已经足够。
+
 ## 未采纳/跳过的检索方向
 
 - **Library of Congress**:loc.gov 与 blogs.loc.gov 对本工具的自动化请求一律返回 403,无法逐条核实版权声明原文,因此本轮未把 LOC 条目计入正式种子档案。已通过搜索确认 LOC 上确实存在大量相关条目(Bain 新闻社底片、"Prisoners returning from work" 1876 版画等),建议开发者本人用浏览器登录核实后补充,补充方式:重复本笔记的表格格式,`source: "Library of Congress"`。

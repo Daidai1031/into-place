@@ -29,3 +29,15 @@
 ## 建议的日常测试候选(符合 CLAUDE.md §fal 使用纪律:5s/720p/16:9 上限)
 
 按单价从低到高:`fal-ai/pixverse/v6/transition`($0.005/s)→ `fal-ai/framepack/flf2v`($0.0333/s,480p)→ `fal-ai/kling-video/v2.5-turbo/pro/image-to-video`($0.07/s)→ `fal-ai/wan-flf2v`($0.40/video 封顶)。Veo 3.1 系列仅用于 scene_04 hero shot,且需在调用前确认单次成本不超过 $2 或先向开发者确认。
+
+## HyperFrames spike 结论(确定性引擎,PLAN Phase 0 第 5 项)
+
+**通过,直接采用,没有走到回退方案。** `hyperframes`(npm 包,HeyGen 出品,`heygen-com/hyperframes`)是真实存在、可以直接 `npm install` 的 CLI,不是要另外调研的假设性工具。
+
+验证方式:真实档案图(`asset_002`,1853 年疯人院版画)经 `scripts/cutout.mjs`(rembg 抠图 + 撕纸毛边 + 投影)处理后,用 `scripts/scene-to-hyperframes.mjs` 翻译成 HyperFrames composition(相机路径交给 GSAP 的 `x/y/z` tween 一个 `transform-style:preserve-3d` 容器,不用手算逐帧 transform),`hyperframes render` 实际渲染出 150 帧、5.0 秒、623.8KB 的 MP4,14.3 秒渲染完成,ffmpeg 编码正常;抽取首尾帧确认相机确实移动、画面内容零形变。`hyperframes preview` 的 live studio 也确认可用(`http://localhost:3002`)。
+
+环境依赖(本机已装好,新终端应该直接可用):FFmpeg 通过 `winget install Gyan.FFmpeg`;rembg 通过 `pip install rembg[cli] onnxruntime`,两者的可执行文件目录都已永久加入 User PATH。
+
+`scripts/render-scene.mjs`(Puppeteer 直接截静帧)保留作为 CLAUDE.md 回退路径里写的方案,已验证可用,不是没试过的纸面选项——HyperFrames 一旦真的用不了,可以直接切过去,场景 JSON 格式不用改。
+
+细节 & 已知坑记在 `CLAUDE.md`「拼贴渲染管线」小节(sharp `joinChannel` vs `dest-in` 的坑、Puppeteer `file://` 加载的坑、HyperFrames composition 的 `class="clip"` / track 冲突规则)。

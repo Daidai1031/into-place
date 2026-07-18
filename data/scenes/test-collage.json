@@ -1,0 +1,8 @@
+{
+  "_note": "HyperFrames spike 用的最小测试场景,不是最终 collage——只有 asset_002 一张真实素材,重复用在两层上验证视差/相机管线。真正的手工拼贴还是开发者自己在 Figma/cutout.mjs 里做。",
+  "planes": [
+    { "asset": "assets/cutouts/asset_002_asylum.png", "z": 0.85, "x": 0.05, "y": 0.05, "scale": 1.1, "shadow": true },
+    { "asset": "assets/cutouts/asset_002_asylum.png", "z": 0.15, "x": -0.15, "y": -0.1, "scale": 0.6, "shadow": false }
+  ],
+  "camera_path": { "from": { "z": 0, "x": 0, "y": 0 }, "to": { "z": 0.35, "x": 0.04, "y": 0 }, "easing": "ease-in-out" }
+}
