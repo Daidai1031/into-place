@@ -46,9 +46,19 @@ node scripts/batch-cutout.mjs --only asset_001,asset_014
 `data/places/roosevelt-island.json` 对应 asset 的 `cutouts` 字段(文件、mode、tone、处理说明),保住溯源链。
 asset_013(PDF)故意不在表里——等人工给页码。
 
-**已知环境限制**:云端容器的网络策略只放行包管理源(npm/pypi),rembg 首次运行要从 GitHub 下载 u2net.onnx
-会被 403 拦截——`mode:paper` 的任务不受影响,`mode:auto`(抠形)的任务需要在本机跑一次
-`node scripts/batch-cutout.mjs`(幂等,只会补做缺的那几张),或在环境设置里放行 `github.com` 后重跑。
+**云端容器跑 rembg 的办法**(网络策略只放行包管理源,GitHub/HF 的模型直链都被 403):
+npm 上 `@rmbg/model-*` 系列包把 rembg 官方权重按 4MB 分块打进了 npm 包,拼回去 md5 与 rembg 期望值完全一致:
+
+```bash
+# @rmbg/model-u2netp(4.6MB)与 @rmbg/model-silueta(43MB,质量接近 u2net 全量版,推荐)
+cd /tmp && npm pack @rmbg/model-silueta && tar xzf rmbg-model-silueta-*.tgz
+mkdir -p ~/.u2net && cat package/silueta-*.onnx > ~/.u2net/silueta.onnx   # 按 1..N 顺序拼接
+REMBG_MODEL=silueta node scripts/batch-cutout.mjs
+```
+
+`REMBG_MODEL` 环境变量选 rembg 模型(默认 `u2net`,本机已有缓存的话不用管)。
+抠形质量结论(2026-07-18 实测):**照片(含 1970/1999 HABS、现代照片)和半调印刷 → silueta 抠得很干净;
+线刻版画 → 不可用**(模型对线刻无图底概念,输出晕影),版画一律 `mode:paper` 纸卡,这已固化在 JOBS 表里。
 
 ## 2. 拼场景:手写 `data/scenes/*.json`
 

@@ -57,8 +57,11 @@ async function hasAlpha(inputPath) {
 }
 
 async function runRembg(inputPath, outputPath) {
+  // REMBG_MODEL 可选 u2net(默认,176MB)/u2netp(4.6MB 轻量版,云端容器用它:
+  // 权重能从 npm @rmbg/model-u2netp 拿到,md5 与 rembg 官方一致)/isnet-general-use 等
+  const model = process.env.REMBG_MODEL || "u2net";
   try {
-    await execFileAsync("rembg", ["i", inputPath, outputPath]);
+    await execFileAsync("rembg", ["i", "-m", model, inputPath, outputPath]);
   } catch (err) {
     throw new Error(
       "本地找不到 rembg 命令,或执行失败。\n" +
@@ -93,25 +96,6 @@ async function applyTornEdge(alphaPngBuffer, width, height, jitterCell = 22) {
   return sharp(original).composite([{ input: jittered, blend: "multiply" }]).png().toBuffer();
 }
 
-/**
- * 统一底色:档案扫描件的纸色从亮黄到中性灰都有,拼在一起像大杂烩。
- * 全部确定性像素操作(灰度化 + 对比度归一 + 可选统一暖调),不经过任何生成式模型,
- * 不违反"档案图片零生成式处理"红线;用了什么 tone 记进 manifest 保持可追溯。
- */
-async function applyTone(rgbaPngBuffer, tone) {
-  if (!tone || tone === "none") return rgbaPngBuffer;
-  const alpha = await sharp(rgbaPngBuffer).extractChannel("alpha").png().toBuffer();
-  let gray = sharp(rgbaPngBuffer).removeAlpha().grayscale().normalise({ lower: 1, upper: 99 });
-  if (tone === "sepia") {
-    // 统一暖调:同一组 tint 参数应用到所有图层,原图偏黄程度不再影响成品
-    gray = gray.tint({ r: 235, g: 220, b: 195 });
-  } else if (tone !== "mono") {
-    throw new Error(`未知 tone: ${tone}(可用: none | mono | sepia)`);
-  }
-  const toned = await gray.toColourspace("srgb").png().toBuffer();
-  return sharp(toned).joinChannel(alpha).png().toBuffer();
-}
-
 export async function cutout({
   input,
   output,
@@ -133,26 +117,43 @@ export async function cutout({
   const tmpDir = path.join(os.tmpdir(), "into-place-cutout");
   await mkdir(tmpDir, { recursive: true });
 
-  // 预处理:裁剪(去扫描黑底/校准条/取立体照片单幅)→ 超大扫描缩到可用尺寸 → 统一转 PNG
+  // 预处理:EXIF 自动旋转 → 裁剪(去扫描黑底/校准条/取立体照片单幅)→ 超大扫描缩到可用尺寸
+  // → 统一底色 → 统一转 PNG。
+  // tone 必须在这里(抠图前的完整画面)做:matting 之后再 normalise,直方图会混进透明区的
+  // 垃圾像素,把中间调整体压暗(asset_001 第一版踩过)。
   let workPath = input;
   {
     const meta = await sharp(input).metadata();
-    let pipeline = sharp(input);
-    let dirty = /\.(tif|tiff)$/i.test(input); // TIFF 一律转码成 PNG 再进后续流程
+    // .rotate() 无参数 = 按 EXIF 方向摆正;sharp 默认丢 EXIF,手机照片会横躺(asset_017 踩过)
+    let pipeline = sharp(input).rotate();
+    let dirty =
+      /\.(tif|tiff)$/i.test(input) || // TIFF 一律转码成 PNG 再进后续流程
+      (meta.orientation && meta.orientation > 1) ||
+      tone !== "none";
     if (crop) {
       const [cx, cy, cw, ch] = String(crop).split(",").map(Number);
       if ([cx, cy, cw, ch].some((v) => !(v >= 0) || v > 1)) throw new Error(`--crop 需要 0..1 比例 "x,y,w,h",拿到: ${crop}`);
+      // 注意:crop 比例按摆正后的宽高算(rotate 可能交换宽高)
+      const w = meta.orientation >= 5 ? meta.height : meta.width;
+      const h = meta.orientation >= 5 ? meta.width : meta.height;
       pipeline = pipeline.extract({
-        left: Math.round(cx * meta.width),
-        top: Math.round(cy * meta.height),
-        width: Math.round(cw * meta.width),
-        height: Math.round(ch * meta.height),
+        left: Math.round(cx * w),
+        top: Math.round(cy * h),
+        width: Math.round(cw * w),
+        height: Math.round(ch * h),
       });
       dirty = true;
     }
     if (maxSize > 0 && Math.max(meta.width, meta.height) > maxSize) {
       pipeline = pipeline.resize(maxSize, maxSize, { fit: "inside" });
       dirty = true;
+    }
+    if (tone === "mono" || tone === "sepia") {
+      pipeline = pipeline.grayscale().normalise({ lower: 1, upper: 99 });
+      if (tone === "sepia") pipeline = pipeline.tint({ r: 235, g: 220, b: 195 });
+      pipeline = pipeline.toColourspace("srgb");
+    } else if (tone !== "none") {
+      throw new Error(`未知 tone: ${tone}(可用: none | mono | sepia)`);
     }
     if (dirty) {
       workPath = path.join(tmpDir, `${path.parse(input).name}_pre.png`);
@@ -172,9 +173,14 @@ export async function cutout({
 
   const { width, height } = await sharp(mattedPath).metadata();
   // 全程用 PNG 编码的 buffer 传来传去,不手写 raw 字节/通道数——那是上一版做出满屏噪点花纹的原因。
-  const originalRgba = await applyTone(await sharp(mattedPath).ensureAlpha().png().toBuffer(), tone);
+  const originalRgba = await sharp(mattedPath).ensureAlpha().png().toBuffer();
 
-  const alphaMask = await sharp(originalRgba).extractChannel("alpha").png().toBuffer();
+  let alphaMask = await sharp(originalRgba).extractChannel("alpha").png().toBuffer();
+  if (mode !== "paper") {
+    // 硬化 matting 输出的软 alpha:老照片上模型置信度低,烟囱/尖顶会给出 40%-60% 的
+    // 半透明值,直接进毛边阈值会被切掉或留鬼影;围绕中点拉一倍对比让蒙版果断起来。
+    alphaMask = await sharp(alphaMask).linear(2, -128).png().toBuffer();
+  }
   const finalMask = tornEdge ? await applyTornEdge(alphaMask, width, height) : alphaMask;
 
   // 把裁切结果的 alpha 换成毛边版:去掉原 alpha,再拿新蒙版当唯一新增通道 join 回去

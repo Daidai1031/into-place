@@ -31,6 +31,13 @@
           "tone": "mono",
           "crop": "0.138,0.120,0.358,0.654",
           "processing": "deterministic only (crop/resize/grayscale-normalise/torn-edge/shadow); no generative model touched pixels"
+        },
+        {
+          "file": "assets/cutouts/asset_001_smallpox.png",
+          "mode": "auto",
+          "tone": "mono",
+          "crop": "0.138,0.120,0.358,0.654",
+          "processing": "deterministic only (crop/resize/grayscale-normalise/torn-edge/shadow); no generative model touched pixels except rembg segmentation mask (mask decides transparency, never repaints pixels)"
         }
       ]
     },
@@ -301,6 +308,12 @@
           "mode": "paper",
           "tone": "mono",
           "processing": "deterministic only (crop/resize/grayscale-normalise/torn-edge/shadow); no generative model touched pixels"
+        },
+        {
+          "file": "assets/cutouts/asset_012_asylum1893.png",
+          "mode": "auto",
+          "tone": "mono",
+          "processing": "deterministic only (crop/resize/grayscale-normalise/torn-edge/shadow); no generative model touched pixels except rembg segmentation mask (mask decides transparency, never repaints pixels)"
         }
       ]
     },
@@ -342,6 +355,12 @@
           "mode": "paper",
           "tone": "mono",
           "processing": "deterministic only (crop/resize/grayscale-normalise/torn-edge/shadow); no generative model touched pixels"
+        },
+        {
+          "file": "assets/cutouts/asset_014_lighthouse1970.png",
+          "mode": "auto",
+          "tone": "mono",
+          "processing": "deterministic only (crop/resize/grayscale-normalise/torn-edge/shadow); no generative model touched pixels except rembg segmentation mask (mask decides transparency, never repaints pixels)"
         }
       ]
     },
@@ -366,6 +385,12 @@
           "mode": "paper",
           "tone": "mono",
           "processing": "deterministic only (crop/resize/grayscale-normalise/torn-edge/shadow); no generative model touched pixels"
+        },
+        {
+          "file": "assets/cutouts/asset_015_asylum1999.png",
+          "mode": "auto",
+          "tone": "mono",
+          "processing": "deterministic only (crop/resize/grayscale-normalise/torn-edge/shadow); no generative model touched pixels except rembg segmentation mask (mask decides transparency, never repaints pixels)"
         }
       ]
     },
@@ -408,7 +433,14 @@
       "upload_role": null,
       "status": "maybe",
       "file": "assets/archive/asset_017.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "file": "assets/cutouts/asset_017_lighthouse_modern.png",
+          "mode": "auto",
+          "tone": "none",
+          "processing": "deterministic only (crop/resize/grayscale-normalise/torn-edge/shadow); no generative model touched pixels except rembg segmentation mask (mask decides transparency, never repaints pixels)"
+        }
+      ]
     },
     {
       "id": "asset_018",
@@ -425,7 +457,14 @@
       "upload_role": null,
       "status": "maybe",
       "file": "assets/archive/asset_018.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "file": "assets/cutouts/asset_018_octagon_modern.png",
+          "mode": "auto",
+          "tone": "none",
+          "processing": "deterministic only (crop/resize/grayscale-normalise/torn-edge/shadow); no generative model touched pixels except rembg segmentation mask (mask decides transparency, never repaints pixels)"
+        }
+      ]
     }
   ]
 }

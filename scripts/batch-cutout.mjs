@@ -31,8 +31,9 @@ const JOBS = [
   // —— 版画/印刷品:统一做撕纸卡 ——
   { asset: "asset_004", part: "asylum1866_card", mode: "paper", tone: "mono", maxSize: 2400 },
   { asset: "asset_005", part: "workhouse_card", mode: "paper", tone: "mono", maxSize: 2400 },
+  // 线刻版画不做 mode:auto——试过 asset_006:模型对线刻没有图底概念,输出是一团晕影,
+  // 不可用(半调印刷 asset_012 反而可以)。版画一律只走纸卡。
   { asset: "asset_006", part: "penitentiary_card", mode: "paper", tone: "mono", maxSize: 2400 },
-  { asset: "asset_006", part: "penitentiary", mode: "auto", tone: "mono", maxSize: 2400 },
   { asset: "asset_007", part: "almshouse_card", mode: "paper", tone: "mono", maxSize: 2400 },
   { asset: "asset_008", part: "darkcell_card", mode: "paper", tone: "mono", maxSize: 2400 },
   { asset: "asset_009", part: "bridgeplan_card", mode: "paper", tone: "mono", maxSize: 2400 },
