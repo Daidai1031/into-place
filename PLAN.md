@@ -1,66 +1,69 @@
-# PLAN — 72 小时执行清单
+# PLAN — MVP 优先执行清单（v2）
 
-原则:**先验证,再建造;先影片,后界面**。每阶段末尾有"割线"——时间不够时,线下全部放弃。
+原则改为:**确定性优先,线性推进,遇到问题当场调试**。素材已收齐(18 项入档),HyperFrames 渲染已跑通——不再设"验证门",验证并入开发:每一步的产出都是 MVP 的一部分。fal 生成镜头是**升级项**,不是阻塞项;任何时刻停下来,手里都有一部能放的片子。
+
+> v1 计划(验证门模型)的遗留:手工拼 collage、实验 A/B 未做。它们没有被删除,而是并入下面的 Step 1 和 Step 4。
+> 声音、用户个人照片/上岛实拍:按开发者决定**后置**,见 Step 6。
 
 ---
 
-## Phase 0 · 验证门(H0–H4)⚠️ 未通过前不写任何应用代码
+## Step 1 · 素材处理管线(当前卡点,最先做)💥
 
-- [x] 在 fal 上核实 spec/04 全部候选端点是否存在 + 当日价格,写入 `lib/models.ts` 草稿
-- [x] Roosevelt Island 种子档案 v0:18 张公共领域图(NYPL Digital Collections / Wikimedia,含来源与 license)→ `data/places/roosevelt-island.json`,文件已下载到 `assets/archive/`(NYPL 已升级到 2600–8900px 长边);已知问题见 `data/day0-ri-archive-notes.md`(asset_013 PDF 待人工给页码截图、LOC 未采纳、石材纹理特写待 Phase 0.5 上岛补拍)
-- [ ] 手工拼一张测试 collage(Figma,20 分钟,或用 `scripts/cutout.mjs` 批量抠好几张再手写 `data/scenes/*.json`):大前景毛边纸片 + 中景档案建筑抠像 + 远景历史地图,层间留缝 + 纸张投影 —— 工具已就绪且已用真实素材(asset_002)验证可用,还差手工拼一个真正的多层构图,用法见 `scripts/README.md`
-- [ ] **实验 A(首尾帧 vs 纯 prompt)**:同一 collage,Kling FLF 与 Kling I2V 各 1 次,5s/720p —— `npm run experiment -- --model kling_flf_standard/kling_i2v_weak ...`,见 `scripts/README.md`
-- [ ] **实验 B(弱运动 vs 强运动)**:检查人物/建筑是否漂移、纸边是否扭曲、视差是否成立
-- [x] **HyperFrames spike(≤2 小时)**:装了真的 `hyperframes` CLI(HeyGen 出品,不是要另找的东西),用真实档案图(asset_002 抠图)+ `scripts/scene-to-hyperframes.mjs` 翻译成 composition,`hyperframes render` 实际出片成功(150 帧、5.0s、14.3s 渲染完,ffmpeg 编码正常),`hyperframes preview` live studio 也跑通。**没有走到 Puppeteer 回退**——`scripts/render-scene.mjs` 保留作为 CLAUDE.md 里写的回退方案,不是当前主路径。
-- [x] 结论记录到 `data/day0-findings.md`(HyperFrames spike 结论已补,fal 首尾帧模型调研见文件其余部分)
+目标:`assets/archive/` 18 项 → 可用图层,全部用脚本批量完成,不再手工。
 
-**门槛:** 至少一个 fal 模型能保住档案内容并产生空间运动,且确定性路径可用。
+- [ ] 用 `scripts/cutout.mjs` 批量处理可直接用的 JPG(抠图/毛边/投影按图层角色分流:建筑/人物抠像,地图/报纸只做毛边纸片化)→ `assets/cutouts/`
+- [ ] asset_014(TIFF)先转码 JPG 再进管线;asset_013(PDF)按 `data/day0-ri-archive-notes.md` 流程人工给页码后单页截取,**没有页码前先跳过,不阻塞**
+- [ ] 产出一份 `data/cutouts-manifest.json`(或直接补进 roosevelt-island.json):每个 cutout 对应的 source asset、处理方式,保住溯源链
+- 完成标准:5 个场景需要的图层全部就位。**不追求 18 张全处理,按场景需求倒推,用到哪张处理哪张。**
 
-## Phase 0.5 · 上岛实拍(H4–H8,可与 Phase 1 并行,强烈建议)
+## Step 2 · 确定性 MVP 成片(最高优先级)🎬
 
-- [ ] 缆车上岛:拍 Renwick 废墟、灯塔、缆车、防波堤石块、回望曼哈顿视角(横构图 16:9,给 Anagnorisis 与 Katharsis 用)
-- [ ] 实录环境声:缆车电机、河水与风、废墟混响、远处车流
-- [ ] 这些是 demo 里"个人素材成为地方档案"的第一手证据
+目标:零 fal 调用,先出一部完整的 ~31s 成片 v0。
 
-## Phase 1 · Pipeline 骨架,无 UI(H4–H16)
+- [ ] 手写 5 个 `data/scenes/*.json`(spec/01 格式,参照已验证的 test-collage.json):
+  - S1 Stasis(dolly in)· S3 Pathos 时间走廊(横移)· S5 Katharsis(拉远)——本来就是确定性镜头
+  - S2 石块堆叠、S4 Push Through——**先做确定性退化版**(HyperFrames 放大穿过 + 交叉溶解,即 CLAUDE.md 回退路径),fal 版在 Step 4 再升级
+- [ ] 每个场景 `scene-to-hyperframes.mjs` → `hyperframes render` 出 MP4;有问题当场调场景 JSON,不回头改管线
+- [ ] FFmpeg 拼接 5 段 + 交叉溶解 → `final/final.mp4` **v0**(先无声或临时 TTS 旁白)
+- ——割线——时间塌方时,v0 就是提交的成片,后面全部步骤只做加分项
+- 完成标准:能从头放到尾的一部片子。**这是 MVP 雏形的核心,先于一切 UI 和 fal。**
 
-- [ ] Next.js 初始化 + 目录约定 + `data/` JSON 读写层(原子写回)
-- [ ] `lib/prompt-compiler.ts`:shot JSON → 正/负 prompt(含固定保护块)
-- [ ] `lib/fal.ts` + `/api/shot/generate` + `/api/shot/status`:queue 提交与轮询,成本记录
-- [ ] HyperFrames 场景模板:`spatial` → MP4;同场景截帧 → start/end frame
-- [ ] 预处理脚本:抠图(rembg / fal 端点)+ 毛边 + 阴影 → `assets/cutouts/`
-- [ ] 无 UI 跑通 **scene_03 时间走廊(确定性)** 与 **scene_04 Push Through(fal)**
-- ——割线——
-- [ ] depth guide 灰度图输出
+## Step 3 · App 骨架(Next.js,无生成功能)
 
-## Phase 2 · 五个镜头的成片(H16–H36)🎬 最高优先级
+- [ ] Next.js 初始化 + Tailwind + 目录约定;`data/project.json` 读写层(原子写回)
+- [ ] `lib/prompt-compiler.ts`:shot JSON → 正/负 prompt(含固定保护块)——纯函数,先写好并配一个快照测试,fal 接入前就能验证
+- [ ] Page 4 Film 的最小版:播放 v0 成片 + Journey Book(来源/license/生成标注)——**先让 MVP 可 demo**
+- [ ] Page 1 Research 的最小版:卡片列表展示 roosevelt-island.json(只读,上传后置)
+- 完成标准:`npm run dev` 打开就能放片、能看档案来源。到这一步,**可提交的 MVP 已存在**。
 
-- [ ] 五个场景的 collage/spatial 定义完成(手工 + 脚本,不等 UI)
-- [ ] S1 Stasis(确定性 dolly)· S3 Pathos 时间走廊(确定性横移)· S5 Katharsis(确定性拉远)
-- [ ] S2 石块堆叠(Kling FLF,≤3 attempts)
-- [ ] S4 hero shot(先 Kling 测通,最后 Veo 出正片:1880s 医院门洞 → 实拍废墟)
-- [ ] 旁白五段(TTS 或自录)+ 实录/补齐环境声 + FFmpeg 混音
-- [ ] `/api/assemble` → `final/final.mp4` v1
-- ——割线——
-- [ ] 时间紧则 S1 并入 S2,成片降为 4 镜头
+## Step 4 · fal 升级(S2 / S4,含原实验 A/B)
 
-## Phase 3 · 界面(H36–H56)
+第一次真实花钱在这里,前置纪律不变:先查 schema 与当日价格;>$2 先问;5s/720p;每镜头 ≤3 attempts。
 
-- [ ] Page 0 Atlas:风格化 SVG 地图 + 3 标记(RI 点亮;沙溪、Camino 半透明 "Be the first to contribute")
-- [ ] Page 1 Research:卡片策展 + 上传(用途选择 + 署名入档)+ Wikimedia 按钮
-- [ ] Page 2 Story:主人公候选 + 分镜编辑 + Place DNA 只读面板
-- [ ] Page 3 Direct:单镜头生成/重生成 + 引擎徽章 + 状态轮询
-- [ ] Page 4 Film:播放 + Journey Book(来源 + 社区署名 + 生成标注)
-- ——割线——
-- [ ] Place DNA 实时提取(否则预生成写死在种子包)
-- [ ] Wikimedia 检索(否则按钮标 experimental 并禁用)
+- [ ] `lib/fal.ts` + `/api/shot/generate` + `/api/shot/status`(queue 模式,request_id/成本写入 shot JSON)
+- [ ] **实验 A/B 在此执行**:用 Step 2 产出的真实首尾帧,Kling FLF vs I2V 各 1 次,检查档案内容是否保住、纸边是否扭曲——这是 S2/S4 升级的前置判断,不是独立仪式
+- [ ] 实验通过 → S2 换 Kling FLF;S4 先 Kling 测通,正片再上 Veo(hero shot 才允许提参数)
+- [ ] 实验失败 → S2/S4 保持确定性退化版,demo 叙事改为"我们宁可不用生成也不伪造历史",**此步整体关闭**
+- ——割线——只升级 S4 一个镜头也可接受
 
-## Phase 4 · Demo 与提交(H56–H72)
+## Step 5 · 界面补全(Page 0/2/3)
+
+- [ ] Page 0 Atlas:风格化 SVG 地图 + 3 标记(RI 点亮,其余 "Be the first to contribute")
+- [ ] Page 3 Direct:单镜头生成/重生成 + 引擎徽章 + 状态轮询(依赖 Step 4;Step 4 关闭则本页只展示确定性渲染状态)
+- [ ] Page 2 Story:分镜编辑 + Place DNA 只读面板(预生成写死在种子包)
+- [ ] Page 1 补上传(用途选择 + 署名入档)
+- ——割线——Page 2 与上传砍掉不影响 demo 主线
+
+## Step 6 · 声音与个人素材(后置项,时间允许才做)
+
+- [ ] 旁白五段(TTS 或自录)+ 环境声 + FFmpeg 混音 → final.mp4 v1
+- [ ] 上岛实拍 / 用户个人照片入档流程(demo 里"个人素材成为地方档案"的证据;去不了则用 Wikimedia CC 现代照片替代,弱化"实拍"叙述)
+
+## Step 7 · Demo 与提交
 
 - [ ] 全流程彩排 2 次,修复或绕开翻车点
-- [ ] 录 3 分钟 demo(脚本见下)
-- [ ] Repo 清理:README、截图、架构图、`.env.example`、无密钥痕迹
-- [ ] Project Description 对齐评审四项;提交视频 + repo + 描述
+- [ ] 录 3 分钟 demo(脚本见下;若 Step 4 关闭,1:25–2:00 段改讲"确定性保真"技术点)
+- [ ] Repo 清理:README、截图、架构图、`.env.local.example` 空模板、无密钥痕迹
 - [ ] 留 4 小时缓冲;**最后 6 小时不引入新功能**
 
 ---
@@ -77,14 +80,13 @@
 
 ## 预算纪律
 
-测试 5s/720p;每镜头 ≤3 次;Veo 仅 S4 正片;单次 >$2 先确认;成本写入 shot JSON。Preview.io 不进 pipeline($50 credits 可忽略;它是竞争参照而非构件)。
+测试 5s/720p;每镜头 ≤3 次;Veo 仅 S4 正片;单次 >$2 先确认;成本写入 shot JSON。fal 调用只发生在 Step 4,之前的一切都是零成本的。
 
 ## 风险登记
 
 | 风险 | 触发信号 | 应对 |
 |---|---|---|
-| fal 模型融化 collage | 实验 A/B 全失败 | 提高确定性镜头占比;转场退化为确定性 push + 溶解 |
-| HyperFrames 不可用 | spike 失败 | Puppeteer 截帧 + FFmpeg |
-| 上岛没时间 | H8 未成行 | Wikimedia 上找 CC 授权的现代 RI 照片替代,demo 弱化"实拍"叙述 |
-| Wikimedia 结果差 | 检索无可用图 | 全走种子包,按钮标 experimental |
-| 时间塌方 | H48 成片未完成 | 冻结界面开发,全力保 Phase 2 |
+| fal 模型融化 collage | Step 4 实验 A/B 失败 | 关闭 Step 4,全片确定性;叙事转"宁可不用生成" |
+| HyperFrames 渲染某场景翻车 | render 报错/画面错乱 | `scripts/render-scene.mjs`(Puppeteer)截帧 + FFmpeg,场景 JSON 不变 |
+| 抠图质量差 | 毛边/残留明显 | rembg 本地跑 + canvas 蒙版近似;实在不行该图层改整片纸片化 |
+| 时间塌方 | 成片 v0 未在中点完成 | 冻结 Step 3 之后所有步骤,全力保 Step 2 |
