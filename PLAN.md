@@ -11,10 +11,12 @@
 
 目标:`assets/archive/` 18 项 → 可用图层,全部用脚本批量完成,不再手工。
 
-- [ ] 用 `scripts/cutout.mjs` 批量处理可直接用的 JPG(抠图/毛边/投影按图层角色分流:建筑/人物抠像,地图/报纸只做毛边纸片化)→ `assets/cutouts/`
-- [ ] asset_014(TIFF)先转码 JPG 再进管线;asset_013(PDF)按 `data/day0-ri-archive-notes.md` 流程人工给页码后单页截取,**没有页码前先跳过,不阻塞**
-- [ ] 产出一份 `data/cutouts-manifest.json`(或直接补进 roosevelt-island.json):每个 cutout 对应的 source asset、处理方式,保住溯源链
-- 完成标准:5 个场景需要的图层全部就位。**不追求 18 张全处理,按场景需求倒推,用到哪张处理哪张。**
+- [x] 用 `scripts/batch-cutout.mjs` 批量处理**已知可用格式**(JPG/TIFF;TIFF 自动转码验证通过):16 个图层已出——15 张撕纸卡(`mode:paper`,含 asset_001 立体照片裁单幅、asset_003 整张地图)+ asset_002 建筑抠像(tone 已事后统一)
+- [x] **统一底色**:黑白档案全部 `tone:mono`(灰度 + 对比度归一,确定性处理,不碰生成红线),亮黄立体照片卡与中性灰版画已归一;现代彩色照片保留彩色;`tone:sepia`(统一暖调)已实现备用
+- [x] **asset_013(PDF)明确跳过**,等人工给页码再单页截取,不阻塞任何后续步骤
+- [x] 处理记录已写回 `data/places/roosevelt-island.json` 每个 asset 的 `cutouts` 字段(文件、mode、tone、crop),溯源链完整
+- [ ] **待本机补跑**:7 个 `mode:auto` 抠形任务(asset_001/006/012/014/015 建筑 + asset_017/018 现代照片)——云端容器网络策略拦了 rembg 模型下载,本机跑一次 `node scripts/batch-cutout.mjs` 即可(幂等,只补缺的);或在环境设置放行 `github.com` 后云端重跑
+- 完成标准:5 个场景需要的图层全部就位。现有 16 层已够搭全部 5 个场景的 v0(纸卡 + 地图 + asset_002 建筑层),抠形层到位后替换升级。
 
 ## Step 2 · 确定性 MVP 成片(最高优先级)🎬
 
@@ -38,7 +40,7 @@
 
 ## Step 4 · fal 升级(S2 / S4,含原实验 A/B)
 
-第一次真实花钱在这里,前置纪律不变:先查 schema 与当日价格;>$2 先问;5s/720p;每镜头 ≤3 attempts。
+**预算已放开(开发者 2026-07-18 决定):效果优先,不逐次省钱。**仍保留的纪律:先查 schema 与当日价格;成本/request_id 全部记录;单次 >$10 或累计异常膨胀时先说一声;每镜头 3 次尝试后停下来分析而不是继续重 roll。参数直接上目标质量,不再强制 5s/720p 测试档。
 
 - [ ] `lib/fal.ts` + `/api/shot/generate` + `/api/shot/status`(queue 模式,request_id/成本写入 shot JSON)
 - [ ] **实验 A/B 在此执行**:用 Step 2 产出的真实首尾帧,Kling FLF vs I2V 各 1 次,检查档案内容是否保住、纸边是否扭曲——这是 S2/S4 升级的前置判断,不是独立仪式
@@ -78,9 +80,9 @@
 | 2:00–2:35 | 成片完整播放(~31s) | Demo |
 | 2:35–3:00 | Journey Book(含社区署名)+ "The place determines the film. The user directs the journey." | 收尾 |
 
-## 预算纪律
+## 预算纪律(2026-07-18 放宽)
 
-测试 5s/720p;每镜头 ≤3 次;Veo 仅 S4 正片;单次 >$2 先确认;成本写入 shot JSON。fal 调用只发生在 Step 4,之前的一切都是零成本的。
+效果优先:模型与参数按最好效果选,不强制先用便宜候选;单次 >$10 或累计预算异常时先确认;每镜头 3 次尝试后停下分析;成本与 request_id 写入 shot JSON(溯源不放松)。fal 调用只发生在 Step 4,之前的一切都是零成本的。
 
 ## 风险登记
 

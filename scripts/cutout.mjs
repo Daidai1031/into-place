@@ -32,6 +32,9 @@ function parseArgs(argv) {
     shadowBlur: 14,
     shadowOpacity: 0.35,
     borderWidth: 2,
+    mode: "auto",
+    tone: "none",
+    maxSize: 0,
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -40,6 +43,10 @@ function parseArgs(argv) {
     else if (a === "--no-torn-edge") args.tornEdge = false;
     else if (a === "--no-shadow") args.shadow = false;
     else if (a === "--no-border") args.whiteBorder = false;
+    else if (a === "--mode") args.mode = argv[++i]; // auto(rembg 抠形) | paper(整张纸片,不抠)
+    else if (a === "--tone") args.tone = argv[++i]; // none | mono(统一中性灰) | sepia(统一暖调)
+    else if (a === "--crop") args.crop = argv[++i]; // "x,y,w,h" 0..1 比例,先裁再处理(去扫描黑底/校准条)
+    else if (a === "--max-size") args.maxSize = Number(argv[++i]); // 长边上限,超大扫描先缩
   }
   return args;
 }
@@ -86,6 +93,25 @@ async function applyTornEdge(alphaPngBuffer, width, height, jitterCell = 22) {
   return sharp(original).composite([{ input: jittered, blend: "multiply" }]).png().toBuffer();
 }
 
+/**
+ * 统一底色:档案扫描件的纸色从亮黄到中性灰都有,拼在一起像大杂烩。
+ * 全部确定性像素操作(灰度化 + 对比度归一 + 可选统一暖调),不经过任何生成式模型,
+ * 不违反"档案图片零生成式处理"红线;用了什么 tone 记进 manifest 保持可追溯。
+ */
+async function applyTone(rgbaPngBuffer, tone) {
+  if (!tone || tone === "none") return rgbaPngBuffer;
+  const alpha = await sharp(rgbaPngBuffer).extractChannel("alpha").png().toBuffer();
+  let gray = sharp(rgbaPngBuffer).removeAlpha().grayscale().normalise({ lower: 1, upper: 99 });
+  if (tone === "sepia") {
+    // 统一暖调:同一组 tint 参数应用到所有图层,原图偏黄程度不再影响成品
+    gray = gray.tint({ r: 235, g: 220, b: 195 });
+  } else if (tone !== "mono") {
+    throw new Error(`未知 tone: ${tone}(可用: none | mono | sepia)`);
+  }
+  const toned = await gray.toColourspace("srgb").png().toBuffer();
+  return sharp(toned).joinChannel(alpha).png().toBuffer();
+}
+
 export async function cutout({
   input,
   output,
@@ -97,20 +123,56 @@ export async function cutout({
   shadowBlur = 14,
   shadowOpacity = 0.35,
   borderWidth = 2,
+  mode = "auto",
+  tone = "none",
+  crop = null,
+  maxSize = 0,
 }) {
   if (!input || !output) throw new Error("cutout() 需要 input 和 output 路径");
 
-  let mattedPath = input;
-  if (!(await hasAlpha(input))) {
-    const tmpDir = path.join(os.tmpdir(), "into-place-cutout");
-    await mkdir(tmpDir, { recursive: true });
+  const tmpDir = path.join(os.tmpdir(), "into-place-cutout");
+  await mkdir(tmpDir, { recursive: true });
+
+  // 预处理:裁剪(去扫描黑底/校准条/取立体照片单幅)→ 超大扫描缩到可用尺寸 → 统一转 PNG
+  let workPath = input;
+  {
+    const meta = await sharp(input).metadata();
+    let pipeline = sharp(input);
+    let dirty = /\.(tif|tiff)$/i.test(input); // TIFF 一律转码成 PNG 再进后续流程
+    if (crop) {
+      const [cx, cy, cw, ch] = String(crop).split(",").map(Number);
+      if ([cx, cy, cw, ch].some((v) => !(v >= 0) || v > 1)) throw new Error(`--crop 需要 0..1 比例 "x,y,w,h",拿到: ${crop}`);
+      pipeline = pipeline.extract({
+        left: Math.round(cx * meta.width),
+        top: Math.round(cy * meta.height),
+        width: Math.round(cw * meta.width),
+        height: Math.round(ch * meta.height),
+      });
+      dirty = true;
+    }
+    if (maxSize > 0 && Math.max(meta.width, meta.height) > maxSize) {
+      pipeline = pipeline.resize(maxSize, maxSize, { fit: "inside" });
+      dirty = true;
+    }
+    if (dirty) {
+      workPath = path.join(tmpDir, `${path.parse(input).name}_pre.png`);
+      await pipeline.png().toFile(workPath);
+    }
+  }
+
+  let mattedPath = workPath;
+  if (mode === "paper") {
+    // 整张纸片化:不抠形状,alpha 全不透明,毛边/白边/投影照常走
+    mattedPath = path.join(tmpDir, `${path.parse(input).name}_paper.png`);
+    await sharp(workPath).ensureAlpha(1).png().toFile(mattedPath);
+  } else if (!(await hasAlpha(workPath))) {
     mattedPath = path.join(tmpDir, `${path.parse(input).name}_matted.png`);
-    await runRembg(input, mattedPath);
+    await runRembg(workPath, mattedPath);
   }
 
   const { width, height } = await sharp(mattedPath).metadata();
   // 全程用 PNG 编码的 buffer 传来传去,不手写 raw 字节/通道数——那是上一版做出满屏噪点花纹的原因。
-  const originalRgba = await sharp(mattedPath).ensureAlpha().png().toBuffer();
+  const originalRgba = await applyTone(await sharp(mattedPath).ensureAlpha().png().toBuffer(), tone);
 
   const alphaMask = await sharp(originalRgba).extractChannel("alpha").png().toBuffer();
   const finalMask = tornEdge ? await applyTornEdge(alphaMask, width, height) : alphaMask;
@@ -199,7 +261,14 @@ const isMain = fileURLToPath(import.meta.url) === path.resolve(process.argv[1] ?
 if (isMain) {
   const args = parseArgs(process.argv.slice(2));
   if (!args.input || !args.output) {
-    console.error("用法: node scripts/cutout.mjs --in assets/archive/xxx.jpg --out assets/cutouts/xxx_part.png [--no-torn-edge] [--no-shadow] [--no-border]");
+    console.error(
+      "用法: node scripts/cutout.mjs --in assets/archive/xxx.jpg --out assets/cutouts/xxx_part.png\n" +
+        "  [--mode auto|paper]   paper=整张撕纸卡(版画/地图),不跑 rembg\n" +
+        "  [--tone none|mono|sepia]  统一底色(确定性:灰度+归一,sepia 再加统一暖调)\n" +
+        "  [--crop x,y,w,h]      0..1 比例预裁剪(去扫描黑底/校准条/立体照片取单幅)\n" +
+        "  [--max-size N]        长边上限,超大扫描先缩\n" +
+        "  [--no-torn-edge] [--no-shadow] [--no-border]"
+    );
     process.exit(1);
   }
   cutout(args).catch((err) => {

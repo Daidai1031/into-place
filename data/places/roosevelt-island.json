@@ -3,7 +3,10 @@
   "name": "Roosevelt Island",
   "region": "New York, USA",
   "status": "seeded",
-  "map_marker": { "x": 0.72, "y": 0.38 },
+  "map_marker": {
+    "x": 0.72,
+    "y": 0.38
+  },
   "tagline": "An island the city built to hide people, now a place people choose to live.",
   "assets": [
     {
@@ -21,7 +24,15 @@
       "upload_role": null,
       "status": "must_use",
       "file": "assets/archive/asset_001.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "file": "assets/cutouts/asset_001_smallpox_card.png",
+          "mode": "paper",
+          "tone": "mono",
+          "crop": "0.138,0.120,0.358,0.654",
+          "processing": "deterministic only (crop/resize/grayscale-normalise/torn-edge/shadow); no generative model touched pixels"
+        }
+      ]
     },
     {
       "id": "asset_002",
@@ -38,7 +49,20 @@
       "upload_role": null,
       "status": "must_use",
       "file": "assets/archive/asset_002.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "file": "assets/cutouts/asset_002_asylum_card.png",
+          "mode": "paper",
+          "tone": "mono",
+          "processing": "deterministic only (crop/resize/grayscale-normalise/torn-edge/shadow); no generative model touched pixels"
+        },
+        {
+          "file": "assets/cutouts/asset_002_asylum.png",
+          "mode": "auto",
+          "tone": "mono",
+          "processing": "rembg segmentation (run earlier on dev machine) + post-hoc deterministic grayscale/contrast tone unification + resize to 3840; mask decides transparency, never repaints pixels"
+        }
+      ]
     },
     {
       "id": "asset_003",
@@ -55,7 +79,14 @@
       "upload_role": null,
       "status": "must_use",
       "file": "assets/archive/asset_003.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "file": "assets/cutouts/asset_003_map_bg.png",
+          "mode": "paper",
+          "tone": "none",
+          "processing": "deterministic only (crop/resize/grayscale-normalise/torn-edge/shadow); no generative model touched pixels"
+        }
+      ]
     },
     {
       "id": "asset_004",
@@ -72,7 +103,14 @@
       "upload_role": null,
       "status": "maybe",
       "file": "assets/archive/asset_004.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "file": "assets/cutouts/asset_004_asylum1866_card.png",
+          "mode": "paper",
+          "tone": "mono",
+          "processing": "deterministic only (crop/resize/grayscale-normalise/torn-edge/shadow); no generative model touched pixels"
+        }
+      ]
     },
     {
       "id": "asset_005",
@@ -89,7 +127,14 @@
       "upload_role": null,
       "status": "maybe",
       "file": "assets/archive/asset_005.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "file": "assets/cutouts/asset_005_workhouse_card.png",
+          "mode": "paper",
+          "tone": "mono",
+          "processing": "deterministic only (crop/resize/grayscale-normalise/torn-edge/shadow); no generative model touched pixels"
+        }
+      ]
     },
     {
       "id": "asset_006",
@@ -106,7 +151,14 @@
       "upload_role": null,
       "status": "must_use",
       "file": "assets/archive/asset_006.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "file": "assets/cutouts/asset_006_penitentiary_card.png",
+          "mode": "paper",
+          "tone": "mono",
+          "processing": "deterministic only (crop/resize/grayscale-normalise/torn-edge/shadow); no generative model touched pixels"
+        }
+      ]
     },
     {
       "id": "asset_007",
@@ -123,7 +175,14 @@
       "upload_role": null,
       "status": "maybe",
       "file": "assets/archive/asset_007.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "file": "assets/cutouts/asset_007_almshouse_card.png",
+          "mode": "paper",
+          "tone": "mono",
+          "processing": "deterministic only (crop/resize/grayscale-normalise/torn-edge/shadow); no generative model touched pixels"
+        }
+      ]
     },
     {
       "id": "asset_008",
@@ -140,7 +199,14 @@
       "upload_role": null,
       "status": "maybe",
       "file": "assets/archive/asset_008.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "file": "assets/cutouts/asset_008_darkcell_card.png",
+          "mode": "paper",
+          "tone": "mono",
+          "processing": "deterministic only (crop/resize/grayscale-normalise/torn-edge/shadow); no generative model touched pixels"
+        }
+      ]
     },
     {
       "id": "asset_009",
@@ -157,7 +223,14 @@
       "upload_role": null,
       "status": "maybe",
       "file": "assets/archive/asset_009.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "file": "assets/cutouts/asset_009_bridgeplan_card.png",
+          "mode": "paper",
+          "tone": "mono",
+          "processing": "deterministic only (crop/resize/grayscale-normalise/torn-edge/shadow); no generative model touched pixels"
+        }
+      ]
     },
     {
       "id": "asset_010",
@@ -174,7 +247,14 @@
       "upload_role": null,
       "status": "must_use",
       "file": "assets/archive/asset_010.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "file": "assets/cutouts/asset_010_prison_card.png",
+          "mode": "paper",
+          "tone": "mono",
+          "processing": "deterministic only (crop/resize/grayscale-normalise/torn-edge/shadow); no generative model touched pixels"
+        }
+      ]
     },
     {
       "id": "asset_011",
@@ -191,7 +271,14 @@
       "upload_role": null,
       "status": "must_use",
       "file": "assets/archive/asset_011.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "file": "assets/cutouts/asset_011_penitentiary1834_card.png",
+          "mode": "paper",
+          "tone": "mono",
+          "processing": "deterministic only (crop/resize/grayscale-normalise/torn-edge/shadow); no generative model touched pixels"
+        }
+      ]
     },
     {
       "id": "asset_012",
@@ -208,7 +295,14 @@
       "upload_role": null,
       "status": "must_use",
       "file": "assets/archive/asset_012.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "file": "assets/cutouts/asset_012_asylum1893_card.png",
+          "mode": "paper",
+          "tone": "mono",
+          "processing": "deterministic only (crop/resize/grayscale-normalise/torn-edge/shadow); no generative model touched pixels"
+        }
+      ]
     },
     {
       "id": "asset_013",
@@ -242,7 +336,14 @@
       "upload_role": null,
       "status": "must_use",
       "file": "assets/archive/asset_014.tif",
-      "cutouts": []
+      "cutouts": [
+        {
+          "file": "assets/cutouts/asset_014_lighthouse1970_card.png",
+          "mode": "paper",
+          "tone": "mono",
+          "processing": "deterministic only (crop/resize/grayscale-normalise/torn-edge/shadow); no generative model touched pixels"
+        }
+      ]
     },
     {
       "id": "asset_015",
@@ -259,7 +360,14 @@
       "upload_role": null,
       "status": "must_use",
       "file": "assets/archive/asset_015.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "file": "assets/cutouts/asset_015_asylum1999_card.png",
+          "mode": "paper",
+          "tone": "mono",
+          "processing": "deterministic only (crop/resize/grayscale-normalise/torn-edge/shadow); no generative model touched pixels"
+        }
+      ]
     },
     {
       "id": "asset_016",
@@ -276,7 +384,14 @@
       "upload_role": null,
       "status": "maybe",
       "file": "assets/archive/asset_016.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "file": "assets/cutouts/asset_016_farmhouse_card.png",
+          "mode": "paper",
+          "tone": "mono",
+          "processing": "deterministic only (crop/resize/grayscale-normalise/torn-edge/shadow); no generative model touched pixels"
+        }
+      ]
     },
     {
       "id": "asset_017",
