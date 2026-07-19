@@ -97,8 +97,11 @@ export async function POST(req: Request) {
     if (model.imageRefsParam && imageUrls.length) {
       input[model.imageRefsParam] = imageUrls;
     }
-    if (model.aspectRatioParam) input[model.aspectRatioParam] = "16:9";
+    if (model.aspectRatioParam) {
+      input[model.aspectRatioParam] = model.aspectRatioValue ?? "16:9";
+    }
     input.num_images = 1;
+    if (model.extraInput) Object.assign(input, model.extraInput);
 
     const { imageUrl, requestId } = await callImageModel(model.endpointId, input);
 
