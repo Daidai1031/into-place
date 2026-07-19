@@ -1,17 +1,17 @@
-# 06 · 首个案例与共创档案机制
+# 06 · First Case and Co-created Archive Mechanism
 
-## 共创档案(平台机制,不是权宜之计)
+## Co-created Archive (A Platform Mechanism, Not a Workaround)
 
-Into Place 的长期形态是一个地方记忆的共创平台:任何人都可以为一个地方贡献图片、声音与理解。MVP 中:
+Into Place is intended to become a co-creation platform for place-based memory: anyone can contribute images, sounds, and interpretations of a place. In the MVP:
 
-- 种子档案由创始人策展(`contributor: "founder_seed"`),来源与 license 齐全;
-- 用户上传的照片经勾选后进入该地方公共档案并署名(`contributor: "user"`);
-- 地图上 `empty` 状态的地点即"等待被点亮"的共创邀请;
-- Journey Book 中社区贡献与机构档案并列展示。
+- The seed archive is curated by the founder (`contributor: "founder_seed"`) and includes complete source and license information.
+- User-uploaded photos enter the place's public archive with attribution after the user opts in (`contributor: "user"`).
+- Places with `empty` status on the map are co-creation invitations “waiting to be illuminated.”
+- The Journey Book displays community contributions alongside institutional archives.
 
-demo 台词:"这不是我的素材库,这是这个地方正在生长的公共记忆。"
+Demo line: “This is not my asset library. It is the growing public memory of this place.”
 
-## 主案例:Roosevelt Island(Blackwell's → Welfare → Roosevelt)
+## Main Case: Roosevelt Island (Blackwell's → Welfare → Roosevelt)
 
 **Format:** ~31-second collage animation, 5 shots  
 

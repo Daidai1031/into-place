@@ -1,21 +1,21 @@
-# 素材预处理与 I2V 实验工具
+# Asset Preprocessing and I2V Experiment Tools
 
-这里的脚本负责两件事：把有来源的档案处理成审核后的 collage 图层，以及用一张审核后的 storyboard frame 运行 fal image-to-video 实验。视频主路径不依赖独立的分层渲染器或 headless browser。
+The scripts here serve two purposes: processing sourced archives into reviewed collage layers, and running fal image-to-video experiments from a reviewed storyboard frame. The main video path does not depend on a standalone layered renderer or headless browser.
 
-## 0. 一次性准备
+## 0. One-time Setup
 
 ```bash
 npm install
-cp .env.local.example .env.local # 填 FAL_KEY；不要提交该文件
+cp .env.local.example .env.local # Add FAL_KEY; do not commit this file
 ```
 
-fal mask 不可用时会回退本地 rembg / silueta，开发机可选安装：
+When fal masks are unavailable, the pipeline falls back to local rembg / silueta. Optionally install them on the development machine:
 
 ```bash
 pip install rembg[cli] onnxruntime
 ```
 
-## 1. 预处理核心：`cutout.mjs`
+## 1. Preprocessing Core: `cutout.mjs`
 
 ```ts
 type TonePreset = "source" | "mono" | "sepia";
@@ -30,15 +30,15 @@ type PreprocessSelection = {
 materializeCutout(recipeIdOrRecipe, selection = {}, context = {});
 ```
 
-固定顺序：EXIF 摆正 → recipe crop → resize（只缩小）→ tone → 应用缓存 mask → edge → 白边 / 阴影 → QA。RGB 始终来自本地原图；fal mask 只替换 alpha。
+Fixed order: EXIF orientation → recipe crop → resize (downscale only) → tone → apply cached mask → edge → white border / shadow → QA. RGB always comes from the local source image; the fal mask replaces alpha only.
 
-- `role:card`：保留 crop 内整幅内容，默认 `torn`。
-- `role:cutout`：使用主体 alpha，默认 `scissor`。
-- `role:bg`：默认 `none`，无边缘和阴影。
-- `source` 保留本地颜色；`mono` 做中性黑白；`sepia` 在 mono 上加固定暖调。
-- `maxSize` 只是长边上限，始终禁止放大。
+- `role:card`: preserves the full content within the crop; defaults to `torn`.
+- `role:cutout`: uses subject alpha; defaults to `scissor`.
+- `role:bg`: defaults to `none`, with no edge or shadow.
+- `source` preserves local color; `mono` produces neutral black and white; `sepia` adds a fixed warm tint on top of mono.
+- `maxSize` is only the upper bound for the long edge; upscaling is always prohibited.
 
-## 2. 批量处理：`batch-cutout.mjs`
+## 2. Batch Processing: `batch-cutout.mjs`
 
 ```bash
 node --env-file-if-exists=.env.local scripts/batch-cutout.mjs --dry-run
@@ -50,29 +50,29 @@ node --env-file-if-exists=.env.local scripts/batch-cutout.mjs --tone sepia --edg
 node scripts/preprocess-contact-sheet.mjs
 ```
 
-分流统一定义在 `data/preprocess/roosevelt-island.json`：
+All routing is defined in `data/preprocess/roosevelt-island.json`:
 
-- `--dry-run` 只校验，不写文件、不调用 fal。
-- `--force` 只重做本地像素阶段；只有 `--refresh-mask` 会重新请求付费 mask。
-- fal SAM 请求必须设置 `apply_mask:false`，失败顺序为 SAM → silueta/rembg → 裁剪纸卡。
-- 输出统一使用 `*_card.png`、`*_cutout.png`、`*_bg.png`。
-- contact sheet 拒绝的 recipe 必须设置 `review.visual: rejected`、`publish:false` 和 `fallbackRecipeId`。
-- mask、provenance、hash、request ID、参数与成本分别保存在 `data/preprocess/` 对应目录。
+- `--dry-run` validates only; it neither writes files nor calls fal.
+- `--force` reruns only the local pixel stages; only `--refresh-mask` requests another paid mask.
+- fal SAM requests must set `apply_mask:false`; the fallback order is SAM → silueta / rembg → cropped paper card.
+- All outputs use `*_card.png`, `*_cutout.png`, or `*_bg.png`.
+- A recipe rejected during contact-sheet review must set `review.visual: rejected`, `publish:false`, and `fallbackRecipeId`.
+- Masks, provenance, hashes, request IDs, parameters, and costs are stored in their corresponding directories under `data/preprocess/`.
 
-## 3. Manual collage 静态导出
+## 3. Manual Collage Static Export
 
-Manual collage 在进入视频生成前必须导出为一张 1280×720 PNG：
+A manual collage must be exported as a single 1280×720 PNG before video generation:
 
-1. 首选在浏览器中从 `CollageCanvas` 导出；
-2. 如果外部图片 CORS 或浏览器差异导致导出不稳定，使用服务端 Sharp 按 `BeatLayout.items` 合成；
-3. 只允许使用已通过视觉审核的 cutout 和用户笔迹；
-4. 导出结果是 I2V start frame，不得再送回抠图 / 分割模型反向找层。
+1. Prefer export from `CollageCanvas` in the browser.
+2. If external-image CORS or browser differences make export unreliable, use server-side Sharp to composite according to `BeatLayout.items`.
+3. Use only visually approved cutouts and user brush strokes.
+4. The exported result is the I2V start frame; do not send it back to a matting / segmentation model to reverse-engineer layers.
 
-对应导出脚本 / route 尚待实现，见 `PLAN.md`。
+The corresponding export script / route is still pending; see `PLAN.md`.
 
-## 4. I2V 实验：`run-experiment.mjs`
+## 4. I2V Experiment: `run-experiment.mjs`
 
-实验输入是一张已经审核的 generated frame 或 manual collage PNG。模型只能从 `lib/models.ts` 的 `I2V_MODELS` 选择；付费前必须重新核实 schema 和当日价格。
+The experiment input is an approved generated frame or manual collage PNG. Models may only be selected from `I2V_MODELS` in `lib/models.ts`; the schema and current-day price must be re-verified before any paid call.
 
 ```bash
 npm run experiment -- \
@@ -83,11 +83,11 @@ npm run experiment -- \
   --tag beat_01_kling_a
 ```
 
-可用模型 key 以 `lib/models.ts` 为准。Hero 模型、无法自动换算价格的模型或单次预估超过 $5 的调用需要先确认，再显式添加 `--yes-i-know-the-cost`。
+See `lib/models.ts` for available model keys. A hero model, a model whose price cannot be converted automatically, or a call with an estimate over $5 requires confirmation first, followed by the explicit `--yes-i-know-the-cost` flag.
 
-输出：
+Outputs:
 
-- `clips/{tag}.mp4`：模型返回的视频；
-- `data/experiments/{tag}.json`：模型、request ID、参数、预估成本与输出路径。
+- `clips/{tag}.mp4`: video returned by the model.
+- `data/experiments/{tag}.json`: model, request ID, parameters, estimated cost, and output path.
 
-每个正式镜头最多尝试 3 次。之后应修改 storyboard frame、动作或 prompt，而不是继续重 roll。
+Each production shot allows no more than 3 attempts. After that, change the storyboard frame, motion, or prompt instead of continuing to reroll.

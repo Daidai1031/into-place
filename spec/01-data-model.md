@@ -1,8 +1,8 @@
-# 01 · 数据模型
+# 01 · Data Model
 
-状态存 JSON 文件,不上数据库。`data/places/*.json` 为地方档案(可多个,支撑地图),`data/project.json` 为当前创作项目(单项目)。
+State is stored in JSON files rather than a database. `data/places/*.json` contains place archives (multiple files are supported for the map), while `data/project.json` contains the current creative project (a single project).
 
-## 1. Place(地方档案 = 共创档案的容器)
+## 1. Place (Place Archive = Container for a Co-created Archive)
 
 ```jsonc
 // data/places/roosevelt-island.json
@@ -10,15 +10,15 @@
   "slug": "roosevelt-island",
   "name": "Roosevelt Island",
   "region": "New York, USA",
-  "status": "seeded",              // seeded(已播种,可进入)| empty(待共创,地图上半透明)
-  "map_marker": { "x": 0.72, "y": 0.38 },   // 旧风格化 SVG 地图坐标,AtlasMap.tsx 保留未删,未来若回退仍可用
-  "coordinates": { "lat": 40.7601, "lng": -73.9500 },  // 真实经纬度,2026-07-19 起 Atlas 纸感地球(react-globe.gl)用这个定位标记
+  "status": "seeded",              // seeded (populated and accessible) | empty (awaiting co-creation; translucent on the map)
+  "map_marker": { "x": 0.72, "y": 0.38 },   // Coordinates for the old stylized SVG map; AtlasMap.tsx remains in the repo for a possible rollback
+  "coordinates": { "lat": 40.7601, "lng": -73.9500 },  // Real latitude and longitude, used to position markers on the Atlas paper-textured globe (react-globe.gl) since 2026-07-19
   "tagline": "An island the city built to hide people, now a place people choose to live.",
-  "assets": [ /* Asset[],见 §3。种子内容 + 用户贡献共存 */ ]
+  "assets": [ /* Asset[]; see §3. Seed content and user contributions coexist */ ]
 }
 ```
 
-`data/places/` 同时放 `shaxi.json`、`camino.json`,status 为 `empty`(仅名称与 tagline),用于地图叙事。
+`data/places/` also contains `shaxi.json` and `camino.json`, with status `empty` (name and tagline only), for the map narrative.
 
 ## 2. Project
 
@@ -33,7 +33,7 @@
     "chosenDirectionId": "dir_1",
     "beats": [{ "id": "beat_1", "act": "Stasis", "text": "…" }]
   },
-  "frames": { "beat_1": { /* BeatFrame,见 §4 */ } },
+  "frames": { "beat_1": { /* BeatFrame; see §4 */ } },
   "beatMode": { "beat_1": "generated | collage" },
   "layouts": { "beat_1": { "items": [], "brushDataUrl": null } },
   "transitions": { "beat_1->beat_2": { "type": "match_cut", "note": "…" } },
@@ -41,9 +41,9 @@
 }
 ```
 
-浏览器端 `localStorage` 是项目状态真值。本地开发环境在 Film 流程前将同一结构镜像到 `data/project.json`;Vercel 不写文件。
+Browser-side `localStorage` is the source of truth for project state. Before the Film workflow, the local development environment mirrors the same structure to `data/project.json`; Vercel does not write files.
 
-## 3. Asset(研究卡片 / 素材 / 社区贡献)
+## 3. Asset (Research Card / Asset / Community Contribution)
 
 ```jsonc
 {
@@ -56,8 +56,8 @@
   "license": "Public Domain",
   "confidence": "high | medium | low",
   "fact_level": "documented | interpretation | creative",
-  "contributor": "founder_seed | user",       // 共创机制:用户上传即成为贡献
-  "share_to_place": true,                      // 用户勾选后进入该地方公共档案
+  "contributor": "founder_seed | user",       // Co-creation mechanism: a user upload becomes a contribution
+  "share_to_place": true,                      // Enters the place's public archive when selected by the user
   "upload_role": "bridge | protagonist_ref | texture | ending | inspiration | null",
   "status": "must_use | maybe | rejected",
   "file": "assets/archive/asset_012.jpg",
@@ -99,9 +99,9 @@
 }
 ```
 
-`source` / `license` 为必填;无来源素材不允许写入。`cutouts` 必须是对象数组,不得退回仅含路径的字符串数组。每个对象都要记录角色、三组 hash、像素来源、操作链、fal 调用和审核状态;没有 fal 调用的纸卡/背景写空数组。`pixel_origin.rgb` 必须指向本地原始素材,fal mask 只能作为 `pixel_origin.alpha`,不能成为 RGB 来源。缓存与发布规则见 spec/05。
+`source` / `license` are required; unsourced assets must not be written. `cutouts` must be an array of objects and must not regress to a string array containing only paths. Each object must record its role, three hashes, pixel origins, operation chain, fal calls, and review status; paper cards / backgrounds with no fal calls use an empty array. `pixel_origin.rgb` must point to the local source asset. A fal mask may only be used as `pixel_origin.alpha` and must never become the RGB source. See spec/05 for caching and publishing rules.
 
-## 4. Frame 与 Shot
+## 4. Frame and Shot
 
 ```jsonc
 {
@@ -145,4 +145,4 @@
 }
 ```
 
-Generated frame 可以直接进入 I2V;manual collage 必须先导出为单张 16:9 PNG。Prompt 一律由 `lib/prompt-compiler.ts` 从 beat、frame references 和 motion 数据编译。常规转场由 FFmpeg 在镜头生成后完成,不要求第二套视频渲染引擎。
+A generated frame can enter I2V directly; a manual collage must first be exported as a single 16:9 PNG. Prompts are always compiled by `lib/prompt-compiler.ts` from the beat, frame references, and motion data. Standard transitions are completed by FFmpeg after shot generation and do not require a second video-rendering engine.
