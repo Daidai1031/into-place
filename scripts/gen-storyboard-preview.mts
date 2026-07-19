@@ -33,7 +33,10 @@ const briefById = new Map<string, { id: string; title: string; era: string; type
 const cutoutById = new Map<string, string>();
 for (const a of place.assets) {
   briefById.set(a.id, { id: a.id, title: a.title, era: a.era, type: a.type });
-  const cut = a.cutouts?.find((c: { role: string }) => c.role !== "bg") ?? a.cutouts?.[0];
+  const cut =
+    a.cutouts?.find((c: { role: string }) => c.role === "cutout") ??
+    a.cutouts?.find((c: { role: string }) => c.role !== "bg") ??
+    a.cutouts?.[0];
   if (cut) cutoutById.set(a.id, cut.file);
 }
 

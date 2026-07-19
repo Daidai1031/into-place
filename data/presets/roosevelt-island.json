@@ -20,7 +20,15 @@
       "transition": "goose feather → archival pen",
       "transitionType": "match_cut",
       "narration": "Before Nellie Bly, thousands of women entered this island as diagnoses, crimes and case numbers.",
-      "references": ["asset_022", "asset_023", "asset_024"]
+      "references": ["asset_022", "asset_023", "asset_024"],
+      "sound": {
+        "diegetic": [
+          "a quill pen nib scratching steadily across paper",
+          "a heavy ledger page being turned",
+          "a rubber stamp pressed onto a document"
+        ],
+        "ambient": "a hushed, cavernous records room; faint distant footsteps and the low indistinct murmur of unseen women working"
+      }
     },
     {
       "id": "beat_2",
@@ -30,7 +38,16 @@
       "transition": "written name → document corridor → asylum door",
       "transitionType": "page_turn",
       "narration": "She entered under a false name — and stopped pretending when the door closed.",
-      "references": ["asset_019", "asset_023", "asset_024", "asset_012"]
+      "references": ["asset_019", "asset_023", "asset_024", "asset_012"],
+      "sound": {
+        "diegetic": [
+          "a pen writing a name in quick strokes",
+          "stiff papers folding and sliding against one another",
+          "measured footsteps on a hard floor",
+          "a heavy iron door swinging shut and latching"
+        ],
+        "ambient": "a cold institutional corridor with a faint echoing reverb, an uneasy quiet"
+      }
     },
     {
       "id": "beat_3",
@@ -40,7 +57,15 @@
       "transition": "bathwater → ink → spreading wall crack",
       "transitionType": "wipe",
       "narration": "The more sanely she spoke, the less she was believed.",
-      "references": ["asset_025", "asset_008", "asset_021", "asset_012", "asset_019"]
+      "references": ["asset_025", "asset_008", "asset_021", "asset_012", "asset_019"],
+      "sound": {
+        "diegetic": [
+          "cold water pouring and dripping into a metal tub",
+          "a hard wooden bench creaking under weight",
+          "a pen scratching notes quietly and insistently"
+        ],
+        "ambient": "a damp stone ward; distant muffled distress and indistinct restless voices behind walls"
+      }
     },
     {
       "id": "beat_4",
@@ -50,7 +75,16 @@
       "transition": "wall crack → newspaper → speech wave → script line",
       "transitionType": "match_cut",
       "narration": "The island held their bodies, but their words crossed the water.",
-      "references": ["asset_027", "asset_026", "asset_028", "asset_029", "asset_003"]
+      "references": ["asset_027", "asset_026", "asset_028", "asset_029", "asset_003"],
+      "sound": {
+        "diegetic": [
+          "river water lapping and small waves against a hull",
+          "a printing press clacking and newspaper pages rustling",
+          "an impassioned orator's rising voice, muffled and indistinct",
+          "a gathered crowd murmuring and stirring in agreement"
+        ],
+        "ambient": "an open-air riverfront; wind, gulls, and the distant swell of a public square"
+      }
     },
     {
       "id": "beat_5",
@@ -60,7 +94,15 @@
       "transition": "archival doorway → present day → computer screen",
       "transitionType": "match_cut",
       "narration": "Their voices changed what the city could no longer ignore.",
-      "references": ["asset_018", "asset_031", "asset_015", "asset_027", "asset_029"]
+      "references": ["asset_018", "asset_031", "asset_015", "asset_027", "asset_029"],
+      "sound": {
+        "diegetic": [
+          "soft, quick keyboard typing",
+          "paper and glass pieces sliding and reassembling",
+          "children playing and laughing faintly nearby"
+        ],
+        "ambient": "a calm present-day riverside park; gentle wind, soft distant city hum, a quietly hopeful open air"
+      }
     }
   ]
 }

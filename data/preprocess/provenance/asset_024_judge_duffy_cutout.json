@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_024_judge_duffy_cutout",
+  "assetId": "asset_024",
+  "role": "cutout",
+  "actualRole": "cutout",
+  "source": {
+    "file": "assets/archive/asset_024.png",
+    "sha256": "ee5f928c3b177fcd4f7d39441b9f63dc78428c9e2e865ebd221360721a484250"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_024_judge_duffy_cutout.png",
+    "sha256": "848fca20f8be27f0ccb057cfecd3a3574d5f488c0dab3bf4db96b89afd42697f"
+  },
+  "cache": {
+    "sourceSha256": "ee5f928c3b177fcd4f7d39441b9f63dc78428c9e2e865ebd221360721a484250",
+    "recipeSha256": "f2ffcf24d37d35e8a9b055debfe6c4759c4ae3ee39f8b8e8c376627b0c18bad2",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "27d39dce1a36d9ef087718d3c707fc9766ef0f4000784e001ed2356ce33dbc55",
+    "cacheKey": "35a6baa8c96a727744b330fa7e1dbaf981231f49954ff866ced2150f5de94a58"
+  },
+  "selection": {
+    "tone": "source",
+    "edge": "none"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "normalized-crop:0.15,0.03,0.74,0.78",
+    "resize-inside:2400:without-enlargement",
+    "tone:source",
+    "cached-mask-alpha-only",
+    "edge:none"
+  ],
+  "mask": {
+    "provider": "local-paper",
+    "file": null,
+    "sha256": "5e17993f96b4a725e8128a09611c6d7ca322bba84ff0f0714752441013c5c8e7",
+    "cacheKey": "b43ac652b6eba50ec29a1acd012c83b9c1b2d1ce8a8bbfbc71b607aa589025f4",
+    "fallback": null
+  },
+  "falCalls": [],
+  "qa": {
+    "width": 930,
+    "height": 1051,
+    "opaquePixels": 247442,
+    "coverage": 0.2531557247066286,
+    "bbox": {
+      "left": 16,
+      "top": 18,
+      "width": 894,
+      "height": 1031
+    },
+    "connectedComponents": 91,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.01,
+      "maxCoverage": 0.65,
+      "maxConnectedComponents": 1024
+    },
+    "outputWidth": 930,
+    "outputHeight": 1051
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "The complete Nellie Before Judge Duffy courtroom illustration",
+  "preserve": "Nellie, the woman beside her, the foreground man, Judge Duffy, and the courtroom lamp, rail, bench and architectural lines that connect the scene.",
+  "exclude": "The scanned paper background, printed caption, surrounding body text, and page artifacts.",
+  "qualityWarnings": [],
+  "createdAt": "2026-07-19T15:24:19.494Z"
+}

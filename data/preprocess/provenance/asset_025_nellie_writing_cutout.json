@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_025_nellie_writing_cutout",
+  "assetId": "asset_025",
+  "role": "cutout",
+  "actualRole": "cutout",
+  "source": {
+    "file": "assets/archive/asset_025.png",
+    "sha256": "996fe8b9a651ebcbfb4136b84a427d28398f536a09eb095ef3c3c5d2623bc0b9"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_025_nellie_writing_cutout.png",
+    "sha256": "50bf2cb8ea52f9b4490910f63872ac77bab6d589e87c05ddf14ad7e740fdf780"
+  },
+  "cache": {
+    "sourceSha256": "996fe8b9a651ebcbfb4136b84a427d28398f536a09eb095ef3c3c5d2623bc0b9",
+    "recipeSha256": "ebb42abf503ca11019eb2c715d65a424134ef3080d3493bd1537a8b9986b9c7d",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "27d39dce1a36d9ef087718d3c707fc9766ef0f4000784e001ed2356ce33dbc55",
+    "cacheKey": "f9e2a06b4e61bd36f89a0db030528671bcd7c8f58ca80c2b959639e2088943d9"
+  },
+  "selection": {
+    "tone": "source",
+    "edge": "none"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "normalized-crop:0.08,0.01,0.88,0.84",
+    "resize-inside:2400:without-enlargement",
+    "tone:source",
+    "cached-mask-alpha-only",
+    "edge:none"
+  ],
+  "mask": {
+    "provider": "local-paper",
+    "file": null,
+    "sha256": "23e17c3ca48e06dd3277137f83c3528c0917a4c7fc6680df805e9e9f25ebde13",
+    "cacheKey": "35dbd31e32da31996eae5ef20823572896084d73113a42d643a636c4cfa547a5",
+    "fallback": null
+  },
+  "falCalls": [],
+  "qa": {
+    "width": 467,
+    "height": 664,
+    "opaquePixels": 84178,
+    "coverage": 0.2714648744872423,
+    "bbox": {
+      "left": 0,
+      "top": 8,
+      "width": 467,
+      "height": 656
+    },
+    "connectedComponents": 331,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.01,
+      "maxCoverage": 0.65,
+      "maxConnectedComponents": 1024
+    },
+    "outputWidth": 467,
+    "outputHeight": 664
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "The complete chapter-opening illustration of Nellie Bly writing at her desk",
+  "preserve": "Nellie, her chair and bow, the complete desk and papers, pen, hanging lamp, and round wall frame.",
+  "exclude": "The scanned paper background, chapter heading, surrounding body text, and page artifacts.",
+  "qualityWarnings": [
+    "source_crop_is_531px_wide_no_upscale"
+  ],
+  "createdAt": "2026-07-19T15:24:19.701Z"
+}

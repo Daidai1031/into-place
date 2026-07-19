@@ -1,6 +1,7 @@
 import "server-only";
 import { readFileSync } from "node:fs";
 import path from "node:path";
+import type { BeatSound } from "./prompt-compiler";
 
 /**
  * Built-in default story presets (data/presets/*.json). A preset seeds the
@@ -18,6 +19,7 @@ export interface PresetBeat {
   transitionType?: "page_turn" | "wipe" | "match_cut" | "push_dissolve" | "custom"; // seeded transition to the NEXT beat
   narration?: string;
   references?: string[]; // asset ids fed to the frame model
+  sound?: BeatSound; // declarative diegetic foley cues for the post audio pass
 }
 
 export interface StoryPreset {

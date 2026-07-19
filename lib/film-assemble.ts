@@ -72,11 +72,117 @@ const SCALE =
   GRADE +
   ",format=yuv420p,fps=30";
 
-function ffprobeDuration(file: string): number {
+export function ffprobeDuration(file: string): number {
   const out = execFileSync("ffprobe", [
     "-v", "error", "-show_entries", "format=duration", "-of", "default=nw=1:nk=1", file,
   ]).toString().trim();
   return Number(out) || 5;
+}
+
+/**
+ * Start time (seconds) of each clip on the xfade-concatenated timeline, using
+ * the exact same offset math as `xfadeConcat` so the audio pass can place each
+ * clip's foley in sync with what ends up on screen. `durs[i]` is clip i's raw
+ * duration; `transitionDur` is the nominal xfade length.
+ */
+export function clipOffsets(durs: number[], transitionDur = 0.7): number[] {
+  const starts: number[] = [];
+  let cum = 0;
+  for (let i = 0; i < durs.length; i++) {
+    if (i === 0) {
+      starts.push(0);
+      cum = durs[0];
+      continue;
+    }
+    const t = Math.min(transitionDur, durs[i] - 0.1, durs[i - 1] - 0.1);
+    const offset = Math.max(0, cum - t);
+    starts.push(offset);
+    cum = cum + durs[i] - t;
+  }
+  return starts;
+}
+
+export interface FoleyTrack {
+  /** A media file whose audio stream is the diegetic foley for one clip. */
+  file: string;
+  /** When (seconds) this clip begins on the final timeline (see clipOffsets). */
+  startSec: number;
+}
+
+/**
+ * Mux a curated audio track onto an already-assembled (silent) film: each
+ * foley track is delayed to its clip offset and summed, one music bed is looped
+ * to length and ducked underneath, the whole mix fades out with the picture and
+ * passes through a limiter to stay clear of clipping. Video is copied, not
+ * re-encoded. Gains are the two tuning knobs (dB).
+ */
+export function muxFilmAudio(args: {
+  videoIn: string;
+  out: string;
+  foley: FoleyTrack[];
+  musicFile?: string | null;
+  foleyGainDb?: number;
+  musicGainDb?: number;
+  fadeOutDur?: number;
+}): void {
+  const {
+    videoIn,
+    out,
+    foley,
+    musicFile = null,
+    foleyGainDb = 0,
+    musicGainDb = -13,
+    fadeOutDur = 1.0,
+  } = args;
+  if (foley.length === 0 && !musicFile) throw new Error("muxFilmAudio: no audio inputs");
+  const total = ffprobeDuration(videoIn);
+  const fadeSt = Math.max(0, total - fadeOutDur);
+
+  // Input 0 = the silent video. Foley inputs follow, then a stream-looped music
+  // input (so a short score tiles to cover a longer film before it is trimmed).
+  const inputs: string[] = ["-i", videoIn];
+  const parts: string[] = [];
+  const mixLabels: string[] = [];
+
+  // Everything is forced to stereo/48k before mixing so a mono foley source
+  // (MMAudio returns mono) never collapses the stereo music bed to mono.
+  const STEREO = "aresample=48000,aformat=channel_layouts=stereo";
+  foley.forEach((f, i) => {
+    const idx = i + 1; // ffmpeg input index
+    inputs.push("-i", f.file);
+    const delayMs = Math.max(0, Math.round(f.startSec * 1000));
+    parts.push(
+      `[${idx}:a]${STEREO},adelay=${delayMs}:all=1,volume=${foleyGainDb}dB[fx${i}]`,
+    );
+    mixLabels.push(`[fx${i}]`);
+  });
+
+  if (musicFile) {
+    const idx = foley.length + 1;
+    inputs.push("-stream_loop", "-1", "-i", musicFile);
+    parts.push(
+      `[${idx}:a]${STEREO},atrim=0:${total.toFixed(3)},asetpts=PTS-STARTPTS,volume=${musicGainDb}dB[music]`,
+    );
+    mixLabels.push(`[music]`);
+  }
+
+  const n = mixLabels.length;
+  const mixIn = mixLabels.join("");
+  // normalize=0 keeps each source at its set gain (amix otherwise divides by n).
+  parts.push(
+    `${mixIn}amix=inputs=${n}:normalize=0:dropout_transition=0[amixed]`,
+  );
+  parts.push(
+    `[amixed]afade=t=out:st=${fadeSt.toFixed(2)}:d=${fadeOutDur.toFixed(2)},alimiter=limit=0.95[aout]`,
+  );
+
+  execFileSync("ffmpeg", [
+    "-y", ...inputs,
+    "-filter_complex", parts.join(";"),
+    "-map", "0:v", "-map", "[aout]",
+    "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
+    "-movflags", "+faststart", "-shortest", out,
+  ], { stdio: "inherit" });
 }
 
 /**
