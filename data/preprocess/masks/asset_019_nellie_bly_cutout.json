@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "recipeId": "asset_019_nellie_bly_cutout",
+  "model": "fal-ai/sam-3/image",
+  "cache": {
+    "sourceSha256": "35170f4363355ed3bba2b80af39e0fc2513ec8ab21668715a47b82a655c1fcc1",
+    "recipeSha256": "f321634eebb17815829e1dcbfff6fae9c783d419766b08bb8a08878a6e0cc720",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "maskConfigSha256": "9c2059398aa95b66b47eb56d80ee6ad5d4a27c8a7f4e38266439c5f63ef4db19",
+    "cacheKey": "e93068a8ee73570230ea9021eeb5ae972c8109a270b2028208c40ed7c7bab6c8"
+  },
+  "sourceInput": {
+    "file": "assets/archive/asset_019.jpg",
+    "crop": null,
+    "uploaded": true,
+    "uploadedUrl": "(redacted uploaded cropped source)",
+    "width": 1600,
+    "height": 2400
+  },
+  "verification": {
+    "schemaCheckedAt": "2026-07-18",
+    "pricingCheckedAt": "2026-07-18",
+    "unitPriceUsd": 0.005,
+    "unit": "request"
+  },
+  "calls": [
+    {
+      "attempt": 1,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f7905-f0d7-7b13-b4f6-b135a6321a38",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "Nellie Bly, the complete solid foreground portrait including all face skin, feathered hat, shoulders, and visible torso",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true,
+        "point_prompts": [
+          {
+            "x": 800,
+            "y": 1080,
+            "label": 1,
+            "object_id": 1
+          },
+          {
+            "x": 800,
+            "y": 460,
+            "label": 1,
+            "object_id": 1
+          },
+          {
+            "x": 800,
+            "y": 1900,
+            "label": 1,
+            "object_id": 1
+          },
+          {
+            "x": 100,
+            "y": 100,
+            "label": 0,
+            "object_id": 1
+          }
+        ]
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "completed",
+      "submitted_at": "2026-07-19T06:17:39.858Z",
+      "qa": {
+        "valid": true,
+        "coverage": 0.6864953125,
+        "minCoverage": 0.35,
+        "maxCoverage": 0.9
+      },
+      "result": {
+        "mask_url": "(redacted fal result URL)",
+        "score": 0.8966039419174194,
+        "box": [
+          0.5014183670282364,
+          0.5024404607752644,
+          0.9978041350841522,
+          0.9956514406456518
+        ],
+        "width": 1600,
+        "height": 2400
+      },
+      "completed_at": "2026-07-19T06:17:45.428Z"
+    }
+  ],
+  "updatedAt": "2026-07-19T06:17:45.432Z",
+  "mask": {
+    "file": "data/preprocess/masks/asset_019_nellie_bly_cutout.png",
+    "sha256": "19c2f9e31617c2e4beb96a4793bb1fe5633495421557382a5b11c417a701de0c",
+    "width": 1600,
+    "height": 2400,
+    "coverage": 0.6864953125
+  }
+}

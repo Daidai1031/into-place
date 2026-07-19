@@ -29,12 +29,28 @@ export function AssetCard({
 }) {
   const thumb = thumbOverride ?? assetThumb(asset);
   const pdf = isPdfAsset(asset) || !thumb;
+  const referenceOnly = asset.reference_only === true;
   const rotate = [(index % 3) - 1, 1.5, -1.5][index % 3] * 0.9;
 
   return (
     <PaperCard seed={index} rotate={rotate} className="w-60 p-3">
       <div className="flex h-36 items-center justify-center overflow-hidden bg-paper-deep/40">
-        {pdf ? (
+        {referenceOnly ? (
+          <div className="flex flex-col items-center gap-1 p-4 text-center">
+            <span className="font-display text-3xl text-ink-soft">▶</span>
+            <span className="font-typewriter text-[10px] uppercase tracking-widest text-ink-soft">
+              Reference film · not used in video
+            </span>
+            <a
+              href={asset.source_url}
+              target="_blank"
+              rel="noreferrer"
+              className="font-typewriter text-[11px] underline decoration-dotted hover:text-stamp"
+            >
+              Watch at source
+            </a>
+          </div>
+        ) : pdf ? (
           <div className="flex flex-col items-center gap-1 p-4 text-center">
             <span className="font-display text-3xl text-ink-soft">¶</span>
             <span className="font-typewriter text-[10px] uppercase tracking-widest text-ink-soft">
@@ -63,6 +79,11 @@ export function AssetCard({
       <p className="mt-2 line-clamp-2 font-display text-sm leading-snug" title={asset.title}>
         {asset.title}
       </p>
+      {referenceOnly && asset.description && (
+        <p className="mt-1 line-clamp-3 font-typewriter text-[10px] leading-relaxed text-ink-soft">
+          {asset.description}
+        </p>
+      )}
       <div className="mt-1 flex items-center justify-between">
         <EraBadge era={asset.era} />
       </div>

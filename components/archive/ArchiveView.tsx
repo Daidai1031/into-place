@@ -79,10 +79,10 @@ export function ArchiveView({ place }: { place: Place }) {
   const buckets = bucketByEra(place.assets, (a) => a.era);
   const approvedUploads = project.uploads.filter((u) => u.moderation === "approved");
   const mustUse =
-    place.assets.filter((a) => statusOf(a.id, a.status) === "must_use").length +
+    place.assets.filter((a) => !a.reference_only && statusOf(a.id, a.status) === "must_use").length +
     approvedUploads.filter((u) => statusOf(u.id, "maybe") === "must_use").length;
   const maybe =
-    place.assets.filter((a) => statusOf(a.id, a.status) === "maybe").length +
+    place.assets.filter((a) => !a.reference_only && statusOf(a.id, a.status) === "maybe").length +
     approvedUploads.filter((u) => statusOf(u.id, "maybe") === "maybe").length;
 
   return (
@@ -110,7 +110,7 @@ export function ArchiveView({ place }: { place: Place }) {
                   index={i}
                   thumbStyle={toneFilter && toneFilter !== "none" ? { filter: toneFilter } : undefined}
                   footer={
-                    hydrated ? (
+                    hydrated && !asset.reference_only ? (
                       <SelectionControls
                         status={statusOf(asset.id, asset.status)}
                         onChange={(s) => setStatus(asset.id, s)}
