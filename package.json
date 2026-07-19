@@ -6,7 +6,7 @@
     "cutout": "node scripts/cutout.mjs",
     "preprocess": "node --env-file-if-exists=.env.local scripts/batch-cutout.mjs",
     "preprocess:review": "node scripts/preprocess-contact-sheet.mjs",
-    "test:preprocess": "node --test tests/*.test.mjs tests/preprocess/*.test.mjs",
+    "test:preprocess": "node --test tests/*.test.mjs tests/*.test.mts tests/preprocess/*.test.mjs",
     "experiment": "node --env-file-if-exists=.env.local --import tsx scripts/run-experiment.mjs",
     "sync-public": "node scripts/sync-public.mjs",
     "dev": "node scripts/sync-public.mjs && next dev",

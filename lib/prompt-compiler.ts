@@ -133,6 +133,44 @@ function referenceBlock(references: AssetBrief[]): string {
 }
 
 /**
+ * Pull only explicit, displayable time points out of a storyboard beat. Broad
+ * phrases such as "years later" are deliberately ignored: the frame should
+ * never invent a date that the storyboard did not actually provide.
+ */
+export function extractBeatTimePoints(
+  beat: Pick<StoryBeat, "act" | "text" | "visualDirection">,
+): string[] {
+  const source = [beat.act, beat.text, beat.visualDirection].filter(Boolean).join(" ");
+  const pattern =
+    /\b(?:(?:early|mid|late)[ -](?:1[5-9]\d0s|20\d0s|\d{1,2}(?:st|nd|rd|th)[ -]century)|(?:(?:ca\.?|circa)\s+)?(?:1[5-9]\d{2}|20\d{2})(?:s|\s*[–—-]\s*(?:\d{2}|\d{4}))?|\d{1,2}(?:st|nd|rd|th)[ -]century|present[ -]day|today)\b/gi;
+  const matches = [...source.matchAll(pattern)].map((match) => ({
+    index: match.index ?? 0,
+    value: /^present[ -]day$/i.test(match[0])
+      ? "PRESENT DAY"
+      : /^today$/i.test(match[0])
+        ? "TODAY"
+        : match[0],
+  }));
+
+  matches.sort((a, b) => a.index - b.index);
+  return matches
+    .map((match) => match.value)
+    .filter(
+      (value, index, all) =>
+        all.findIndex((item) => item.toLowerCase() === value.toLowerCase()) === index,
+    );
+}
+
+function timeMarkerBlock(beat: StoryBeat): string {
+  const timePoints = extractBeatTimePoints(beat);
+  if (!timePoints.length) return "";
+  const labels = timePoints.map((timePoint) => `"${timePoint}"`).join(", ");
+  return `Visible time marker: the storyboard explicitly names ${labels}. Render ${
+    timePoints.length === 1 ? "this time point" : "these time points"
+  } as concise, clearly legible text inside the frame, integrated into the paper collage as period-appropriate archival typography. Keep the wording exact, and do not invent or add any other date or time label.`;
+}
+
+/**
  * Text-to-image prompt for one storyboard frame.
  * Composes: film context + beat scene + collage medium + references + palette/mood + avoid.
  */
@@ -148,6 +186,7 @@ export function compileFramePrompt(args: {
     filmPremise ? `Film premise: ${filmPremise}` : "",
     `Scene (${beat.act}): ${beat.text}`,
     beat.visualDirection ? `Storyboard staging: ${beat.visualDirection}` : "",
+    timeMarkerBlock(beat),
     `Render it as ${STYLE.medium}.`,
     referenceBlock(references),
     SOURCE_IMAGE_LIMIT,
