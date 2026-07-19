@@ -1,11 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import type { Place } from "@/lib/types";
 import type { StoryPreset } from "@/lib/presets";
 import { useProject } from "@/lib/hooks/useProject";
-import type { StoryBeat } from "@/lib/local-store";
+import type { StoryBeat, TransitionNote } from "@/lib/local-store";
 import { CollageButton } from "@/components/ui/CollageButton";
 import { StoryLoadingState } from "./StoryLoadingState";
 import { DirectionPicker, type Direction } from "./DirectionPicker";
@@ -17,8 +17,15 @@ const MAX_BEATS = 8;
 export function StoryView({ place, preset }: { place: Place; preset?: StoryPreset | null }) {
   const { project, update, hydrated } = useProject(place.slug);
 
-  function useDefaultStory() {
+  function loadBuiltInStory() {
     if (!preset) return;
+    const transitions: Record<string, TransitionNote> = {};
+    preset.beats.forEach((b, i) => {
+      const next = preset.beats[i + 1];
+      if (next && b.transitionType) {
+        transitions[`${b.id}->${next.id}`] = { type: b.transitionType, note: b.transition ?? "" };
+      }
+    });
     update((prev) => ({
       ...prev,
       story: {
@@ -26,8 +33,20 @@ export function StoryView({ place, preset }: { place: Place; preset?: StoryPrese
         chosenDirectionId: preset.direction.id,
         beats: preset.beats.map((b) => ({ id: b.id, act: b.act, text: b.text })),
       },
+      transitions: { ...prev.transitions, ...transitions },
     }));
   }
+
+  // On a fresh project, load the built-in default story once so /story reflects
+  // the preset without a manual click. "start over" then still lets you draft.
+  const autoSeeded = useRef(false);
+  useEffect(() => {
+    if (hydrated && preset && !project.story && !autoSeeded.current) {
+      autoSeeded.current = true;
+      loadBuiltInStory();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hydrated, preset, project.story]);
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -155,14 +174,25 @@ export function StoryView({ place, preset }: { place: Place; preset?: StoryPrese
             drafts, you decide.
           </p>
         </div>
-        {story && (
-          <button
-            onClick={() => update((prev) => ({ ...prev, story: null }))}
-            className="cursor-pointer font-hand text-sm text-ink-soft underline decoration-dotted hover:text-stamp"
-          >
-            start over
-          </button>
-        )}
+        <div className="flex items-center gap-3">
+          {preset && (
+            <button
+              onClick={loadBuiltInStory}
+              title={`Load “${preset.direction.title}”`}
+              className="cursor-pointer font-hand text-sm text-ink-soft underline decoration-dotted hover:text-stamp"
+            >
+              load built-in story
+            </button>
+          )}
+          {story && (
+            <button
+              onClick={() => update((prev) => ({ ...prev, story: null }))}
+              className="cursor-pointer font-hand text-sm text-ink-soft underline decoration-dotted hover:text-stamp"
+            >
+              start over
+            </button>
+          )}
+        </div>
       </div>
 
       {error && (
@@ -185,7 +215,7 @@ export function StoryView({ place, preset }: { place: Place; preset?: StoryPrese
             </CollageButton>
             {preset && (
               <button
-                onClick={useDefaultStory}
+                onClick={loadBuiltInStory}
                 className="cursor-pointer font-hand text-sm text-ink-soft underline decoration-dotted hover:text-stamp"
               >
                 or use the built-in “{preset.direction.title}” story

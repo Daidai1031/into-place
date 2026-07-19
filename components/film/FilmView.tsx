@@ -1,20 +1,34 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import type { Place } from "@/lib/types";
 import { useProject } from "@/lib/hooks/useProject";
 import { useFilms } from "@/lib/hooks/useFilms";
+import { I2V_MODELS, I2V_DEFAULT } from "@/lib/models";
 import { CollageButton } from "@/components/ui/CollageButton";
 import { Stamp } from "@/components/ui/Stamp";
 import { JourneyBook } from "./JourneyBook";
 
 interface GenStep {
   label: string;
-  ms: number;
+}
+type Phase = "idle" | "running" | "done" | "failed";
+interface Caps {
+  isLocal: boolean;
+  canRunPipeline: boolean;
+  canWriteFs: boolean;
+  hasFal: boolean;
 }
 
-type Phase = "idle" | "running" | "done" | "failed";
+/** Per-shot durations each model actually accepts (seconds). */
+const DUR_OPTIONS: Record<string, number[]> = {
+  "kling-v3-turbo-std": [5, 10],
+  "happy-horse": [3, 4, 5, 6, 7, 8],
+  "veo3.1-hero": [4, 6, 8],
+};
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export function FilmView({ place }: { place: Place }) {
   const { project, hydrated } = useProject(place.slug);
@@ -26,52 +40,153 @@ export function FilmView({ place }: { place: Place }) {
   const [filmUrl, setFilmUrl] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [caps, setCaps] = useState<Caps | null>(null);
+  const [filmModel, setFilmModel] = useState<string>(I2V_DEFAULT);
+  const [secondsPerShot, setSecondsPerShot] = useState<number>(5);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const cancelled = useRef(false);
 
-  useEffect(() => () => timers.current.forEach(clearTimeout), []);
+  useEffect(() => {
+    fetch("/api/capabilities").then((r) => r.json()).then(setCaps).catch(() => {});
+    return () => {
+      cancelled.current = true;
+      timers.current.forEach(clearTimeout);
+    };
+  }, []);
 
   const beats = project.story?.beats ?? [];
-  const readyCount = beats.filter((b) => {
-    const beatMode = project.beatMode[b.id] ?? "generated";
-    return beatMode === "generated"
-      ? Boolean(project.frames[b.id]?.imageUrl)
-      : (project.layouts[b.id]?.items.length ?? 0) > 0;
-  }).length;
+  const beatReady = (id: string) => {
+    const m = project.beatMode[id] ?? "generated";
+    return m === "generated"
+      ? Boolean(project.frames[id]?.imageUrl)
+      : (project.layouts[id]?.items.length ?? 0) > 0;
+  };
+  const readyCount = beats.filter((b) => beatReady(b.id)).length;
   const ready = beats.length >= 5 && readyCount === beats.length;
+
+  // Shots we can actually animate in-app (generated, real frame — not placeholder).
+  const renderableShots = useMemo(
+    () =>
+      beats
+        .map((b, i) => ({ beat: b, next: beats[i + 1] ?? null }))
+        .filter(
+          ({ beat }) =>
+            (project.beatMode[beat.id] ?? "generated") === "generated" &&
+            project.frames[beat.id]?.imageUrl &&
+            project.frames[beat.id]?.source === "generated",
+        ),
+    [beats, project.beatMode, project.frames],
+  );
+
+  const canRunReal = Boolean(caps?.canRunPipeline && caps?.hasFal) && renderableShots.length > 0;
+  const unitPrice = I2V_MODELS[filmModel]?.unitPrice ?? 0;
+  const estCost = unitPrice * secondsPerShot * renderableShots.length;
+  const durOptions = DUR_OPTIONS[filmModel] ?? [5];
+
+  function pickModel(key: string) {
+    setFilmModel(key);
+    const opts = DUR_OPTIONS[key] ?? [5];
+    if (!opts.includes(secondsPerShot)) setSecondsPerShot(opts[0]);
+  }
+
+  async function pollShot(endpointId: string, requestId: string): Promise<string> {
+    const q = `endpointId=${encodeURIComponent(endpointId)}&requestId=${encodeURIComponent(requestId)}`;
+    for (let t = 0; t < 180 && !cancelled.current; t++) {
+      const r = await fetch(`/api/shot/status?${q}`);
+      const d = await r.json();
+      if (d.status === "completed" && d.videoUrl) return d.videoUrl as string;
+      if (d.status === "error") throw new Error(d.error ?? "shot failed");
+      await sleep(5000);
+    }
+    throw new Error("shot timed out");
+  }
+
+  async function runReal() {
+    setMode("local");
+    setSteps([
+      ...renderableShots.map((s, i) => ({ label: `Animating scene ${i + 1}: ${s.beat.act}` })),
+      { label: "Assembling the film" },
+    ]);
+    await fetch("/api/project/save", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ project }),
+    }).catch(() => {});
+
+    const clips: { videoUrl: string; transitionType: string | null }[] = [];
+    for (let i = 0; i < renderableShots.length; i++) {
+      setStepIndex(i);
+      const { beat, next } = renderableShots[i];
+      const gen = await fetch("/api/shot/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          frameUrl: project.frames[beat.id]!.imageUrl,
+          beat,
+          model: filmModel,
+          durationSeconds: secondsPerShot,
+          confirmed: true,
+        }),
+      }).then((r) => r.json());
+      if (gen.status !== "queued") {
+        throw new Error(gen.error ?? `scene ${i + 1}: ${gen.status ?? "failed"}`);
+      }
+      const videoUrl = await pollShot(gen.endpointId, gen.requestId);
+      const transitionType = next
+        ? (project.transitions[`${beat.id}->${next.id}`]?.type ?? null)
+        : null;
+      clips.push({ videoUrl, transitionType });
+    }
+
+    setStepIndex(renderableShots.length);
+    const asm = await fetch("/api/assemble", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ slug: place.slug, clips }),
+    });
+    const asmData = await asm.json();
+    if (!asm.ok) throw new Error(asmData.error ?? "assembly failed");
+    setFilmUrl(asmData.filmUrl);
+    setStepIndex(renderableShots.length + 1);
+    setPhase("done");
+  }
+
+  async function runSimulated() {
+    await fetch("/api/project/save", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ project }),
+    }).catch(() => {});
+    const res = await fetch("/api/generate/start", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ project }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error ?? "Generation failed");
+    setSteps((data.steps as { label: string }[]).map((s) => ({ label: s.label })));
+    setMode(data.mode);
+    let acc = 0;
+    (data.steps as { ms: number }[]).forEach((step, i) => {
+      acc += step.ms;
+      timers.current.push(setTimeout(() => setStepIndex(i + 1), acc));
+    });
+    timers.current.push(
+      setTimeout(() => {
+        setFilmUrl(data.filmUrl);
+        setPhase("done");
+      }, acc + 400),
+    );
+  }
 
   async function generate() {
     setPhase("running");
     setError(null);
     setStepIndex(0);
+    cancelled.current = false;
     try {
-      // Mirror browser state for the local pipeline, then start.
-      await fetch("/api/project/save", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ project }),
-      }).catch(() => {});
-      const res = await fetch("/api/generate/start", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ project }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "Generation failed");
-      setSteps(data.steps);
-      setMode(data.mode);
-      let acc = 0;
-      (data.steps as GenStep[]).forEach((step, i) => {
-        acc += step.ms;
-        timers.current.push(
-          setTimeout(() => setStepIndex(i + 1), acc),
-        );
-      });
-      timers.current.push(
-        setTimeout(() => {
-          setFilmUrl(data.filmUrl);
-          setPhase("done");
-        }, acc + 400),
-      );
+      if (canRunReal) await runReal();
+      else await runSimulated();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Generation failed");
       setPhase("failed");
@@ -97,6 +212,10 @@ export function FilmView({ place }: { place: Place }) {
 
   if (!hydrated) return null;
 
+  const totalSeconds = Math.round(
+    secondsPerShot * renderableShots.length - 0.7 * Math.max(0, renderableShots.length - 1),
+  );
+
   return (
     <main className="mx-auto max-w-5xl px-6 pb-16 pt-8">
       <div className="flex flex-wrap items-end justify-between gap-3">
@@ -104,7 +223,7 @@ export function FilmView({ place }: { place: Place }) {
           <h2 className="text-3xl">The film</h2>
           <p className="mt-1 font-typewriter text-sm text-ink-soft">
             {beats.length} scenes · {readyCount} storyboarded ·{" "}
-            {mode === "local-preview" ? "local preview" : "simulation mode"}
+            {mode === "local" ? "live pipeline" : mode === "local-preview" ? "local preview" : "simulation mode"}
           </p>
         </div>
         {filmsHydrated && films.length > 0 && (
@@ -135,13 +254,60 @@ export function FilmView({ place }: { place: Place }) {
 
       {ready && phase === "idle" && (
         <div className="mt-12 flex flex-col items-center gap-4">
-          <p className="max-w-md text-center font-hand text-xl text-ink-soft">
-            Every scene has an approved start frame. Ready to prepare the film
-            preview.
+          <p className="max-w-lg text-center font-hand text-xl text-ink-soft">
+            Each scene becomes its own {secondsPerShot}s image-to-video clip, then they’re
+            stitched with transitions into one ~{totalSeconds}s film.
           </p>
+
+          {canRunReal ? (
+            <div className="flex flex-wrap items-center justify-center gap-4 border border-ink/15 bg-paper-deep/20 px-4 py-3">
+              <label className="flex items-center gap-2 font-typewriter text-xs text-ink-soft">
+                Model
+                <select
+                  value={filmModel}
+                  onChange={(e) => pickModel(e.target.value)}
+                  className="border border-ink/20 bg-paper px-2 py-1"
+                >
+                  {Object.keys(I2V_MODELS).map((k) => (
+                    <option key={k} value={k}>
+                      {I2V_MODELS[k].displayName}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="flex items-center gap-2 font-typewriter text-xs text-ink-soft">
+                Seconds/scene
+                <select
+                  value={secondsPerShot}
+                  onChange={(e) => setSecondsPerShot(Number(e.target.value))}
+                  className="border border-ink/20 bg-paper px-2 py-1"
+                >
+                  {durOptions.map((d) => (
+                    <option key={d} value={d}>
+                      {d}s
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <span className="font-typewriter text-xs text-ink-soft">
+                {renderableShots.length} shots · est. ~${estCost.toFixed(2)}
+              </span>
+            </div>
+          ) : (
+            <p className="max-w-md text-center font-typewriter text-[11px] text-ink-soft">
+              This environment can’t run image-to-video (no local pipeline / FAL key) — it will
+              play the pre-rendered demonstration film instead.
+            </p>
+          )}
+
           <CollageButton onClick={() => void generate()} className="px-8 py-3 text-base">
-            🎬 Generate the film
+            🎬 {canRunReal ? "Generate the film" : "Play the demo film"}
           </CollageButton>
+          {canRunReal && (
+            <p className="max-w-md text-center font-typewriter text-[11px] text-ink-soft">
+              Real generation runs shot-by-shot and can take several minutes — keep this tab open.
+            </p>
+          )}
         </div>
       )}
 
@@ -151,11 +317,7 @@ export function FilmView({ place }: { place: Place }) {
             <div key={step.label} className="flex items-center gap-3 py-2">
               <span
                 className={`font-typewriter text-sm ${
-                  i < stepIndex
-                    ? "text-accent"
-                    : i === stepIndex
-                      ? "text-ink"
-                      : "text-ink-soft/40"
+                  i < stepIndex ? "text-accent" : i === stepIndex ? "text-ink" : "text-ink-soft/40"
                 }`}
               >
                 {i < stepIndex ? "✓" : i === stepIndex ? "▸" : "·"} {step.label}
@@ -183,17 +345,18 @@ export function FilmView({ place }: { place: Place }) {
             ) : (
               <div className="flex aspect-video items-center justify-center">
                 <p className="max-w-sm text-center font-typewriter text-sm text-paper/80">
-                  No rendered film yet — connect I2V generation and assembly,
-                  then refresh.
+                  No rendered film yet.
                 </p>
               </div>
             )}
           </div>
           <div className="mt-2 flex items-center justify-between">
             <p className="font-typewriter text-[11px] text-ink-soft">
-              {mode === "local-preview"
-                ? "Storyboard state saved locally — I2V generation and assembly are not connected yet."
-                : "Simulation mode: playing the pre-rendered demonstration film."}
+              {mode === "local"
+                ? "Live pipeline: each scene generated by image-to-video from its approved frame, then assembled with FFmpeg."
+                : mode === "local-preview"
+                  ? "Storyboard state saved locally."
+                  : "Simulation mode: playing the pre-rendered demonstration film."}
             </p>
             {filmUrl && !saved && (
               <CollageButton variant="ghost" onClick={saveToLibrary}>
