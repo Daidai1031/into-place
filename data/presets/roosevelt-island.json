@@ -10,52 +10,57 @@
     "reason": "A present-day goose feather falls into an archival record and becomes Nellie Bly's pen; its ink continues through an admission record, an asylum corridor, a newspaper column, Emma Goldman's speech waveform, an underline beneath Mae West's script, and a present-day female student's screen — the visible form of a voice institutions try, but fail, to contain."
   },
   "ending_text": "THE WATER HELD THEIR BODIES. NOT THEIR VOICES.",
-  "master_style_prompt": "Handmade, tactile, editorial collage animation about the hidden history of Roosevelt Island: layered 2.5D parallax, multiplane depth, stacked paper cutouts, archival photos, map fragments, newspaper clippings, hand-drawn textures, torn paper edges, vintage typography, masked image layers. Muted blue-gray and sepia tones, historical texture overlays, vintage print feeling, restrained but expressive; thoughtful, hidden, reflective, slightly haunting, not horror. Avoid tourism-ad / glossy / drone-commercial / polished-3D / bright-cheerful / generic-city-montage / sleek-motion-graphics / corporate-infographic looks.",
+  "master_style_prompt": "Handmade, tactile, editorial collage animation about the hidden history of Roosevelt Island: layered 2.5D parallax, multiplane depth, stacked paper cutouts, archival photos, map fragments, newspaper clippings, hand-drawn textures, torn paper edges, vintage typography, masked image layers. Muted blue-gray and sepia tones, historical texture overlays, vintage print feeling, restrained but expressive; thoughtful, hidden, reflective, slightly haunting, not horror. Avoid tourism-ad / glossy / drone-commercial / polished-3D / bright-cheerful / generic-city-montage / sleek-motion-graphics / corporate-infographic looks. A scene may use up to seven source images; the same source asset may appear in no more than two scenes.",
   "beats": [
     {
       "id": "beat_1",
       "act": "Stasis — Women Enter the Record",
       "text": "A goose feather falls into an admission ledger. Its pages fill with anonymous women stamped POOR, INSANE, IMMIGRANT and INMATE, while behind the records other women clean, sew and care for the sick without names.",
+      "visualDirection": "A top-down intake ledger becomes a deep paper grid. Cut figures and architectural fragments out of the source illustrations; let women move between cells while the feather and ink line travel across the page. Do not preserve the source cards as intact rectangles.",
       "transition": "goose feather → archival pen",
       "transitionType": "match_cut",
       "narration": "Before Nellie Bly, thousands of women entered this island as diagnoses, crimes and case numbers.",
-      "references": ["asset_012", "asset_002", "asset_003"]
+      "references": ["asset_022", "asset_023", "asset_024"]
     },
     {
       "id": "beat_2",
       "act": "Peripeteia — Nellie Brown Enters",
       "text": "The feather writes NELLIE BROWN, 1887. Her false name passes through police, court, hospital and ferry documents to the octagon-shaped asylum door; she drops her performed madness, but an INSANE stamp covers her face.",
+      "visualDirection": "Build a diagonal document corridor. Nellie steps out of her portrait and passes through cropped police and court figures toward a distant asylum doorway; papers fold, slide and close around her. Identity must remain recognizable, but the original compositions may be dismantled.",
       "transition": "written name → document corridor → asylum door",
       "transitionType": "page_turn",
       "narration": "She entered under a false name — and stopped pretending when the door closed.",
-      "references": ["asset_019", "asset_012", "asset_002"]
+      "references": ["asset_019", "asset_023", "asset_024", "asset_012"]
     },
     {
       "id": "beat_3",
       "act": "Pathos — Ten Days Inside",
       "text": "The ink line moves through cold bathwater, spoiled food, rigid benches and violent hands, past women whose mouths are covered by their diagnoses, as Nellie records each scene until the ink seeps into the walls.",
+      "visualDirection": "Use a narrow vertical cutaway rather than a flat montage. Nellie writes above while the Dark Cell, asylum fragments and book cover unfold below; isolate and animate hands, doors, benches and the pen line from within the source images.",
       "transition": "bathwater → ink → spreading wall crack",
       "transitionType": "wipe",
       "narration": "The more sanely she spoke, the less she was believed.",
-      "references": ["asset_008", "asset_012", "asset_019"]
+      "references": ["asset_025", "asset_008", "asset_021", "asset_012", "asset_019"]
     },
     {
       "id": "beat_4",
       "act": "Anagnorisis — The Voices Cross the Water",
       "text": "The wall crack becomes a newspaper column and printed evidence crosses the river toward Manhattan; the ink briefly turns into Emma Goldman's speech waveform and an underline beneath Mae West's script while official labels try to cover both.",
+      "visualDirection": "Stage the frame as a wide horizontal current. Emma's gesture, Mae stepping from the police van, newspaper type and the island map are cut loose from their original frames and carried left-to-right by one continuous ink line.",
       "transition": "wall crack → newspaper → speech wave → script line",
       "transitionType": "match_cut",
       "narration": "The island held their bodies, but their words crossed the water.",
-      "references": ["asset_003", "asset_019", "asset_012"]
+      "references": ["asset_027", "asset_026", "asset_028", "asset_029", "asset_003"]
     },
     {
       "id": "beat_5",
       "act": "Katharsis — A Different Future",
       "text": "The archival octagon doorway becomes its present-day entrance; the ink line continues into a female student's screen and turns into code and design, while children play nearby and archival women stay faintly reflected in the glass.",
+      "visualDirection": "Use a monumental close-up: The Girl Puzzle face separates into moving puzzle-like layers that reveal the modern Octagon and faint fragments of Emma and Mae. The pieces reassemble around an open gap where the ink line continues toward the viewer.",
       "transition": "archival doorway → present day → computer screen",
       "transitionType": "match_cut",
       "narration": "Their voices changed what the city could no longer ignore.",
-      "references": ["asset_018", "asset_015", "asset_019"]
+      "references": ["asset_018", "asset_031", "asset_015", "asset_027", "asset_029"]
     }
   ]
 }

@@ -1,32 +1,62 @@
 import { listPlaces } from "@/lib/places";
-import { AtlasMap } from "@/components/atlas/AtlasMap";
-import { NewPlaceInput } from "@/components/atlas/NewPlaceInput";
+import { SiteNav } from "@/components/atlas/SiteNav";
+import { FeatureBar } from "@/components/atlas/FeatureBar";
+import { AtlasHero } from "@/components/atlas/AtlasHero";
+import { AtlasFinder } from "@/components/atlas/AtlasFinder";
+import {
+  ArchiveCTACard,
+  LatestContributionCard,
+} from "@/components/atlas/HeroCards";
 
 export default function AtlasPage() {
-  const places = listPlaces();
+  const allPlaces = listPlaces();
+  // The homepage globe only opens a few example places — the rest of the
+  // atlas fills in over time, but the entry point stays deliberately small.
+  const places = allPlaces.slice(0, 3);
+  const latest = allPlaces.find((p) => p.status === "seeded") ?? allPlaces[0];
+
   return (
-    <main className="mx-auto flex min-h-screen max-w-6xl flex-col items-center gap-8 px-6 py-12">
-      <header className="text-center">
-        <h1 className="text-5xl tracking-tight">Into Place</h1>
-        <p className="mx-auto mt-3 max-w-xl font-typewriter text-sm text-ink-soft">
-          Step inside the layered stories of a place. Real archives, community
-          memory, collage films. The place determines the film — you direct the
-          journey.
-        </p>
-      </header>
+    <div className="flex min-h-screen flex-col">
+      <SiteNav />
 
-      <AtlasMap places={places} />
+      <main className="flex-1">
+        <div className="mx-auto grid max-w-[1440px] items-center gap-12 px-6 py-10 lg:grid-cols-[minmax(0,600px)_minmax(0,720px)] lg:justify-center lg:gap-16 lg:px-16 lg:py-16">
+          {/* Editorial column */}
+          <section className="flex flex-col gap-6">
+            <h1 className="text-6xl leading-[1.02] text-ink lg:text-[88px]">
+              Into Place
+            </h1>
 
-      <section className="flex flex-col items-center gap-3 text-center">
-        <p className="font-typewriter text-xs uppercase tracking-widest text-ink-soft">
-          Lit places hold archives. Faded ones are waiting for you.
-        </p>
-        <NewPlaceInput />
-        <p className="mt-2 max-w-lg font-hand text-base text-ink-soft">
-          Anyone can contribute images and understanding to a place — every
-          photograph keeps its source, and every contributor keeps their name.
-        </p>
-      </section>
-    </main>
+            <span aria-hidden className="block h-px w-16 bg-orange" />
+
+            <p className="max-w-md font-body text-lg leading-relaxed text-ink-soft">
+              An interactive map of stories and archives, gathered with
+              communities and layered over the places that hold them.
+            </p>
+
+            <p className="max-w-md font-body text-lg leading-relaxed text-ink">
+              Explore. Remember. Add your voice. Keep the stories in place.
+            </p>
+
+            <AtlasFinder places={allPlaces} />
+          </section>
+
+          {/* Collage / globe column */}
+          <section className="relative flex flex-col gap-6 lg:block">
+            <div className="z-30 lg:absolute lg:left-0 lg:top-0">
+              <ArchiveCTACard />
+            </div>
+
+            <AtlasHero places={places} />
+
+            <div className="z-30 lg:absolute lg:bottom-2 lg:right-0">
+              {latest && <LatestContributionCard place={latest} />}
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <FeatureBar />
+    </div>
   );
 }

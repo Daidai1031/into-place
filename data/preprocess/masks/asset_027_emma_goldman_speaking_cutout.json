@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "recipeId": "asset_027_emma_goldman_speaking_cutout",
+  "model": "fal-ai/sam-3/image",
+  "cache": {
+    "sourceSha256": "eda47323a268e178fe50953652d9507b9d38da84e085437a90db22527ecb9af0",
+    "recipeSha256": "335aad9d42532b554e1d84a8d0f80959373f2056233579cd47e21ff3623b05b4",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "maskConfigSha256": "848388fc792ac420bae3e9004f1fa63d6a9d27c35e326051104aa462a58a1869",
+    "cacheKey": "ceeadbb17deb6b2b3c8728a90160291631f9c7e5020d656ca481481a07a13195"
+  },
+  "mask": {
+    "file": "data/preprocess/masks/asset_027_emma_goldman_speaking_cutout.png",
+    "sha256": "8aecf5bcde68ab76a422883d09e6c388a0322a33a58118bae7d6c3fe816fcfcf",
+    "coverage": 0.43815,
+    "composition": "reviewed local random-walker alpha mask seeded for Emma Goldman's figure, raised hand, lower hand, and paper; source RGB is unchanged"
+  },
+  "sourceInput": {
+    "file": "assets/archive/asset_027.jpg",
+    "crop": null,
+    "width": 263,
+    "height": 300
+  },
+  "calls": [
+    {
+      "attempt": "local-reviewed-segmentation",
+      "model": "local-random-walker",
+      "request_id": null,
+      "input": {
+        "foreground": "Emma Goldman's complete visible figure, raised arm and hand, lower hand, and held paper",
+        "exclude": "architecture, foreground hats, cropped bystander, and other scene elements",
+        "operation": "edge-aware random walker with reviewed foreground/background seeds"
+      },
+      "estimated_cost_usd": 0,
+      "status": "completed",
+      "qa": {
+        "valid": true,
+        "coverage": 0.43815,
+        "minCoverage": 0.25,
+        "maxCoverage": 0.85
+      }
+    }
+  ],
+  "updatedAt": "2026-07-19T13:15:00.000Z"
+}

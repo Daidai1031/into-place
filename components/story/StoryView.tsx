@@ -32,9 +32,18 @@ export function StoryView({ place, preset }: { place: Place; preset?: StoryPrese
       story: {
         directions: [preset.direction],
         chosenDirectionId: preset.direction.id,
-        beats: preset.beats.map((b) => ({ id: b.id, act: b.act, text: b.text })),
+        beats: preset.beats.map((b) => ({
+          id: b.id,
+          act: b.act,
+          text: b.text,
+          visualDirection: b.visualDirection,
+        })),
       },
-      transitions: { ...prev.transitions, ...transitions },
+      // A new built-in story invalidates every artifact derived from the old beats.
+      frames: {},
+      layouts: {},
+      beatMode: {},
+      transitions,
     }));
   }
 

@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_027_emma_goldman_speaking_cutout",
+  "assetId": "asset_027",
+  "role": "cutout",
+  "actualRole": "cutout",
+  "source": {
+    "file": "assets/archive/asset_027.jpg",
+    "sha256": "eda47323a268e178fe50953652d9507b9d38da84e085437a90db22527ecb9af0"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_027_emma_goldman_speaking_cutout.png",
+    "sha256": "b2b36d6ef2e6a7c61525d0cc16d62e6266d19aae9b8e8b2fdaa7c418573808ec"
+  },
+  "cache": {
+    "sourceSha256": "eda47323a268e178fe50953652d9507b9d38da84e085437a90db22527ecb9af0",
+    "recipeSha256": "335aad9d42532b554e1d84a8d0f80959373f2056233579cd47e21ff3623b05b4",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "ada972a34555fc5e2e86c50ae5849815e2b36e4d0270d9a15deea9a554d7f1c6",
+    "cacheKey": "073e00f75f1a943afe8e3177349a442338126d5771600005958069010c55bbee"
+  },
+  "selection": {
+    "tone": "source",
+    "edge": "scissor"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "resize-inside:2400:without-enlargement",
+    "tone:source",
+    "cached-mask-alpha-only",
+    "edge:scissor",
+    "white-border",
+    "shadow-behind-border"
+  ],
+  "mask": {
+    "provider": "fal-cache",
+    "file": "data/preprocess/masks/asset_027_emma_goldman_speaking_cutout.png",
+    "sha256": "8aecf5bcde68ab76a422883d09e6c388a0322a33a58118bae7d6c3fe816fcfcf",
+    "cacheKey": "ceeadbb17deb6b2b3c8728a90160291631f9c7e5020d656ca481481a07a13195",
+    "fallback": null
+  },
+  "falCalls": [
+    {
+      "attempt": "local-reviewed-segmentation",
+      "model": "local-random-walker",
+      "request_id": null,
+      "input": {
+        "foreground": "Emma Goldman's complete visible figure, raised arm and hand, lower hand, and held paper",
+        "exclude": "architecture, foreground hats, cropped bystander, and other scene elements",
+        "operation": "edge-aware random walker with reviewed foreground/background seeds"
+      },
+      "estimated_cost_usd": 0,
+      "status": "completed",
+      "qa": {
+        "valid": true,
+        "coverage": 0.43815,
+        "minCoverage": 0.25,
+        "maxCoverage": 0.85
+      },
+      "schema_checked_at": "2026-07-18",
+      "price_checked_at": "2026-07-18",
+      "unit_price_usd": 0.005,
+      "pricing_unit": "request"
+    }
+  ],
+  "qa": {
+    "width": 263,
+    "height": 300,
+    "opaquePixels": 34570,
+    "coverage": 0.43814955640050696,
+    "bbox": {
+      "left": 0,
+      "top": 17,
+      "width": 263,
+      "height": 283
+    },
+    "connectedComponents": 1,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.25,
+      "maxCoverage": 0.85,
+      "maxConnectedComponents": 64
+    },
+    "outputWidth": 375,
+    "outputHeight": 412
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "Emma Goldman speaking and gesturing while holding a paper",
+  "preserve": "Emma Goldman's complete visible figure, including her head, face, raised arm and hand, coat, lower arm and hand, and the paper she is holding.",
+  "exclude": "The architectural background, foreground hats, cropped bystander at right, and all other non-Emma scene elements.",
+  "qualityWarnings": [
+    "low_source_resolution_no_upscale"
+  ],
+  "createdAt": "2026-07-19T13:12:04.507Z"
+}

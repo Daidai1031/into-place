@@ -188,7 +188,7 @@ export function AristotelianArc({
                 <g key={STAGES[index].term}>
                   <circle cx={x} cy={y} r="7.5" fill="#a5432c" />
                   <circle cx={x} cy={y} r="11" fill="none" stroke="#a5432c" strokeWidth="0.75" opacity="0.35" />
-                  <text x={x} y={Math.max(15, y - 18)} textAnchor="middle" fill="#5b5348" fontSize="10" fontFamily="Courier New, monospace" letterSpacing="1.5">
+                  <text x={x} y={Math.max(15, y - 18)} textAnchor="middle" fill="#5b5348" fontSize="10" fontFamily="var(--font-ui)" letterSpacing="1.5">
                     {STAGES[index].emotion.toUpperCase()}
                   </text>
                 </g>

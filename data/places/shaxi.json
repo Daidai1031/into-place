@@ -4,6 +4,7 @@
   "region": "Yunnan, China",
   "status": "empty",
   "map_marker": { "x": 0.2, "y": 0.56 },
+  "coordinates": { "lat": 26.3167, "lng": 99.9083 },
   "tagline": "A Tea Horse Road market town whose Friday market never stopped.",
   "assets": []
 }

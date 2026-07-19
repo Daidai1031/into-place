@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "recipeId": "asset_028_mae_west_arrest_cutout",
+  "model": "fal-ai/sam-3/image",
+  "cache": {
+    "sourceSha256": "7eee77a770b8a2a1c14cf491c5f2c97877eaf0a1d6629061b5efae3631add4f6",
+    "recipeSha256": "0f4dd64e3ef714f2806593556fd9823dbfbef242a813f29d409fce5f243e414a",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "maskConfigSha256": "5e32b1ef9b466e5adf00c490ff334e1c14abafd1a426ef2a46680b7a8145ccc7",
+    "cacheKey": "78b642edbf934ef58f9f7fef29d2035c76acfc7ea33b52ee4138fce92c812d66"
+  },
+  "sourceInput": {
+    "file": "assets/archive/asset_028.jpg",
+    "crop": null,
+    "uploaded": true,
+    "uploadedUrl": "(redacted uploaded cropped source)",
+    "width": 1200,
+    "height": 1339
+  },
+  "verification": {
+    "schemaCheckedAt": "2026-07-18",
+    "pricingCheckedAt": "2026-07-18",
+    "unitPriceUsd": 0.005,
+    "unit": "request"
+  },
+  "calls": [
+    {
+      "attempt": 1,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f7a4d-b94d-7b63-9b89-a2750521408a",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "Mae West's complete visible figure seated in the police van doorway, including all shawl fringe, crossed legs, shoes, and dress",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true,
+        "point_prompts": [
+          {
+            "x": 470,
+            "y": 350,
+            "label": 1,
+            "object_id": 1
+          },
+          {
+            "x": 490,
+            "y": 610,
+            "label": 1,
+            "object_id": 1
+          },
+          {
+            "x": 640,
+            "y": 790,
+            "label": 1,
+            "object_id": 1
+          },
+          {
+            "x": 690,
+            "y": 930,
+            "label": 1,
+            "object_id": 1
+          },
+          {
+            "x": 860,
+            "y": 560,
+            "label": 0,
+            "object_id": 1
+          },
+          {
+            "x": 100,
+            "y": 560,
+            "label": 0,
+            "object_id": 1
+          }
+        ]
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "failed",
+      "submitted_at": "2026-07-19T12:15:41.694Z",
+      "error": "fal result did not contain masks[0].url",
+      "completed_at": "2026-07-19T12:15:43.837Z"
+    },
+    {
+      "attempt": 2,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f7a4d-c116-7f31-9949-114e15717e37",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "Mae West alone, the woman in the fringed shawl seated at the left side of the open van doorway",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "failed",
+      "submitted_at": "2026-07-19T12:15:43.839Z",
+      "error": "fal result did not contain masks[0].url",
+      "completed_at": "2026-07-19T12:15:50.744Z"
+    }
+  ],
+  "updatedAt": "2026-07-19T12:15:50.744Z"
+}

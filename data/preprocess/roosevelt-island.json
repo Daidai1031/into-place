@@ -714,6 +714,34 @@
       "edgeSeed": "asset_022_temporary_home_card"
     },
     {
+      "id": "asset_022_temporary_home_cutout",
+      "assetId": "asset_022",
+      "sourceSha256": "768e3038465c1d4bc7589e7b92740b9717f1e42a0356c4eda8d412f6607aee90",
+      "recipeSha256": "a65944a92b51af01be50e59f26515ffb0c788dcdb972f6f6e6cd4fbc2a7ca477",
+      "input": "assets/archive/asset_022.png",
+      "output": "assets/cutouts/asset_022_temporary_home_cutout.png",
+      "identity": "The complete Temporary Home for Women building illustration",
+      "preserve": "The roof, complete facade, windows, shutters, stairs, railings, small doorway figure, and immediate hatched plants.",
+      "exclude": "The scanned paper background, printed caption, surrounding body text, and page artifacts.",
+      "review": "approved",
+      "role": "cutout",
+      "crop": [0.18, 0.02, 0.65, 0.8],
+      "maxSize": 2400,
+      "defaultTone": "source",
+      "defaultEdge": "none",
+      "whiteBorder": false,
+      "shadow": false,
+      "edgeSeed": "asset_022_temporary_home_cutout",
+      "mask": {
+        "provider": "local-paper",
+        "paperPercentile": 0.82,
+        "blurSigma": 18,
+        "transparentThreshold": 14,
+        "opaqueThreshold": 78,
+        "qa": { "minCoverage": 0.01, "maxCoverage": 0.65, "maxConnectedComponents": 512 }
+      }
+    },
+    {
       "id": "asset_023_police_card",
       "assetId": "asset_023",
       "sourceSha256": "47dddeb84f494b401b5e5af08dac742fb4cc467ddf035dd7f0a20d05f678effe",
@@ -732,6 +760,34 @@
       "whiteBorder": true,
       "shadow": true,
       "edgeSeed": "asset_023_police_card"
+    },
+    {
+      "id": "asset_023_police_cutout",
+      "assetId": "asset_023",
+      "sourceSha256": "47dddeb84f494b401b5e5af08dac742fb4cc467ddf035dd7f0a20d05f678effe",
+      "recipeSha256": "51d1e09d7d0ff796740822bb7e3728a6b900726696877807aa196bd5b4db2141",
+      "input": "assets/archive/asset_023.png",
+      "output": "assets/cutouts/asset_023_police_cutout.png",
+      "identity": "The complete In the Hands of the Police group illustration",
+      "preserve": "All four complete people, their clothing and limbs, the street lamp, and the artist signature.",
+      "exclude": "The scanned paper background, printed caption, surrounding body text, and page artifacts.",
+      "review": "approved",
+      "role": "cutout",
+      "crop": [0.16, 0.03, 0.7, 0.8],
+      "maxSize": 2400,
+      "defaultTone": "source",
+      "defaultEdge": "none",
+      "whiteBorder": false,
+      "shadow": false,
+      "edgeSeed": "asset_023_police_cutout",
+      "mask": {
+        "provider": "local-paper",
+        "paperPercentile": 0.82,
+        "blurSigma": 18,
+        "transparentThreshold": 14,
+        "opaqueThreshold": 78,
+        "qa": { "minCoverage": 0.01, "maxCoverage": 0.65, "maxConnectedComponents": 512 }
+      }
     },
     {
       "id": "asset_024_judge_duffy_card",
@@ -754,6 +810,34 @@
       "edgeSeed": "asset_024_judge_duffy_card"
     },
     {
+      "id": "asset_024_judge_duffy_cutout",
+      "assetId": "asset_024",
+      "sourceSha256": "ee5f928c3b177fcd4f7d39441b9f63dc78428c9e2e865ebd221360721a484250",
+      "recipeSha256": "e5d9f72481a5da86ee0f3ea7332d5af337faf44432d962dfe52b0fb9b8b3adcc",
+      "input": "assets/archive/asset_024.png",
+      "output": "assets/cutouts/asset_024_judge_duffy_cutout.png",
+      "identity": "The complete Nellie Before Judge Duffy courtroom illustration",
+      "preserve": "Nellie, the woman beside her, the foreground man, Judge Duffy, and the courtroom lamp, rail, bench and architectural lines that connect the scene.",
+      "exclude": "The scanned paper background, printed caption, surrounding body text, and page artifacts.",
+      "review": "approved",
+      "role": "cutout",
+      "crop": [0.15, 0.03, 0.74, 0.78],
+      "maxSize": 2400,
+      "defaultTone": "source",
+      "defaultEdge": "none",
+      "whiteBorder": false,
+      "shadow": false,
+      "edgeSeed": "asset_024_judge_duffy_cutout",
+      "mask": {
+        "provider": "local-paper",
+        "paperPercentile": 0.82,
+        "blurSigma": 18,
+        "transparentThreshold": 14,
+        "opaqueThreshold": 78,
+        "qa": { "minCoverage": 0.01, "maxCoverage": 0.65, "maxConnectedComponents": 512 }
+      }
+    },
+    {
       "id": "asset_025_nellie_writing_card",
       "assetId": "asset_025",
       "sourceSha256": "996fe8b9a651ebcbfb4136b84a427d28398f536a09eb095ef3c3c5d2623bc0b9",
@@ -773,6 +857,223 @@
       "shadow": true,
       "edgeSeed": "asset_025_nellie_writing_card",
       "qualityWarnings": ["source_crop_is_531px_wide_no_upscale"]
+    },
+    {
+      "id": "asset_025_nellie_writing_cutout",
+      "assetId": "asset_025",
+      "sourceSha256": "996fe8b9a651ebcbfb4136b84a427d28398f536a09eb095ef3c3c5d2623bc0b9",
+      "recipeSha256": "23d9b49d9ddf1c03eb90187bb88842019200a1eb8fbb375c472e1f4492d12cfe",
+      "input": "assets/archive/asset_025.png",
+      "output": "assets/cutouts/asset_025_nellie_writing_cutout.png",
+      "identity": "The complete chapter-opening illustration of Nellie Bly writing at her desk",
+      "preserve": "Nellie, her chair and bow, the complete desk and papers, pen, hanging lamp, and round wall frame.",
+      "exclude": "The scanned paper background, chapter heading, surrounding body text, and page artifacts.",
+      "review": "approved",
+      "role": "cutout",
+      "crop": [0.08, 0.01, 0.88, 0.84],
+      "maxSize": 2400,
+      "defaultTone": "source",
+      "defaultEdge": "none",
+      "whiteBorder": false,
+      "shadow": false,
+      "edgeSeed": "asset_025_nellie_writing_cutout",
+      "qualityWarnings": ["source_crop_is_531px_wide_no_upscale"],
+      "mask": {
+        "provider": "local-paper",
+        "paperPercentile": 0.82,
+        "blurSigma": 14,
+        "transparentThreshold": 13,
+        "opaqueThreshold": 72,
+        "qa": { "minCoverage": 0.01, "maxCoverage": 0.65, "maxConnectedComponents": 512 }
+      }
+    },
+    {
+      "id": "asset_026_goldman_rap_sheet_card",
+      "assetId": "asset_026",
+      "sourceSha256": "8c29b34e640e7fd3a0fb80fffe9ef9495c5895106ce435e0f117f8e3af2cbb61",
+      "recipeSha256": "67c684ad29e8fc166653c09e086db267d97ed55e6f1f04a021c12f6041ad2796",
+      "input": "assets/archive/asset_026.jpg",
+      "output": "assets/cutouts/asset_026_goldman_rap_sheet_card.png",
+      "identity": "Newspaper clipping headed 'Emma May Be Choked Off by Police'",
+      "preserve": "The complete PBS archival newspaper crop, including the central headline and surrounding columns.",
+      "exclude": "Nothing; the surrounding newspaper context is part of the archival composition.",
+      "review": "approved",
+      "role": "card",
+      "crop": null,
+      "maxSize": 2400,
+      "defaultTone": "source",
+      "defaultEdge": "torn",
+      "whiteBorder": true,
+      "shadow": true,
+      "edgeSeed": "asset_026_goldman_rap_sheet_card"
+    },
+    {
+      "id": "asset_027_emma_goldman_speaking_cutout",
+      "assetId": "asset_027",
+      "sourceSha256": "eda47323a268e178fe50953652d9507b9d38da84e085437a90db22527ecb9af0",
+      "recipeSha256": "335aad9d42532b554e1d84a8d0f80959373f2056233579cd47e21ff3623b05b4",
+      "input": "assets/archive/asset_027.jpg",
+      "output": "assets/cutouts/asset_027_emma_goldman_speaking_cutout.png",
+      "identity": "Emma Goldman speaking and gesturing while holding a paper",
+      "preserve": "Emma Goldman's complete visible figure, including her head, face, raised arm and hand, coat, lower arm and hand, and the paper she is holding.",
+      "exclude": "The architectural background, foreground hats, cropped bystander at right, and all other non-Emma scene elements.",
+      "review": "approved",
+      "role": "cutout",
+      "crop": null,
+      "maxSize": 2400,
+      "defaultTone": "source",
+      "defaultEdge": "scissor",
+      "whiteBorder": true,
+      "shadow": true,
+      "edgeSeed": "asset_027_emma_goldman_speaking_cutout",
+      "qualityWarnings": ["low_source_resolution_no_upscale"],
+      "mask": {
+        "provider": "fal",
+        "model": "fal-ai/sam-3/image",
+        "cacheFile": "data/preprocess/masks/asset_027_emma_goldman_speaking_cutout.png",
+        "metadataFile": "data/preprocess/masks/asset_027_emma_goldman_speaking_cutout.json",
+        "attempts": [
+          { "prompt": "Emma Goldman's complete visible figure, including her raised arm and hand and the paper held in her other hand" },
+          { "prompt": "Emma Goldman alone, the central woman speaking and gesturing" }
+        ],
+        "qa": { "minCoverage": 0.25, "maxCoverage": 0.85 },
+        "fallback": ["rembg:silueta", "card"]
+      }
+    },
+    {
+      "id": "asset_028_mae_west_arrest_card",
+      "assetId": "asset_028",
+      "sourceSha256": "7eee77a770b8a2a1c14cf491c5f2c97877eaf0a1d6629061b5efae3631add4f6",
+      "recipeSha256": "281746ccc7487302e7ce512ff302a2fbf69724c96c4fea587a469dd4a561ba89",
+      "input": "assets/archive/asset_028.jpg",
+      "output": "assets/cutouts/asset_028_mae_west_arrest_card.png",
+      "identity": "Mae West seated in the open rear doorway of a police van after the 1927 Sex raid",
+      "preserve": "The complete historical photograph, including Mae West, the police van, nearby officers, and street context.",
+      "exclude": "Nothing; the complete documentary frame is historically relevant.",
+      "review": "approved",
+      "role": "card",
+      "crop": null,
+      "maxSize": 2400,
+      "defaultTone": "source",
+      "defaultEdge": "torn",
+      "whiteBorder": true,
+      "shadow": true,
+      "edgeSeed": "asset_028_mae_west_arrest_card"
+    },
+    {
+      "id": "asset_028_mae_west_arrest_cutout",
+      "assetId": "asset_028",
+      "sourceSha256": "7eee77a770b8a2a1c14cf491c5f2c97877eaf0a1d6629061b5efae3631add4f6",
+      "recipeSha256": "0f4dd64e3ef714f2806593556fd9823dbfbef242a813f29d409fce5f243e414a",
+      "input": "assets/archive/asset_028.jpg",
+      "output": "assets/cutouts/asset_028_mae_west_arrest_cutout.png",
+      "identity": "Mae West seated in the police van doorway after the 1927 Sex raid",
+      "preserve": "Mae West's complete visible figure, including hair, face, shawl fringe, hands, crossed legs, shoes, and dress.",
+      "exclude": "The police van, the other passenger, officers, bystanders, steps, and street background.",
+      "review": "approved",
+      "role": "cutout",
+      "crop": null,
+      "maxSize": 2400,
+      "defaultTone": "source",
+      "defaultEdge": "scissor",
+      "whiteBorder": true,
+      "shadow": true,
+      "edgeSeed": "asset_028_mae_west_arrest_cutout",
+      "mask": {
+        "provider": "fal",
+        "model": "fal-ai/sam-3/image",
+        "cacheFile": "data/preprocess/masks/asset_028_mae_west_arrest_cutout.png",
+        "metadataFile": "data/preprocess/masks/asset_028_mae_west_arrest_cutout.json",
+        "attempts": [
+          {
+            "prompt": "Mae West's complete visible figure seated in the police van doorway, including all shawl fringe, crossed legs, shoes, and dress",
+            "point_prompts": [
+              { "x": 470, "y": 350, "label": 1, "object_id": 1 },
+              { "x": 490, "y": 610, "label": 1, "object_id": 1 },
+              { "x": 640, "y": 790, "label": 1, "object_id": 1 },
+              { "x": 690, "y": 930, "label": 1, "object_id": 1 },
+              { "x": 860, "y": 560, "label": 0, "object_id": 1 },
+              { "x": 100, "y": 560, "label": 0, "object_id": 1 }
+            ]
+          },
+          { "prompt": "Mae West alone, the woman in the fringed shawl seated at the left side of the open van doorway" }
+        ],
+        "qa": { "minCoverage": 0.06, "maxCoverage": 0.25 },
+        "fallback": ["rembg:silueta", "card"]
+      }
+    },
+    {
+      "id": "asset_029_mae_west_cutout",
+      "assetId": "asset_029",
+      "sourceSha256": "92a1f621c01e26273fcbdf0ead203227fb88b1cd348e121ca453160c6e0ffbf9",
+      "recipeSha256": "3d41c950e8f59a1d0b2a61a3a73cfb35152cd3f3a7d2e0b5bcecca03b4b74bae",
+      "input": "assets/archive/asset_029.jpg",
+      "output": "assets/cutouts/asset_029_mae_west_cutout.png",
+      "identity": "Mae West portrait from She Done Him Wrong",
+      "preserve": "Mae West's complete visible figure from hair through both hands and the full visible dress to the bottom edge.",
+      "exclude": "The dark studio background and upholstered settee.",
+      "review": "approved",
+      "role": "cutout",
+      "crop": null,
+      "maxSize": 2400,
+      "defaultTone": "source",
+      "defaultEdge": "scissor",
+      "whiteBorder": true,
+      "shadow": true,
+      "edgeSeed": "asset_029_mae_west_cutout",
+      "mask": {
+        "provider": "fal",
+        "model": "fal-ai/sam-3/image",
+        "cacheFile": "data/preprocess/masks/asset_029_mae_west_cutout.png",
+        "metadataFile": "data/preprocess/masks/asset_029_mae_west_cutout.json",
+        "attempts": [
+          { "prompt": "Mae West's complete visible figure, including all hair, both arms and hands, jewelry, and dress to the bottom edge" },
+          { "prompt": "the entire foreground woman from the top of her hair through the full visible dress" }
+        ],
+        "qa": { "minCoverage": 0.25, "maxCoverage": 0.85 },
+        "fallback": ["rembg:silueta", "card"]
+      }
+    },
+    {
+      "id": "asset_031_girl_puzzle_statue_cutout",
+      "assetId": "asset_031",
+      "sourceSha256": "82c6cc5c4cd84d32837be64d5b6d6c8c5030feb371187af841ae3bedb9cffa85",
+      "recipeSha256": "8715662f952f7980d7ab4b168b9acb8da6cfa3cf5e884d66d29840db6b099628",
+      "input": "assets/archive/asset_031.jpg",
+      "output": "assets/cutouts/asset_031_girl_puzzle_statue_cutout.png",
+      "identity": "The central bronze Nellie Bly head and neck sculpture in The Girl Puzzle monument",
+      "preserve": "The complete large bronze Nellie Bly head and neck sculpture.",
+      "exclude": "The inscribed pedestal, skyline, river, sky, bridge, silver sphere, smaller sculpted heads and plaques, railings, ground, and surrounding concrete walls.",
+      "review": "approved",
+      "role": "cutout",
+      "crop": [0.33, 0.08, 0.42, 0.78],
+      "maxSize": 2400,
+      "defaultTone": "source",
+      "defaultEdge": "scissor",
+      "whiteBorder": true,
+      "shadow": true,
+      "edgeSeed": "asset_031_girl_puzzle_statue_cutout",
+      "mask": {
+        "provider": "fal",
+        "model": "fal-ai/sam-3/image",
+        "cacheFile": "data/preprocess/masks/asset_031_girl_puzzle_statue_cutout.png",
+        "metadataFile": "data/preprocess/masks/asset_031_girl_puzzle_statue_cutout.json",
+        "attempts": [
+          { "prompt": "the central monumental Nellie Bly bronze head and neck together with its inscribed rectangular THE GIRL PUZZLE NELLIE BLY pedestal" },
+          {
+            "prompt": "the complete main Nellie Bly statue, including the large bronze head, neck, and named rectangular plinth",
+            "point_prompts": [
+              { "x": 610, "y": 680, "label": 1, "object_id": 1 },
+              { "x": 670, "y": 1430, "label": 1, "object_id": 1 },
+              { "x": 610, "y": 1830, "label": 1, "object_id": 1 },
+              { "x": 1180, "y": 1280, "label": 0, "object_id": 1 },
+              { "x": 100, "y": 200, "label": 0, "object_id": 1 }
+            ]
+          }
+        ],
+        "qa": { "minCoverage": 0.12, "maxCoverage": 0.75 },
+        "fallback": ["rembg:silueta", "card"]
+      }
     }
   ]
 }

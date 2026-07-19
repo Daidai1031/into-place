@@ -4,6 +4,7 @@
   "region": "Galicia, Spain",
   "status": "empty",
   "map_marker": { "x": 0.44, "y": 0.34 },
+  "coordinates": { "lat": 42.8805, "lng": -8.5456 },
   "tagline": "A thousand-year path remembered one pilgrim at a time.",
   "assets": []
 }

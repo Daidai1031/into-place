@@ -43,6 +43,11 @@ export const PRESERVATION =
 /** Audio block — generation is always muted; narration/subtitles added later. */
 export const AUDIO = "Diegetic sounds only. No music. No dialogue. No subtitles.";
 
+/** A sparse collage reads more clearly and keeps each archival source legible. */
+export const MAX_SOURCE_IMAGES_PER_FRAME = 7;
+export const SOURCE_IMAGE_LIMIT =
+  "Use no more than seven archival or reference images in this frame. The source images do not need to remain complete: crop, tear, fold, isolate figures or objects, separate depth layers and spatially reassemble them so the collage can move. Preserve historical identity and provenance, not the original rectangular composition.";
+
 function referenceBlock(references: AssetBrief[]): string {
   if (!references.length) return "";
   const lines = references
@@ -66,8 +71,10 @@ export function compileFramePrompt(args: {
     `A single storyboard frame (16:9) for a short collage film about ${place.name} (${place.region}).`,
     filmPremise ? `Film premise: ${filmPremise}` : "",
     `Scene (${beat.act}): ${beat.text}`,
+    beat.visualDirection ? `Storyboard staging: ${beat.visualDirection}` : "",
     `Render it as ${STYLE.medium}.`,
     referenceBlock(references),
+    SOURCE_IMAGE_LIMIT,
     `Visual style: ${STYLE.palette}. ${STYLE.grain}. Overall tone ${STYLE.mood}.`,
     AVOID,
   ]

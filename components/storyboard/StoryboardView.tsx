@@ -22,8 +22,9 @@ import { AssetShelf } from "./AssetShelf";
 import { BeatStrip } from "./BeatStrip";
 import { CollageButton } from "@/components/ui/CollageButton";
 
-const MAX_PIECES = 8;
-const MIN_PIECES = 3;
+const MAX_PIECES = 7;
+const MIN_PIECES = 1;
+const MAX_REFERENCE_IMAGES = 7;
 const SOFT_ATTEMPT_WARN = 3; // gentle nudge; hard cap is reserved for paid video
 
 const T2I_OPTIONS = [
@@ -96,9 +97,27 @@ export function StoryboardView({ place, preset }: { place: Place; preset?: Story
   function defaultRefsFor(beatId: string): string[] {
     const shelfIds = new Set(shelfAssets.map((a) => a.id));
     const fromPreset = (presetRefsById.get(beatId) ?? []).filter((id) => shelfIds.has(id));
-    if (fromPreset.length) return fromPreset;
-    return mustUseIds.length ? mustUseIds : shelfAssets.slice(0, 4).map((a) => a.id);
+    if (fromPreset.length) return fromPreset.slice(0, MAX_REFERENCE_IMAGES);
+    return (mustUseIds.length ? mustUseIds : shelfAssets.map((a) => a.id)).slice(
+      0,
+      MAX_REFERENCE_IMAGES,
+    );
   }
+
+  // Count scenes, not copies within a scene. A source may support at most two
+  // different beats across generated frames and manual collages.
+  const sourceSceneUseCounts = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const storyBeat of beats) {
+      const storyBeatMode = project.beatMode[storyBeat.id] ?? "generated";
+      const ids =
+        storyBeatMode === "collage"
+          ? (project.layouts[storyBeat.id]?.items ?? []).map((item) => item.assetId)
+          : (project.frames[storyBeat.id]?.references ?? presetRefsById.get(storyBeat.id) ?? []);
+      for (const id of new Set(ids)) counts.set(id, (counts.get(id) ?? 0) + 1);
+    }
+    return counts;
+  }, [beats, project.beatMode, project.frames, project.layouts, presetRefsById]);
 
   function setBeatMode(beatId: string, next: BeatMode) {
     update((p) => ({ ...p, beatMode: { ...p.beatMode, [beatId]: next } }));
@@ -185,6 +204,7 @@ export function StoryboardView({ place, preset }: { place: Place; preset?: Story
           shelfAssets={shelfAssets}
           briefById={briefById}
           defaultRefIds={defaultRefsFor(beat!.id)}
+          sourceSceneUseCounts={sourceSceneUseCounts}
           frame={project.frames[beat!.id] ?? null}
           onFrame={(f) => update((p) => ({ ...p, frames: { ...p.frames, [beat!.id]: f } }))}
         />
@@ -193,6 +213,7 @@ export function StoryboardView({ place, preset }: { place: Place; preset?: Story
           place={place}
           beat={beat!}
           shelfAssets={shelfAssets}
+          sourceSceneUseCounts={sourceSceneUseCounts}
           layout={project.layouts[beat!.id] ?? null}
           onLayout={(next) => update((p) => ({ ...p, layouts: { ...p.layouts, [beat!.id]: next } }))}
         />
@@ -212,6 +233,7 @@ function GeneratedFrameEditor({
   shelfAssets,
   briefById,
   defaultRefIds,
+  sourceSceneUseCounts,
   frame,
   onFrame,
 }: {
@@ -221,11 +243,14 @@ function GeneratedFrameEditor({
   shelfAssets: LayoutAssetInput[];
   briefById: Map<string, AssetBriefLite>;
   defaultRefIds: string[];
+  sourceSceneUseCounts: Map<string, number>;
   frame: BeatFrame | null;
   onFrame: (f: BeatFrame) => void;
 }) {
   const [model, setModel] = useState<string>(frame?.model ?? "nano-banana-2");
-  const [refIds, setRefIds] = useState<string[]>(frame?.references ?? defaultRefIds);
+  const [refIds, setRefIds] = useState<string[]>(
+    (frame?.references ?? defaultRefIds).slice(0, MAX_REFERENCE_IMAGES),
+  );
   const [editText, setEditText] = useState("");
   const [busy, setBusy] = useState<null | string>(null);
   const [dragOver, setDragOver] = useState(false);
@@ -236,7 +261,11 @@ function GeneratedFrameEditor({
   const shelfById = useMemo(() => new Map(shelfAssets.map((a) => [a.id, a])), [shelfAssets]);
 
   const post = useCallback(
-    async (payload: Record<string, unknown>, edits: BeatFrame["edits"]) => {
+    async (
+      payload: Record<string, unknown>,
+      edits: BeatFrame["edits"],
+      usedRefIds: string[] = refIds,
+    ) => {
       const res = await fetch("/api/storyboard/frame", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -255,7 +284,7 @@ function GeneratedFrameEditor({
         imageUrl: data.imageUrl,
         model: data.model,
         prompt: data.prompt,
-        references: refIds,
+        references: usedRefIds.slice(0, MAX_REFERENCE_IMAGES),
         edits,
         requestId: data.requestId,
         costUsd: data.costUsd,
@@ -282,7 +311,14 @@ function GeneratedFrameEditor({
     setBusy("Composing frame…");
     setNote(null);
     try {
-      const chosen = ids.map((id) => shelfById.get(id)).filter((a): a is LayoutAssetInput => Boolean(a));
+      const cappedIds = ids.slice(0, MAX_REFERENCE_IMAGES);
+      setRefIds(cappedIds);
+      const chosen = cappedIds
+        .map((id) => shelfById.get(id))
+        .filter((a): a is LayoutAssetInput => Boolean(a));
+      const chosenReferences = cappedIds
+        .map((id) => briefById.get(id))
+        .filter((b): b is AssetBriefLite => Boolean(b));
       let sheet: string | undefined;
       if (chosen.length) {
         await Promise.all(chosen.map(measure));
@@ -293,12 +329,13 @@ function GeneratedFrameEditor({
           mode: "generate",
           place: { name: place.name, region: place.region, tagline: place.tagline },
           beat,
-          references,
+          references: chosenReferences,
           filmPremise,
           model,
           referenceSheetDataUrl: sheet,
         },
         frame?.edits ?? [],
+        cappedIds,
       );
     } finally {
       setBusy(null);
@@ -308,7 +345,13 @@ function GeneratedFrameEditor({
   async function addAsset(assetId: string, dropHint: { x: number; y: number }) {
     const asset = shelfById.get(assetId);
     if (!asset) return;
-    const nextRefs = refIds.includes(assetId) ? refIds : [...refIds, assetId];
+    if (!refIds.includes(assetId) && (sourceSceneUseCounts.get(assetId) ?? 0) >= 2) {
+      setNote("This archive piece already appears in two scenes. Choose a different piece.");
+      return;
+    }
+    const nextRefs = refIds.includes(assetId)
+      ? refIds
+      : [...refIds, assetId].slice(-MAX_REFERENCE_IMAGES);
     setRefIds(nextRefs);
     const brief = briefById.get(assetId);
     const edits = [...(frame?.edits ?? []), { kind: "add_asset" as const, assetId, at: new Date().toISOString() }];
@@ -327,7 +370,9 @@ function GeneratedFrameEditor({
           mode: "edit_add_asset",
           place: { name: place.name, region: place.region, tagline: place.tagline },
           beat,
-          references,
+          references: nextRefs
+            .map((id) => briefById.get(id))
+            .filter((b): b is AssetBriefLite => Boolean(b)),
           model,
           currentImageUrl: frame!.imageUrl,
           addAssetDataUrl,
@@ -335,6 +380,7 @@ function GeneratedFrameEditor({
           dropHint,
         },
         edits,
+        nextRefs,
       );
     } finally {
       setBusy(null);
@@ -495,7 +541,8 @@ function GeneratedFrameEditor({
             })}
           </div>
           <p className="mt-1 font-typewriter text-[10px] text-ink-soft">
-            Pieces marked “ref” are fed to the model as visual references on the next generate.
+            Pieces marked “ref” are fed to the model on the next generate. Each frame keeps at
+            most {MAX_REFERENCE_IMAGES}; dragging a new piece replaces the oldest reference.
           </p>
         </div>
       </aside>
@@ -511,12 +558,14 @@ function CollageEditor({
   place,
   beat,
   shelfAssets,
+  sourceSceneUseCounts,
   layout,
   onLayout,
 }: {
   place: Place;
   beat: { id: string; text: string };
   shelfAssets: LayoutAssetInput[];
+  sourceSceneUseCounts: Map<string, number>;
   layout: BeatLayout | null;
   onLayout: (next: BeatLayout) => void;
 }) {
@@ -531,7 +580,9 @@ function CollageEditor({
   const history = useRef<BeatLayout[]>([]);
   const [, forceRender] = useState(0);
 
-  const items = layout?.items ?? [];
+  // Old saved layouts may predate the current source-image limit; never render
+  // or resubmit more than seven pieces.
+  const items = (layout?.items ?? []).slice(0, MAX_PIECES);
 
   function setLayout(next: BeatLayout, recordHistory = true) {
     if (recordHistory) {
@@ -554,7 +605,9 @@ function CollageEditor({
     const chosen =
       items.length >= MIN_PIECES
         ? shelfAssets.filter((a) => items.some((i) => i.assetId === a.id))
-        : shelfAssets.slice(0, 5);
+        : shelfAssets
+            .filter((asset) => (sourceSceneUseCounts.get(asset.id) ?? 0) < 2)
+            .slice(0, MAX_PIECES);
     if (chosen.length < MIN_PIECES) return;
     setPhase("sheet");
     setLayoutSource(null);
@@ -698,6 +751,15 @@ function CollageEditor({
         <AssetShelf
           assets={shelfAssets}
           usedIds={new Set(items.map((i) => i.assetId))}
+          disabledIds={new Set(
+            shelfAssets
+              .filter(
+                (asset) =>
+                  !items.some((item) => item.assetId === asset.id) &&
+                  (sourceSceneUseCounts.get(asset.id) ?? 0) >= 2,
+              )
+              .map((asset) => asset.id),
+          )}
           max={MAX_PIECES}
           onAdd={(asset) => {
             const nextZ = items.length ? Math.max(...items.map((i) => i.z)) + 1 : 0;

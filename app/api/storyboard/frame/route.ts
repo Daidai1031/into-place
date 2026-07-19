@@ -4,6 +4,7 @@ import { getCapabilities } from "@/lib/capabilities";
 import {
   compileFramePrompt,
   compileEditPrompt,
+  MAX_SOURCE_IMAGES_PER_FRAME,
 } from "@/lib/prompt-compiler";
 import { T2I_MODELS, T2I_DEFAULT, NANO_BANANA_2 } from "@/lib/models";
 import type { AssetBrief, PlaceBrief } from "@/lib/llm";
@@ -63,7 +64,7 @@ export async function POST(req: Request) {
         : compileFramePrompt({
             place: body.place,
             beat: body.beat,
-            references: body.references ?? [],
+            references: (body.references ?? []).slice(0, MAX_SOURCE_IMAGES_PER_FRAME),
             filmPremise: body.filmPremise,
           });
 

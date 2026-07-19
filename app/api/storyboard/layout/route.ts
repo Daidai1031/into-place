@@ -12,6 +12,7 @@ export const maxDuration = 60;
 const VISION_ENDPOINT = "fal-ai/any-llm/vision";
 const VISION_MODEL = "anthropic/claude-sonnet-4.5";
 const DRAFT_ENDPOINT = "fal-ai/nano-banana/edit"; // $0.0398/image (checked 2026-07-19)
+const MAX_COLLAGE_IMAGES = 7;
 
 /**
  * Initial collage layout for one storyboard beat.
@@ -29,6 +30,12 @@ export async function POST(req: Request) {
   };
   if (!body.assets?.length) {
     return NextResponse.json({ error: "assets required" }, { status: 400 });
+  }
+  if (body.assets.length > MAX_COLLAGE_IMAGES) {
+    return NextResponse.json(
+      { error: `a collage can use at most ${MAX_COLLAGE_IMAGES} source images` },
+      { status: 400 },
+    );
   }
 
   const assetLines = body.assets

@@ -9,7 +9,7 @@ export function NewPlaceInput() {
 
   return (
     <form
-      className="flex items-center gap-2"
+      className="flex flex-wrap items-center gap-2"
       onSubmit={(e) => {
         e.preventDefault();
         if (!value.trim()) return;
@@ -23,7 +23,7 @@ export function NewPlaceInput() {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="Name a place you carry with you…"
-        className="w-64 border-b-2 border-dashed border-ink/40 bg-transparent px-1 py-1.5 font-hand text-base outline-none placeholder:text-ink-soft/50 focus:border-ink"
+        className="min-w-0 flex-1 border-b-2 border-dashed border-ink/40 bg-transparent px-1 py-1.5 font-hand text-base outline-none placeholder:text-ink-soft/50 focus:border-ink"
       />
       <CollageButton variant="ghost" type="submit">
         Propose

@@ -148,9 +148,14 @@ export function validateConfig(config, place) {
     const suffix = recipe.role === "cutout" ? "_cutout.png" : recipe.role === "card" ? "_card.png" : "_bg.png";
     if (!recipe.output.endsWith(suffix)) throw new Error(`${recipe.id}: ${recipe.role} output must end with ${suffix}`);
     if (recipe.role === "cutout") {
-      if (recipe.mask?.provider !== "fal" || recipe.mask.model !== config.fal.model) throw new Error(`${recipe.id}: cutout needs the configured fal mask contract`);
-      if (!Array.isArray(recipe.mask.attempts) || recipe.mask.attempts.length < 1 || recipe.mask.attempts.length > 2) {
-        throw new Error(`${recipe.id}: mask attempts must contain one or two prompts`);
+      if (!recipe.mask || !["fal", "local-paper"].includes(recipe.mask.provider)) {
+        throw new Error(`${recipe.id}: cutout needs a fal or local-paper mask contract`);
+      }
+      if (recipe.mask.provider === "fal") {
+        if (recipe.mask.model !== config.fal.model) throw new Error(`${recipe.id}: cutout needs the configured fal mask model`);
+        if (!Array.isArray(recipe.mask.attempts) || recipe.mask.attempts.length < 1 || recipe.mask.attempts.length > 2) {
+          throw new Error(`${recipe.id}: mask attempts must contain one or two prompts`);
+        }
       }
     } else if (recipe.mask) {
       throw new Error(`${recipe.id}: only cutout recipes may declare a mask`);
@@ -230,7 +235,7 @@ async function makeRecipeState(recipe, config, selection) {
   const outputCache = await inspectOutputCache({ recipe, sourceSha256, recipeSha256, toolSha256, selectionSha256 });
   const maskConfigSha256 = hashJson(recipe.mask ?? null);
   const maskCacheIdentity = buildCacheIdentity({ sourceSha256, recipeSha256, toolSha256, maskConfigSha256 });
-  const maskCache = recipe.mask
+  const maskCache = recipe.mask?.provider === "fal"
     ? await inspectMaskCache({ recipe, cacheIdentity: maskCacheIdentity, projectRoot: PROJECT_ROOT })
     : { valid: false, reason: "not_applicable" };
   return {
@@ -364,7 +369,18 @@ async function materializeState({ state, config, selection, args, stagingDir }) 
   let falCalls = state.maskCache.valid ? state.maskCache.metadata.calls ?? [] : [];
   let maskFallback = state.maskCache.valid ? null : state.maskCache.reason;
 
-  if (args.refreshMask && recipe.mask) {
+  let maskBuffer = null;
+  if (recipe.mask?.provider === "local-paper") {
+    maskBuffer = await cutoutApi.createPaperInkMask(await readFile(abs(recipe.input)), {
+      crop: recipe.crop,
+      maxSize: recipe.maxSize,
+      ...recipe.mask,
+    });
+    maskSha256 = sha256(maskBuffer);
+    maskFallback = null;
+  }
+
+  if (args.refreshMask && recipe.mask?.provider === "fal") {
     try {
       const generated = await generateFalMask({
         recipe,
@@ -402,6 +418,7 @@ async function materializeState({ state, config, selection, args, stagingDir }) 
       projectRoot: PROJECT_ROOT,
       inputBuffer,
       output: stageOutput,
+      maskBuffer,
       maskPath,
       cachedMaskPath: maskPath,
       allowRembg: true,
@@ -456,7 +473,14 @@ async function materializeState({ state, config, selection, args, stagingDir }) 
     operations,
     mask: recipe.mask
       ? {
-          provider: maskPath ? "fal-cache" : actualRole === "cutout" ? "rembg:silueta" : "none",
+          provider:
+            recipe.mask.provider === "local-paper"
+              ? "local-paper"
+              : maskPath
+                ? "fal-cache"
+                : actualRole === "cutout"
+                  ? "rembg:silueta"
+                  : "none",
           file: maskPath ? recipe.mask.cacheFile : null,
           sha256: maskSha256,
           cacheKey: state.maskCacheIdentity.cacheKey,
@@ -495,7 +519,7 @@ export async function runBatch(args) {
   for (const recipe of recipes) states.push(await makeRecipeState(recipe, config, selection));
   const maximumCost = args.refreshMask
     ? states
-        .filter((state) => state.recipe.mask && state.recipe.publish !== false)
+        .filter((state) => state.recipe.mask?.provider === "fal" && state.recipe.publish !== false)
         .reduce((sum, state) => sum + estimateFalMaskCost(state.recipe, config.fal), 0)
     : 0;
   if (maximumCost > 2) throw new Error(`Maximum fal mask cost $${maximumCost.toFixed(3)} exceeds $2; obtain developer approval before continuing`);
@@ -508,7 +532,7 @@ export async function runBatch(args) {
     );
   }
   if (args.dryRun) return { built: 0, cached: states.filter((state) => summarizeAction(state, args) === "cached").length, maximumCost };
-  if (args.refreshMask && states.some((state) => state.recipe.mask && state.recipe.publish !== false)) assertFalVerificationFresh(config.fal);
+  if (args.refreshMask && states.some((state) => state.recipe.mask?.provider === "fal" && state.recipe.publish !== false)) assertFalVerificationFresh(config.fal);
 
   const manifestChanged = pruneUnpublishedManifestEntries(place, config.recipes);
   await syncRejectedProvenance(states, config.fal);
