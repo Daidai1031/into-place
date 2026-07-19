@@ -147,9 +147,10 @@ export const MAX_ATTEMPTS_PER_SHOT = 3;
 export const COST_CONFIRMATION_THRESHOLD_USD = 5;
 
 /**
- * Audio pass (post-production, the last step before export). Two kinds:
+ * Audio pass (post-production, the last step before export). Three kinds:
  *  - "video-to-audio": diegetic foley synchronized to a rendered clip's motion.
  *  - "text-to-music":  one restrained score bed for the whole film.
+ *  - "text-to-speech": one spoken narration track written from the Story map.
  * The i2v clips themselves stay muted (generate_audio:false); sound is added
  * here so it stays curated and separable — see lib/prompt-compiler AUDIO block.
  */
@@ -157,8 +158,8 @@ export interface AudioModel {
   endpointId: string;
   displayName: string;
   unitPrice: number;
-  unit: "seconds" | "30 seconds";
-  kind: "video-to-audio" | "text-to-music";
+  unit: "seconds" | "30 seconds" | "1000 characters";
+  kind: "video-to-audio" | "text-to-music" | "text-to-speech";
   /** MMAudio-style models mux the audio back into a video and return `video`. */
   returns: "video" | "audio";
   verifyBeforeCall: boolean;
@@ -189,7 +190,24 @@ export const LYRIA2: AudioModel = {
     "Google Lyria 2; input prompt (+ negative_prompt, seed), no duration control — loop/trim to film length in post.",
 };
 
+/**
+ * Fast, low-cost English narration. Official fal schema: prompt + voice +
+ * speed, returning a WAV file. Pricing checked 2026-07-19: $0.02 / 1K chars.
+ */
+export const KOKORO_AMERICAN_TTS: AudioModel = {
+  endpointId: "fal-ai/kokoro/american-english",
+  displayName: "Kokoro TTS (American English)",
+  unitPrice: 0.02,
+  unit: "1000 characters",
+  kind: "text-to-speech",
+  returns: "audio",
+  verifyBeforeCall: false,
+  notes: "Uses voice af_heart at a slightly restrained pace for documentary narration.",
+};
+
 export const FOLEY_MODELS: Record<string, AudioModel> = { "mmaudio-v2": MMAUDIO_V2 };
 export const MUSIC_MODELS: Record<string, AudioModel> = { lyria2: LYRIA2 };
+export const TTS_MODELS: Record<string, AudioModel> = { "kokoro-american": KOKORO_AMERICAN_TTS };
 export const FOLEY_DEFAULT = "mmaudio-v2";
 export const MUSIC_DEFAULT = "lyria2";
+export const TTS_DEFAULT = "kokoro-american";

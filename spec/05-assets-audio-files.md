@@ -44,10 +44,10 @@ type PreprocessSelection = {
 
 Generated shots (`fal_i2v`) always contain no sound / subtitles. This allows TTS narration wording and subtitle proofreading to be revised repeatedly without rerunning video generation (cheaper and more stable), while ensuring subtitles match archival text exactly. This is an established strategy, not a temporary limitation.
 
-- Narration: a fal TTS endpoint (verified on Day 0), with self-recording as fallback; one or two sentences for each of the five acts.
+- Narration: Claude Sonnet 4.5 via `fal-ai/any-llm` writes one concise 35–65 word voiceover from the user's current ordered Story map; `fal-ai/kokoro/american-english` voices it with `af_heart` at 0.95× speed. The generated text is shown in the Film UI and recorded in audio provenance.
 - Ambient sound (Roosevelt Island): tram motor hum, East River water and wind, seagulls, spacious reverberation inside the ruins, and distant Manhattan traffic—**prefer recording it on the island**, supplemented with public Freesound assets.
-- Mix with FFmpeg; align sound with scenes (switch ambience near the ruins), without implementing full spatial audio.
-- No music by default; always disable model-native audio tracks (fixed prompt block).
+- Mix with FFmpeg; align generated foley with scenes (switch ambience near the ruins), without implementing full spatial audio.
+- Always disable model-native audio tracks (fixed prompt block). The Film page offers equal-level Background music and Narration toggles after silent assembly; music starts on and narration starts off, and users may select either or both before confirming.
 
 ## Directory Conventions
 

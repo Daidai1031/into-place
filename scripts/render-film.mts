@@ -11,7 +11,7 @@
  * Reads FAL_KEY from .env.local. Never prints the key. Muted clips (narration
  * is layered later). After it finishes, run: node scripts/sync-public.mjs
  */
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { copyFileSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { fal } from "@fal-ai/client";
 import { I2V_MODELS, I2V_DEFAULT, COST_CONFIRMATION_THRESHOLD_USD } from "../lib/models.ts";
 import { buildI2vInput, xfadeConcat } from "../lib/film-assemble.ts";
@@ -112,4 +112,5 @@ const finalOut = `${ROOT}/final/${slug}.mp4`;
 const transitions = shots.map((s) => s.transitionOut?.type ?? null);
 process.stdout.write(`\nConcatenating ${clipPaths.length} clips with xfade…\n`);
 xfadeConcat(clipPaths, transitions, finalOut, TRANSITION_DUR);
+copyFileSync(finalOut, `${clipsDir}/silent-master.mp4`);
 process.stdout.write(`\n✓ film → ${finalOut}\nNext: node scripts/sync-public.mjs  (copies into public/films/)\n`);

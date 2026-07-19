@@ -51,7 +51,19 @@ const XFADE: Record<string, string> = {
   match_cut: "fade",
   cut: "fade",
   custom: "fade",
+  paper_slide: "slideleft", // next shot pushes in laterally, like a page shoved aside
+  paper_reveal: "revealup", // previous shot lifts away, revealing the next underneath
 };
+
+/**
+ * `torn_paper` has no built-in xfade equivalent, so it's the one type driven by
+ * a custom expr instead of the XFADE name table: a vertical sweep (top to
+ * bottom, distinct from paper_slide's lateral push) perturbed by a sum of sines
+ * so the boundary reads as a ragged tear rather than a straight wipe line.
+ * Variables per ffmpeg's xfade custom transition: X,Y,W,H,P (progress),A,B.
+ */
+const TORN_PAPER_EXPR =
+  "if(lt(Y,H*P+18*sin(X*0.045)+9*sin(X*0.11+1.7)),A,B)";
 
 /**
  * Unified grade applied to EVERY clip so five separately-generated shots share
@@ -77,6 +89,14 @@ export function ffprobeDuration(file: string): number {
     "-v", "error", "-show_entries", "format=duration", "-of", "default=nw=1:nk=1", file,
   ]).toString().trim();
   return Number(out) || 5;
+}
+
+/** True when a media file already contains at least one audio stream. */
+export function hasAudioStream(file: string): boolean {
+  const out = execFileSync("ffprobe", [
+    "-v", "error", "-select_streams", "a", "-show_entries", "stream=index", "-of", "csv=p=0", file,
+  ]).toString().trim();
+  return out.length > 0;
 }
 
 /**
@@ -112,17 +132,20 @@ export interface FoleyTrack {
 /**
  * Mux a curated audio track onto an already-assembled (silent) film: each
  * foley track is delayed to its clip offset and summed, one music bed is looped
- * to length and ducked underneath, the whole mix fades out with the picture and
- * passes through a limiter to stay clear of clipping. Video is copied, not
- * re-encoded. Gains are the two tuning knobs (dB).
+ * to length and ducked underneath optional narration, the whole mix fades out
+ * with the picture and passes through a limiter to stay clear of clipping.
+ * Video is copied, not re-encoded; each layer has its own gain control.
  */
 export function muxFilmAudio(args: {
   videoIn: string;
   out: string;
   foley: FoleyTrack[];
   musicFile?: string | null;
+  narrationFile?: string | null;
   foleyGainDb?: number;
   musicGainDb?: number;
+  narrationGainDb?: number;
+  narrationDelaySec?: number;
   fadeOutDur?: number;
 }): void {
   const {
@@ -130,11 +153,16 @@ export function muxFilmAudio(args: {
     out,
     foley,
     musicFile = null,
+    narrationFile = null,
     foleyGainDb = 0,
     musicGainDb = -13,
+    narrationGainDb = -3,
+    narrationDelaySec = 0.6,
     fadeOutDur = 1.0,
   } = args;
-  if (foley.length === 0 && !musicFile) throw new Error("muxFilmAudio: no audio inputs");
+  if (foley.length === 0 && !musicFile && !narrationFile) {
+    throw new Error("muxFilmAudio: no audio inputs");
+  }
   const total = ffprobeDuration(videoIn);
   const fadeSt = Math.max(0, total - fadeOutDur);
 
@@ -160,17 +188,28 @@ export function muxFilmAudio(args: {
   if (musicFile) {
     const idx = foley.length + 1;
     inputs.push("-stream_loop", "-1", "-i", musicFile);
+    const gain = narrationFile ? Math.min(musicGainDb, -17) : musicGainDb;
     parts.push(
-      `[${idx}:a]${STEREO},atrim=0:${total.toFixed(3)},asetpts=PTS-STARTPTS,volume=${musicGainDb}dB[music]`,
+      `[${idx}:a]${STEREO},atrim=0:${total.toFixed(3)},asetpts=PTS-STARTPTS,volume=${gain}dB[music]`,
     );
     mixLabels.push(`[music]`);
+  }
+
+  if (narrationFile) {
+    const idx = foley.length + (musicFile ? 2 : 1);
+    const delayMs = Math.max(0, Math.round(narrationDelaySec * 1000));
+    inputs.push("-i", narrationFile);
+    parts.push(
+      `[${idx}:a]${STEREO},adelay=${delayMs}:all=1,apad,atrim=0:${total.toFixed(3)},volume=${narrationGainDb}dB[narration]`,
+    );
+    mixLabels.push(`[narration]`);
   }
 
   const n = mixLabels.length;
   const mixIn = mixLabels.join("");
   // normalize=0 keeps each source at its set gain (amix otherwise divides by n).
   parts.push(
-    `${mixIn}amix=inputs=${n}:normalize=0:dropout_transition=0[amixed]`,
+    `${mixIn}amix=inputs=${n}:normalize=0:dropout_transition=0,apad,atrim=0:${total.toFixed(3)}[amixed]`,
   );
   parts.push(
     `[amixed]afade=t=out:st=${fadeSt.toFixed(2)}:d=${fadeOutDur.toFixed(2)},alimiter=limit=0.95[aout]`,
@@ -217,8 +256,12 @@ export function xfadeConcat(
   for (let m = 1; m < clipFiles.length; m++) {
     const t = Math.min(transitionDur, durs[m] - 0.1, durs[m - 1] - 0.1);
     const offset = Math.max(0, cum - t);
-    const xf = XFADE[transitions[m - 1] ?? "push_dissolve"] ?? "fade";
-    fc += `${prev}[v${m}]xfade=transition=${xf}:duration=${t.toFixed(2)}:offset=${offset.toFixed(2)}[vx${m}];`;
+    const type = transitions[m - 1] ?? "push_dissolve";
+    const seg =
+      type === "torn_paper"
+        ? `xfade=transition=custom:expr='${TORN_PAPER_EXPR}':duration=${t.toFixed(2)}:offset=${offset.toFixed(2)}`
+        : `xfade=transition=${XFADE[type] ?? "fade"}:duration=${t.toFixed(2)}:offset=${offset.toFixed(2)}`;
+    fc += `${prev}[v${m}]${seg}[vx${m}];`;
     cum = cum + durs[m] - t;
     prev = `[vx${m}]`;
   }

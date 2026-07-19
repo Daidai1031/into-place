@@ -1,27 +1,13 @@
 {
   "slug": "roosevelt-island",
-  "mode": "whole-cut",
-  "filmDurationSec": 12.666667,
-  "totalCostUsd": 0.113,
-  "foley": [
-    {
-      "label": "whole-cut",
-      "startSec": 0,
-      "file": "E:\\Cornell\\26summer\\into-place/renders/roosevelt-island/audio/foley_whole-cut.mp4",
-      "model": "fal-ai/mmaudio-v2",
-      "requestId": "019f7afc-6458-7382-b15e-93d6dad1a3f4",
-      "prompt": "Diegetic sound design for a short, quiet, hand-made archival collage film — a single continuous passage of realistic, close, restrained foley timed to the motion on screen. Foreground sounds, unfolding in order: a quill pen nib scratching steadily across paper; a heavy ledger page being turned; a rubber stamp pressed onto a document; a pen writing a name in quick strokes; stiff papers folding and sliding against one another; measured footsteps on a hard floor; a heavy iron door swinging shut and latching; cold water pouring and dripping into a metal tub; a hard wooden bench creaking under weight; a pen scratching notes quietly and insistently; river water lapping and small waves against a hull; a printing press clacking and newspaper pages rustling; an impassioned orator's rising voice, muffled and indistinct; a gathered crowd murmuring and stirring in agreement; soft, quick keyboard typing; paper and glass pieces sliding and reassembling; children playing and laughing faintly nearby. Shifting background bed: a hushed, cavernous records room; faint distant footsteps and the low indistinct murmur of unseen women working; then a cold institutional corridor with a faint echoing reverb, an uneasy quiet; then a damp stone ward; distant muffled distress and indistinct restless voices behind walls; then an open-air riverfront; wind, gulls, and the distant swell of a public square; then a calm present-day riverside park; gentle wind, soft distant city hum, a quietly hopeful open air. Keep it sparse, intimate and period-appropriate. Any human voices are distant and indistinct — never intelligible words. No music, no score.",
-      "negativePrompt": "music, musical score, melody, background music, singing, lyrics, intelligible speech, clear spoken words, dialogue, narration, voiceover, subtitles, modern city traffic, car engines, sirens, phone notifications, electronic beeps, synth, distortion, harsh clipping noise",
-      "params": {
-        "duration": 13
-      },
-      "costUsd": 0.013000000000000001
-    }
-  ],
+  "mode": "per-clip",
+  "filmDurationSec": 27.1,
+  "totalCostUsd": 0.1,
+  "foley": [],
   "music": {
     "file": "E:\\Cornell\\26summer\\into-place/renders/roosevelt-island/audio/music.wav",
     "model": "fal-ai/lyria2",
-    "requestId": "019f7afc-a3cd-77e3-8c0c-c40a330a04de",
+    "requestId": "019f7b5b-eeb7-7b80-ab54-3462b55e1e3f",
     "prompt": "An original instrumental score for a reflective historical documentary collage film about a place and the voices it tried to contain. Warm, sparse and nostalgic: soft solo piano with subtle warm strings and a low sustained drone, slow tempo, gentle and human, quietly hopeful. Restrained, calm and contemplative — like leafing through an old family archive; never eerie, never somber, never suspenseful, never grand or triumphant. Low, even dynamics so it can sit softly beneath narration and diegetic sound. Muted, aged, analog warmth, gentle tape hiss. Instrumental only, no vocals, no drums.",
     "negativePrompt": "harsh, aggressive, horror, eerie, ominous, suspenseful, dissonant, distorted, heavy drums, percussion-driven, EDM, electronic beats, pop, vocals, singing, lyrics, upbeat commercial jingle, triumphant fanfare, low quality",
     "params": {},

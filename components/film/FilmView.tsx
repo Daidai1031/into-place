@@ -14,6 +14,7 @@ interface GenStep {
   label: string;
 }
 type Phase = "idle" | "running" | "done" | "failed";
+type AudioPhase = "idle" | "confirming" | "running" | "done" | "failed";
 type SceneStatus = "waiting" | "queued" | "rendering" | "done" | "failed";
 interface SceneState {
   beatId: string;
@@ -64,6 +65,12 @@ export function FilmView({ place }: { place: Place }) {
   const [caps, setCaps] = useState<Caps | null>(null);
   const [filmModel, setFilmModel] = useState<string>(I2V_DEFAULT);
   const [secondsPerShot, setSecondsPerShot] = useState<number>(5);
+  const [audioPhase, setAudioPhase] = useState<AudioPhase>("idle");
+  const [audioMessage, setAudioMessage] = useState<string | null>(null);
+  const [audioError, setAudioError] = useState<string | null>(null);
+  const [includeMusic, setIncludeMusic] = useState(true);
+  const [includeNarration, setIncludeNarration] = useState(false);
+  const [narrationText, setNarrationText] = useState<string | null>(null);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
   const cancelled = useRef(false);
 
@@ -102,6 +109,7 @@ export function FilmView({ place }: { place: Place }) {
   const canRunReal = Boolean(caps?.canRunPipeline && caps?.hasFal) && renderableShots.length > 0;
   const unitPrice = I2V_MODELS[filmModel]?.unitPrice ?? 0;
   const estCost = unitPrice * secondsPerShot * renderableShots.length;
+  const audioEstimate = (includeMusic ? 0.1 : 0) + (includeNarration ? 0.03 : 0);
   const durOptions = DUR_OPTIONS[filmModel] ?? [5];
 
   function pickModel(key: string) {
@@ -234,6 +242,66 @@ export function FilmView({ place }: { place: Place }) {
       setError(e instanceof Error ? e.message : "Generation failed");
       setPhase("failed");
     }
+  }
+
+  async function addAudio() {
+    if (!includeMusic && !includeNarration) return;
+    setAudioPhase("running");
+    setAudioError(null);
+    setNarrationText(null);
+    setAudioMessage(
+      includeNarration ? "Preparing narration from the Story map…" : "Starting background music…",
+    );
+    try {
+      const savedStory = await fetch("/api/project/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ project }),
+      });
+      if (!savedStory.ok) throw new Error("Could not save the current Story map for narration.");
+      const start = await fetch("/api/audio/start", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          slug: place.slug,
+          confirmed: true,
+          music: includeMusic,
+          narration: includeNarration,
+        }),
+      });
+      const started = await start.json();
+      if (!start.ok) throw new Error(started.error ?? "Could not start audio generation.");
+
+      for (let attempt = 0; attempt < 900 && !cancelled.current; attempt++) {
+        const response = await fetch(
+          `/api/audio/status?jobId=${encodeURIComponent(started.id)}`,
+          { cache: "no-store" },
+        );
+        const job = await response.json();
+        if (!response.ok) throw new Error(job.error ?? "Could not read audio status.");
+        setAudioMessage(job.message ?? "Generating selected audio…");
+        if (job.status === "done") {
+          setFilmUrl(job.filmUrl ?? `/films/${place.slug}.mp4?v=${Date.now()}`);
+          setNarrationText(job.narrationText ?? null);
+          setAudioPhase("done");
+          return;
+        }
+        if (job.status === "failed") throw new Error(job.error ?? "Audio generation failed.");
+        await sleep(2000);
+      }
+      throw new Error("Audio generation timed out. Check the local server output.");
+    } catch (e) {
+      setAudioError(e instanceof Error ? e.message : "Audio generation failed.");
+      setAudioPhase("failed");
+    }
+  }
+
+  function toggleAudioOption(option: "music" | "narration") {
+    if (audioPhase === "running") return;
+    if (option === "music") setIncludeMusic((value) => !value);
+    else setIncludeNarration((value) => !value);
+    setAudioPhase("idle");
+    setAudioError(null);
   }
 
   function saveToLibrary() {
@@ -490,6 +558,138 @@ export function FilmView({ place }: { place: Place }) {
             )}
             {saved && <Stamp text="In your library" color="accent" animate />}
           </div>
+
+          {filmUrl && (
+            <div className="mt-5 border border-ink/15 bg-paper-deep/20 px-4 py-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <p className="font-display text-base">Finish the soundtrack</p>
+                  <p className="mt-1 font-typewriter text-[11px] leading-relaxed text-ink-soft">
+                    Choose either layer or combine them. Narration is written from your current
+                    Story map before it is voiced.
+                  </p>
+                </div>
+                {audioPhase === "done" && <Stamp text="Soundtrack added" color="accent" animate />}
+              </div>
+
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={includeMusic}
+                  onClick={() => toggleAudioOption("music")}
+                  disabled={audioPhase === "running"}
+                  className={`cursor-pointer border px-4 py-3 text-left transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
+                    includeMusic
+                      ? "border-stamp/60 bg-stamp/8"
+                      : "border-ink/15 bg-paper/40 hover:border-ink/35"
+                  }`}
+                >
+                  <span className="flex items-center justify-between gap-3 font-typewriter text-sm">
+                    <span>♪ Background music</span>
+                    <span className={includeMusic ? "text-stamp" : "text-ink-soft"}>
+                      {includeMusic ? "ON" : "OFF"}
+                    </span>
+                  </span>
+                  <span className="mt-1 block font-typewriter text-[10px] text-ink-soft">
+                    Restrained instrumental score · Lyria 2
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={includeNarration}
+                  onClick={() => toggleAudioOption("narration")}
+                  disabled={audioPhase === "running"}
+                  className={`cursor-pointer border px-4 py-3 text-left transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
+                    includeNarration
+                      ? "border-stamp/60 bg-stamp/8"
+                      : "border-ink/15 bg-paper/40 hover:border-ink/35"
+                  }`}
+                >
+                  <span className="flex items-center justify-between gap-3 font-typewriter text-sm">
+                    <span>◉ Narration</span>
+                    <span className={includeNarration ? "text-stamp" : "text-ink-soft"}>
+                      {includeNarration ? "ON" : "OFF"}
+                    </span>
+                  </span>
+                  <span className="mt-1 block font-typewriter text-[10px] text-ink-soft">
+                    Story-map script · Kokoro voice
+                  </span>
+                </button>
+              </div>
+
+              {!caps?.canRunPipeline || !caps?.hasFal ? (
+                <p className="mt-2 font-typewriter text-[11px] text-ink-soft">
+                  Audio generation is available in the local pipeline with a FAL key.
+                </p>
+              ) : null}
+
+              {audioPhase !== "running" && audioPhase !== "confirming" && (
+                <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+                  <span className="font-typewriter text-[11px] text-ink-soft">
+                    Estimated paid generation · ${audioEstimate.toFixed(2)}
+                  </span>
+                  <CollageButton
+                    variant="ghost"
+                    onClick={() => setAudioPhase("confirming")}
+                    disabled={
+                      !caps?.canRunPipeline ||
+                      !caps?.hasFal ||
+                      (!includeMusic && !includeNarration)
+                    }
+                  >
+                    {audioPhase === "done" ? "Regenerate selected audio" : "Generate selected audio"}
+                  </CollageButton>
+                </div>
+              )}
+
+              {audioPhase === "confirming" && (
+                <div className="mt-3 border-l-2 border-stamp/60 pl-3">
+                  <p className="font-typewriter text-xs leading-relaxed text-ink-soft">
+                    Generate {includeMusic && includeNarration
+                      ? "background music and narration"
+                      : includeNarration
+                        ? "narration"
+                        : "background music"} for about ${audioEstimate.toFixed(2)}? This may take
+                    several minutes.
+                  </p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <CollageButton onClick={() => void addAudio()}>
+                      Confirm · generate audio
+                    </CollageButton>
+                    <CollageButton variant="ghost" onClick={() => setAudioPhase("idle")}>
+                      Cancel
+                    </CollageButton>
+                  </div>
+                </div>
+              )}
+
+              {audioPhase === "running" && (
+                <p className="mt-3 font-typewriter text-xs text-ink-soft">
+                  <span className="animate-pulse">●</span>{" "}
+                  {audioMessage ?? "Generating selected audio…"}
+                </p>
+              )}
+              {audioPhase === "done" && (
+                <div className="mt-3">
+                  <p className="font-typewriter text-xs text-accent">
+                    Selected audio is ready. The player above now uses the new mix.
+                  </p>
+                  {narrationText && (
+                    <p className="mt-2 border-l-2 border-ink/15 pl-3 font-typewriter text-xs leading-relaxed text-ink-soft">
+                      <span className="block text-[10px] uppercase tracking-widest">Narration</span>
+                      {narrationText}
+                    </p>
+                  )}
+                </div>
+              )}
+              {audioPhase === "failed" && audioError && (
+                <p className="mt-3 font-typewriter text-xs text-stamp">{audioError}</p>
+              )}
+            </div>
+          )}
 
           <div className="mt-8">
             <JourneyBook place={place} project={project} />

@@ -9,6 +9,9 @@ const TYPES: { value: TransitionNote["type"]; label: string }[] = [
   { value: "wipe", label: "Wipe" },
   { value: "match_cut", label: "Match cut" },
   { value: "push_dissolve", label: "Push dissolve" },
+  { value: "torn_paper", label: "Torn paper" },
+  { value: "paper_reveal", label: "Paper reveal" },
+  { value: "paper_slide", label: "Paper slide" },
   { value: "custom", label: "Custom" },
 ];
 

@@ -50,7 +50,15 @@ export interface BeatLayout {
 }
 
 export interface TransitionNote {
-  type: "page_turn" | "wipe" | "match_cut" | "push_dissolve" | "custom";
+  type:
+    | "page_turn"
+    | "wipe"
+    | "match_cut"
+    | "push_dissolve"
+    | "custom"
+    | "torn_paper"
+    | "paper_reveal"
+    | "paper_slide";
   note: string;
 }
 

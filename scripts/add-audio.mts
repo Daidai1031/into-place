@@ -3,7 +3,8 @@
  * the otherwise-silent assembled film:
  *   1. Diegetic foley, timed to each shot's motion, via MMAudio V2 (video→audio).
  *   2. One warm, restrained score bed for the whole film, via Lyria 2 (text→music).
- *   3. FFmpeg mix: foley delayed to each shot's offset + ducked music, faded out
+ *   3. Optional LLM-written narration, voiced by Kokoro TTS (text→speech).
+ *   4. FFmpeg mix: foley delayed to each shot's offset + ducked music + narration, faded out
  *      with the picture, muxed onto final/<slug>.mp4.
  *
  * Cues are declarative (data/presets/<slug>.json `beat.sound`) and compiled by
@@ -34,6 +35,7 @@ import { fal } from "@fal-ai/client";
 import {
   MMAUDIO_V2,
   LYRIA2,
+  KOKORO_AMERICAN_TTS,
   COST_CONFIRMATION_THRESHOLD_USD,
   type AudioModel,
 } from "../lib/models.ts";
@@ -41,12 +43,15 @@ import {
   compileSoundPrompt,
   compileWholeFilmSoundPrompt,
   compileMusicPrompt,
+  compileNarrationWriterPrompt,
+  NARRATION_WRITER_SYSTEM,
   SOUND_NEGATIVE,
   MUSIC_NEGATIVE,
   type BeatSound,
 } from "../lib/prompt-compiler.ts";
 import {
   ffprobeDuration,
+  hasAudioStream,
   clipOffsets,
   muxFilmAudio,
   type FoleyTrack,
@@ -68,8 +73,12 @@ const TRANSITION_DUR = 0.7; // must match scripts/render-film.mts
 
 const foleyModel: AudioModel = MMAUDIO_V2;
 const musicModel: AudioModel = LYRIA2;
+const narrationModel: AudioModel = KOKORO_AMERICAN_TTS;
 const noMusic = Boolean(args["no-music"]);
 const noFoley = Boolean(args["no-foley"]);
+const withNarration = Boolean(args.narration);
+const placeName = (args["place-name"] as string) ?? slug.replaceAll("-", " ");
+const placeRegion = (args.region as string) ?? "";
 
 interface PresetBeatJson {
   id: string;
@@ -78,10 +87,17 @@ interface PresetBeatJson {
 }
 
 // --- preset (declarative sound cues) ---
-const preset = JSON.parse(
-  readFileSync(`${ROOT}/data/presets/${slug}.json`, "utf8"),
-) as { direction?: { title?: string; premise?: string }; beats: PresetBeatJson[] };
+const presetPath = `${ROOT}/data/presets/${slug}.json`;
+const preset = existsSync(presetPath)
+  ? (JSON.parse(readFileSync(presetPath, "utf8")) as {
+      direction?: { title?: string; premise?: string };
+      beats: PresetBeatJson[];
+    })
+  : { direction: undefined, beats: [] as PresetBeatJson[] };
 const beats = preset.beats;
+if (!noFoley && beats.length === 0) {
+  throw new Error(`foley needs declarative sound cues in data/presets/${slug}.json`);
+}
 
 // --- resolve source mode ---
 const clipsDir = `${ROOT}/renders/${slug}`;
@@ -104,10 +120,13 @@ if (!existsSync(finalPath) && !perClip) {
   );
 }
 
-// Durable silent master to mux onto and (in whole-cut mode) to score. Created
-// once from the first silent assembly so re-runs stay idempotent.
+// Durable silent master to mux onto and (in whole-cut mode) to score. If the
+// current final is silent, it is a newly assembled cut and becomes the latest
+// master. If the current final already has audio, keep the prior silent master
+// so regenerating the soundtrack never stacks audio on top of itself.
 const silentMaster = `${clipsDir}/silent-master.mp4`;
-if (!existsSync(silentMaster)) {
+const finalIsSilent = existsSync(finalPath) && !hasAudioStream(finalPath);
+if (!existsSync(silentMaster) || finalIsSilent) {
   if (!existsSync(finalPath))
     throw new Error(`need an assembled ${finalPath} to mux onto (run render-film first)`);
   copyFileSync(finalPath, silentMaster);
@@ -122,13 +141,18 @@ if (remix) {
   const prov = JSON.parse(readFileSync(provPath, "utf8")) as {
     foley: { file: string; startSec: number }[];
     music: { file: string } | null;
+    narration?: { file: string; text?: string } | null;
   };
   const foley: FoleyTrack[] = prov.foley
     .filter((f) => existsSync(f.file))
     .map((f) => ({ file: f.file, startSec: f.startSec }));
   const music = prov.music && existsSync(prov.music.file) ? prov.music.file : null;
-  process.stdout.write(`Re-mixing ${foley.length} foley track(s)${music ? " + music" : ""} → ${finalPath}\n`);
-  muxFilmAudio({ videoIn, out: finalPath, foley, musicFile: music });
+  const narration =
+    prov.narration && existsSync(prov.narration.file) ? prov.narration.file : null;
+  process.stdout.write(
+    `Re-mixing ${foley.length} foley track(s)${music ? " + music" : ""}${narration ? " + narration" : ""} → ${finalPath}\n`,
+  );
+  muxFilmAudio({ videoIn, out: finalPath, foley, musicFile: music, narrationFile: narration });
   process.stdout.write(`✓ remixed → ${finalPath}\nNext: node scripts/sync-public.mjs\n`);
   process.exit(0);
 }
@@ -174,13 +198,16 @@ if (noFoley) {
 const foleyDur = segments.reduce((s, seg) => s + Math.min(Math.ceil(seg.durSec), 30), 0);
 const foleyCost = noFoley ? 0 : foleyDur * foleyModel.unitPrice;
 const musicCost = noMusic ? 0 : musicModel.unitPrice; // one <=30s Lyria generation
-const estCost = foleyCost + musicCost;
+// Conservative upper bound: one premium narration-writer request plus <=1K TTS chars.
+const narrationCost = withNarration ? 0.03 : 0;
+const estCost = foleyCost + musicCost + narrationCost;
 
 process.stdout.write(
   `Audio pass: ${slug}\n` +
     `Mode: ${perClip ? `per-clip (${segments.length} shots)` : "whole-cut (1 pass)"}\n` +
     `Foley: ${noFoley ? "(skipped)" : `${foleyModel.displayName} — ~${foleyDur}s @ $${foleyModel.unitPrice}/s`}\n` +
     `Music: ${noMusic ? "(skipped)" : `${musicModel.displayName} — $${musicModel.unitPrice}/30s`}\n` +
+    `Narration: ${withNarration ? `${narrationModel.displayName} — estimated <=$${narrationCost.toFixed(2)}` : "(skipped)"}\n` +
     `Film length: ${totalDur.toFixed(2)}s\n` +
     `Estimated cost: ~$${estCost.toFixed(3)}\n`,
 );
@@ -226,9 +253,26 @@ interface Provenance {
   params: Record<string, unknown>;
   costUsd: number;
 }
-const provenance: { foley: (Provenance & { label: string; startSec: number; file: string })[]; music: (Provenance & { file: string }) | null } = {
+interface NarrationProvenance {
+  file: string;
+  text: string;
+  writerModel: string;
+  writerRequestId: string;
+  writerPrompt: string;
+  ttsModel: string;
+  ttsRequestId: string;
+  voice: string;
+  speed: number;
+  costUsd: number;
+}
+const provenance: {
+  foley: (Provenance & { label: string; startSec: number; file: string })[];
+  music: (Provenance & { file: string }) | null;
+  narration: NarrationProvenance | null;
+} = {
   foley: [],
   music: null,
+  narration: null,
 };
 
 // --- 1) foley per segment (MMAudio; video model → queue mode) ---
@@ -299,14 +343,98 @@ if (!noMusic) {
   process.stdout.write(`  ✓ ${musicFile} (req ${res.requestId})\n`);
 }
 
-// --- 3) mix + mux ---
+// --- 3) story-map narration (LLM writer → Kokoro TTS) ---
+let narrationFile: string | null = null;
+if (withNarration) {
+  const projectPath = `${ROOT}/data/project.json`;
+  if (!existsSync(projectPath)) {
+    throw new Error("Narration needs the current Story map in data/project.json.");
+  }
+  const project = JSON.parse(readFileSync(projectPath, "utf8")) as {
+    slug?: string;
+    story?: {
+      directions: { id: string; title: string; premise: string }[];
+      chosenDirectionId: string | null;
+      beats: { act: string; text: string }[];
+    } | null;
+  };
+  if (project.slug !== slug || !project.story?.beats.length) {
+    throw new Error("Narration needs a saved Story map for this place.");
+  }
+  const direction = project.story.directions.find(
+    (candidate) => candidate.id === project.story?.chosenDirectionId,
+  );
+  const writerPrompt = compileNarrationWriterPrompt({
+    place: { name: placeName, region: placeRegion },
+    direction,
+    beats: project.story.beats,
+    durationSeconds: totalDur,
+  });
+
+  process.stdout.write("\n▶ writing simple narration from the current Story map\n");
+  const writer = await fal.subscribe("fal-ai/any-llm", {
+    input: {
+      model: "anthropic/claude-sonnet-4.5",
+      system_prompt: NARRATION_WRITER_SYSTEM,
+      prompt: writerPrompt,
+      max_tokens: 300,
+      temperature: 0.45,
+      priority: "latency",
+    },
+    logs: false,
+  });
+  const raw = (writer.data as { output?: string; error?: string | null }).output ?? "";
+  const cleaned = raw.replace(/```(?:json)?/g, "").trim();
+  const start = cleaned.indexOf("{");
+  const end = cleaned.lastIndexOf("}");
+  if (start < 0 || end <= start) throw new Error("Narration writer returned invalid JSON.");
+  const narrationText = (
+    JSON.parse(cleaned.slice(start, end + 1)) as { text?: string }
+  ).text
+    ?.replace(/\s+/g, " ")
+    .trim();
+  if (!narrationText) throw new Error("Narration writer returned empty text.");
+  if (narrationText.length > 1_000) throw new Error("Narration is unexpectedly long.");
+
+  const voice = "af_heart";
+  const speed = 0.95;
+  process.stdout.write(`  narration: ${narrationText}\n`);
+  process.stdout.write(`\n▶ voiceover (${narrationModel.displayName}, ${voice})\n`);
+  const speech = await fal.subscribe(narrationModel.endpointId, {
+    input: { prompt: narrationText, voice, speed },
+    logs: false,
+  });
+  const audioUrl = (speech.data as { audio?: { url: string } }).audio?.url;
+  if (!audioUrl) throw new Error("Kokoro returned no narration audio.");
+  const ext = audioUrl.split("?")[0].split(".").pop() || "wav";
+  narrationFile = `${audioDir}/narration.${ext}`;
+  await download(audioUrl, narrationFile);
+  provenance.narration = {
+    file: narrationFile,
+    text: narrationText,
+    writerModel: "anthropic/claude-sonnet-4.5 via fal-ai/any-llm",
+    writerRequestId: writer.requestId,
+    writerPrompt,
+    ttsModel: narrationModel.endpointId,
+    ttsRequestId: speech.requestId,
+    voice,
+    speed,
+    costUsd: 0.01 + (narrationText.length / 1_000) * narrationModel.unitPrice,
+  };
+  process.stdout.write(`  ✓ ${narrationFile} (req ${speech.requestId})\n`);
+}
+
+// --- 4) mix + mux ---
 process.stdout.write(`\n▶ mixing audio onto ${finalPath}\n`);
-muxFilmAudio({ videoIn, out: finalPath, foley: foleyTracks, musicFile });
+muxFilmAudio({ videoIn, out: finalPath, foley: foleyTracks, musicFile, narrationFile });
 
 // --- provenance (no keys) ---
 const provDir = `${ROOT}/data/scenes/generated/${slug}`;
 mkdirSync(provDir, { recursive: true });
-const totalCost = provenance.foley.reduce((s, f) => s + f.costUsd, 0) + (provenance.music?.costUsd ?? 0);
+const totalCost =
+  provenance.foley.reduce((s, f) => s + f.costUsd, 0) +
+  (provenance.music?.costUsd ?? 0) +
+  (provenance.narration?.costUsd ?? 0);
 writeFileSync(
   `${provDir}/audio-provenance.json`,
   JSON.stringify(

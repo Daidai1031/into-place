@@ -51,6 +51,9 @@ export async function POST(req: Request) {
     const finalOut = path.join(finalDir, `${body.slug}.mp4`);
     const transitions = body.clips.slice(0, -1).map((c) => c.transitionType ?? null);
     xfadeConcat(clipFiles, transitions, finalOut);
+    // Every fresh assembly is silent. Keep an exact master for repeatable
+    // soundtrack regeneration without ever stacking audio tracks.
+    await copyFile(finalOut, path.join(clipsDir, "silent-master.mp4"));
 
     // Publish so the browser can play it right away.
     const publicDir = path.join(root, "public", "films");

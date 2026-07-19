@@ -119,6 +119,39 @@ export function compileMusicPrompt(args: { title?: string; premise?: string } = 
   ].join(" ");
 }
 
+/** System and user prompts for the LLM pass that turns the current Story map
+ * into one short voiceover. The TTS model receives only the returned `text`. */
+export const NARRATION_WRITER_SYSTEM = `You write concise documentary voiceover for Into Place, an archival collage film about a real place. Use only facts and ideas present in the supplied story map. Keep the language simple, calm, specific, and easy to speak aloud. Never add production notes, citations, headings, or unsupported historical claims. Return STRICT JSON only.`;
+
+export function compileNarrationWriterPrompt(args: {
+  place: { name: string; region: string };
+  direction?: { title?: string; premise?: string };
+  beats: Pick<StoryBeat, "act" | "text">[];
+  durationSeconds: number;
+}): string {
+  const targetWords = Math.max(35, Math.min(65, Math.round((args.durationSeconds - 2) * 1.8)));
+  const storyMap = args.beats
+    .map((beat, index) => `${index + 1}. (${beat.act}) ${beat.text}`)
+    .join("\n");
+  return `Place: ${args.place.name} (${args.place.region})
+
+Story direction: ${args.direction?.title ?? "Untitled"}
+Premise: ${args.direction?.premise ?? "Follow the supplied story map."}
+
+Story map, in screen order:
+${storyMap}
+
+Write one continuous English narration for a ${args.durationSeconds.toFixed(1)}-second film.
+- Aim for about ${targetWords} words total.
+- Use 3 to 5 short sentences in chronological order.
+- Cover the arc rather than describing every visual.
+- Use plain spoken language and a reflective, human tone.
+- Include dates only when they appear in the story map.
+- No title, labels, stage directions, quotation marks, or markdown.
+
+JSON schema: {"text":"the complete narration"}`;
+}
+
 /** A sparse collage reads more clearly and keeps each archival source legible. */
 export const MAX_SOURCE_IMAGES_PER_FRAME = 7;
 export const SOURCE_IMAGE_LIMIT =

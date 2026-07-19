@@ -44,8 +44,8 @@ Goal: sourced archival materials → reviewed card / cutout / background layers.
 - [ ] Use FFmpeg to concatenate all approved shots
 - [ ] Complete page turn / wipe / match cut / crossfade transitions in post-production
 - [ ] Add ambient sound
-- [ ] Add optional narration (TTS or self-recorded)
-- [ ] Add optional music and balance its loudness with ambient sound / narration
+- [x] Add optional Story-map narration (LLM writer + Kokoro TTS; self-recording remains future work)
+- [x] Add optional music and balance its loudness under narration
 - [ ] Output the final MP4, replacing `public/films/roosevelt-island.mp4`
 
 ## Demo and Submission

@@ -33,7 +33,7 @@ General-purpose AI video tools tend to generate similar imagery for different pl
 | Storyboard | ✅ Done | Each beat can choose an AI-generated frame or manual collage; supports reference assets, text edits, dragged-in assets, and transition notes |
 | Per-shot video generation | ✅ Wired up locally | The Web client submits fal queue per shot, polls status, and previews immediately after each shot completes; supports Kling / Happy Horse / Veo 3.1 |
 | Film / Journey Book | ✅ Wired up locally | Generate shots in order, display the actual model / prompt / estimated cost, invoke FFmpeg to assemble, save the film, and list sources and licenses |
-| Sound | 🚧 In development | The current I2V explicitly disables model audio, and the final film is silent; ambient sound, narration, and music are not yet wired in |
+| Sound | ✅ Wired up locally | I2V stays muted; the Film page has equal-level toggles for a Lyria 2 background score and LLM-written, Kokoro-voiced narration based on the user's current Story map, then mixes the selected layers with FFmpeg |
 | Real-time archive retrieval | ⏳ To be implemented | Currently uses the Roosevelt Island pre-curated bundle; the Wikimedia real-time retrieval API is still a stub |
 
 ## End-to-end workflow
@@ -51,6 +51,7 @@ Place + archive metadata
   → [User] edits the frame + confirms the transition
   → [Kling / Happy Horse / Veo 3.1] each confirmed frame → one I2V clip
   → [FFmpeg, no model] clips + transitions → final/<slug>.mp4
+  → [Optional, user-confirmed] Lyria score and/or Story-map narration → Kokoro TTS → FFmpeg audio mix
   → Final Film + Journey Book
 ```
 
@@ -70,8 +71,9 @@ The table below reflects the current code. `endpoint` is the fal API path; the "
 | 3c | Transition suggestion | **Claude Sonnet 4.5** · `fal-ai/any-llm` | Adjacent `fromBeat`, `toBeat` | `{type,note}`, where type is `page_turn/wipe/match_cut/push_dissolve` | The user can edit it; it maps to an FFmpeg xfade during assembly |
 | 4 | Per-shot image-to-video | Default **Kling v3 Turbo Standard** · `fal-ai/kling-video/v3/turbo/standard/image-to-video`; optionally Alibaba Happy Horse, Veo 3.1 | The confirmed generated `frameUrl` + the compiled motion prompt + duration; Kling / Veo force `generate_audio:false` | The queue submit returns `requestId`; after polling completes, you get `videoUrl` | The browser generates shots sequentially and previews immediately; assembly begins once all clips are done |
 | 5 | Final assembly | **No generative model, FFmpeg** | `{videoUrl,transitionType}[]` in beat order | Normalized to 1280×720 / 30fps, unified color grade, 0.7s xfade, fade-out at the end; outputs `final/<slug>.mp4` and `/films/<slug>.mp4` | The Film page plays it; the Journey Book shows the story, sources, and generation records |
+| 6 | Optional soundtrack | **Lyria 2** · `fal-ai/lyria2`; narration writer via **Claude Sonnet 4.5** · `fal-ai/any-llm`; voice via **Kokoro** · `fal-ai/kokoro/american-english`; FFmpeg | The current silent master plus the user's selected Background music / Narration toggles; narration receives the current direction, premise, and ordered Story beats | Selected music and/or concise spoken narration mixed into the current film; job status is polled through `/api/audio/status` | The Film player refreshes to the new mix and displays the generated narration text when complete |
 
-> The current real I2V Web flow only handles storyboards with `source:"generated"`. Manual collage can be used for storyboarding and project saving, but is not yet automatically rasterized on the Film page into a first frame that can be submitted to I2V. The final assembly currently has no audio track.
+> The current real I2V Web flow only handles storyboards with `source:"generated"`. Manual collage can be used for storyboarding and project saving, but is not yet automatically rasterized on the Film page into a first frame that can be submitted to I2V. Film assembly is silent by default; the Film page can add the optional soundtrack afterward in the local pipeline.
 
 ### Model routing and selection rules
 
@@ -174,7 +176,7 @@ Both directions use a five-part structure (Stasis → Peripeteia → Pathos → 
 - Next.js 15 App Router, React 19, TypeScript, Tailwind CSS 4
 - fal: a unified generation layer for LLM, vision, image generation / editing, SAM 3, and image-to-video
 - Sharp: local cropping, color grading, alpha, paper-edge processing, and the static-first-frame compositing for manual collage
-- FFmpeg: video shot normalization, unified color grading, transition stitching, and end fade-out in the Web local flow; audio is not yet wired in
+- FFmpeg: video shot normalization, unified color grading, transition stitching, end fade-out, and the optional Web-triggered foley/music mix in the local flow
 - localStorage: browser-side project state; JSON files are used to mirror the local I2V / assembly flow
 
 ## Running locally

@@ -9,6 +9,9 @@ const TYPE_ICON: Record<TransitionNote["type"], string> = {
   wipe: "⇥",
   match_cut: "⧉",
   push_dissolve: "◎",
+  torn_paper: "✂",
+  paper_reveal: "◐",
+  paper_slide: "▤",
   custom: "✎",
 };
 

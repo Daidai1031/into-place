@@ -58,6 +58,9 @@ Normal transitions are done by FFmpeg after shot generation:
 | `wipe` | FFmpeg wipe transition |
 | `page_turn` | prefer a simplified wipe / overlay to simulate a page turning |
 | `match_cut` | align composition first in the Storyboard stage, then a direct cut or short crossfade in post |
+| `torn_paper` | `xfade=transition=custom` with a sine-perturbed vertical sweep expr (ragged tear, no built-in ffmpeg equivalent) |
+| `paper_reveal` | ffmpeg's built-in `revealup` xfade transition (previous shot lifts away) |
+| `paper_slide` | ffmpeg's built-in `slideleft` xfade transition (next shot pushes in laterally) |
 | `custom` | save the user's note, confirm the implementation manually before assembly |
 
 Generative transitions are not the default path. Only when ordinary post-production cannot express a necessary narrative movement do we separately evaluate an FLF model.
@@ -68,7 +71,7 @@ Concatenation and unified post-production happen together; `/api/assemble` and `
 
 - **Unified grading**: the 5 separately generated shots all get the same `GRADE` (a shared grade, not per-shot histogram matching) before concatenation, keeping the whole film consistent—muted blue-gray shadows + warm sepia midtones, brightening and lifting the black point to counter the dark bias of i2v output (`eq brightness` + `curves 0/0.05` to lift blacks, `1/0.97` to protect highlights, `saturation 0.85` to desaturate). It is a single tunable constant; adjust dark/gray bias here in one place.
 - **Ending fade-out**: at the end of the assembled timeline, `fadeOutDur` (default 1.0s) fades to black.
-- Currently **no audio track** (i2v `generate_audio:false`, and assembly does not map audio either); narration / ambient sound is deferred to a separate later pass.
+- The assembly remains a **silent master** (`generate_audio:false`). After explicit confirmation on the Film page, the separate audio pass can generate a restrained Lyria 2 score and/or simple narration: Claude writes the narration from the current ordered Story beats, Kokoro voices it, and `muxFilmAudio` mixes the selected layers onto the master without rerunning I2V.
 
 ## Review and traceability
 
