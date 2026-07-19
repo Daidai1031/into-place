@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_022_temporary_home_card",
+  "assetId": "asset_022",
+  "role": "card",
+  "actualRole": "card",
+  "source": {
+    "file": "assets/archive/asset_022.png",
+    "sha256": "768e3038465c1d4bc7589e7b92740b9717f1e42a0356c4eda8d412f6607aee90"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_022_temporary_home_card.png",
+    "sha256": "e7cecd88cc5a1c65104c2789894b47a7aa291bb7f3889bcf742f9229cd9dc2a2"
+  },
+  "cache": {
+    "sourceSha256": "768e3038465c1d4bc7589e7b92740b9717f1e42a0356c4eda8d412f6607aee90",
+    "recipeSha256": "2d5c60cbaf1f69bdd7132e51d62da5ce45eeffab31cc871082deb1e0e0f59311",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "27cd5a2f0cfdceb6963a323f6a33ab0046ff70c260147a14912987308cfdafcc",
+    "cacheKey": "add200fb81917852b664aed5c9b81b515a18bb2bd203fbd37ee1fb7752356542"
+  },
+  "selection": {
+    "tone": "source",
+    "edge": "torn"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "resize-inside:2400:without-enlargement",
+    "tone:source",
+    "edge:torn",
+    "white-border",
+    "shadow-behind-border"
+  ],
+  "mask": null,
+  "falCalls": [],
+  "qa": {
+    "width": 1477,
+    "height": 1350,
+    "opaquePixels": 1987782,
+    "coverage": 0.9969066425938464,
+    "bbox": {
+      "left": 0,
+      "top": 0,
+      "width": 1477,
+      "height": 1350
+    },
+    "connectedComponents": 2,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.5,
+      "maxCoverage": 1,
+      "maxConnectedComponents": 128
+    },
+    "outputWidth": 1589,
+    "outputHeight": 1462
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "At the Temporary Home for Women illustration and caption",
+  "preserve": "The complete building illustration and printed caption.",
+  "exclude": "Surrounding body text from the scanned page.",
+  "qualityWarnings": [],
+  "createdAt": "2026-07-19T10:47:29.937Z"
+}

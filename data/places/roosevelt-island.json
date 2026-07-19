@@ -1655,6 +1655,398 @@
       "cutouts": [],
       "reference_only": true,
       "description": "A 1903 boat panorama of Blackwell's Island showing the lighthouse, asylum, workhouse, almshouse, penitentiary, Charity Hospital, seawall, and Queensboro Bridge piers. Provided for historical context only."
+    },
+    {
+      "id": "asset_021",
+      "title": "Ten Days in a Mad-House (cover)",
+      "type": "print",
+      "era": "1887",
+      "source": "Wikimedia Commons (source: Internet Archive / Yale Cushing Whitney Medical Library)",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Ten_days_in_a_mad-house;_or,_Nellie_Bly's_experience_on_Blackwell's_island._Feigning_insanity_in_order_to_reveal_asylum_horrors._(IA_3304680.med.yale.edu).pdf",
+      "license": "Public Domain (pre-1931 US publication; CC Public Domain Mark 1.0)",
+      "confidence": "high",
+      "fact_level": "documented",
+      "contributor": "founder_seed",
+      "share_to_place": true,
+      "upload_role": null,
+      "status": "must_use",
+      "file": "assets/archive/asset_021.png",
+      "cutouts": [
+        {
+          "recipe_id": "asset_021_ten_days_cover_card",
+          "file": "assets/cutouts/asset_021_ten_days_cover_card.png",
+          "role": "card",
+          "requested_role": "card",
+          "tone": "source",
+          "edge": "torn",
+          "source_sha256": "2bca9b266b74b4947d433a4347088bcf501b26f8059ae6020c39d87e86b27546",
+          "recipe_sha256": "da7f7f6cd222a25fd260464ec0f9b694e1ccb6f67740a36d574e4a9fb2da953c",
+          "output_sha256": "c0870c2e55ddbaf74eded8009e7a97c62edff203aef6b3d9b36e87d50cd51511",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "resize-inside:2400:without-enlargement",
+            "tone:source",
+            "edge:torn",
+            "white-border",
+            "shadow-behind-border"
+          ],
+          "fal_calls": [],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 1568,
+            "height": 2400,
+            "opaquePixels": 3757515,
+            "coverage": 0.9984893176020408,
+            "bbox": {
+              "left": 0,
+              "top": 0,
+              "width": 1568,
+              "height": 2400
+            },
+            "connectedComponents": 3,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.5,
+              "maxCoverage": 1,
+              "maxConnectedComponents": 128
+            },
+            "outputWidth": 1680,
+            "outputHeight": 2512
+          },
+          "quality_warnings": []
+        }
+      ],
+      "description": "Cover extracted from PDF page 1 of asset_013.pdf."
+    },
+    {
+      "id": "asset_022",
+      "title": "At the Temporary Home for Women",
+      "type": "print",
+      "era": "1887",
+      "source": "Wikimedia Commons (source: Internet Archive / Yale Cushing Whitney Medical Library)",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Ten_days_in_a_mad-house;_or,_Nellie_Bly's_experience_on_Blackwell's_island._Feigning_insanity_in_order_to_reveal_asylum_horrors._(IA_3304680.med.yale.edu).pdf",
+      "license": "Public Domain (pre-1931 US publication; CC Public Domain Mark 1.0)",
+      "confidence": "high",
+      "fact_level": "documented",
+      "contributor": "founder_seed",
+      "share_to_place": true,
+      "upload_role": null,
+      "status": "must_use",
+      "file": "assets/archive/asset_022.png",
+      "cutouts": [
+        {
+          "recipe_id": "asset_022_temporary_home_card",
+          "file": "assets/cutouts/asset_022_temporary_home_card.png",
+          "role": "card",
+          "requested_role": "card",
+          "tone": "source",
+          "edge": "torn",
+          "source_sha256": "768e3038465c1d4bc7589e7b92740b9717f1e42a0356c4eda8d412f6607aee90",
+          "recipe_sha256": "2d5c60cbaf1f69bdd7132e51d62da5ce45eeffab31cc871082deb1e0e0f59311",
+          "output_sha256": "e7cecd88cc5a1c65104c2789894b47a7aa291bb7f3889bcf742f9229cd9dc2a2",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "resize-inside:2400:without-enlargement",
+            "tone:source",
+            "edge:torn",
+            "white-border",
+            "shadow-behind-border"
+          ],
+          "fal_calls": [],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 1477,
+            "height": 1350,
+            "opaquePixels": 1987782,
+            "coverage": 0.9969066425938464,
+            "bbox": {
+              "left": 0,
+              "top": 0,
+              "width": 1477,
+              "height": 1350
+            },
+            "connectedComponents": 2,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.5,
+              "maxCoverage": 1,
+              "maxConnectedComponents": 128
+            },
+            "outputWidth": 1589,
+            "outputHeight": 1462
+          },
+          "quality_warnings": []
+        }
+      ],
+      "description": "Illustration extracted from PDF page 13 of asset_013.pdf."
+    },
+    {
+      "id": "asset_023",
+      "title": "In the Hands of the Police",
+      "type": "print",
+      "era": "1887",
+      "source": "Wikimedia Commons (source: Internet Archive / Yale Cushing Whitney Medical Library)",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Ten_days_in_a_mad-house;_or,_Nellie_Bly's_experience_on_Blackwell's_island._Feigning_insanity_in_order_to_reveal_asylum_horrors._(IA_3304680.med.yale.edu).pdf",
+      "license": "Public Domain (pre-1931 US publication; CC Public Domain Mark 1.0)",
+      "confidence": "high",
+      "fact_level": "documented",
+      "contributor": "founder_seed",
+      "share_to_place": true,
+      "upload_role": null,
+      "status": "must_use",
+      "file": "assets/archive/asset_023.png",
+      "cutouts": [
+        {
+          "recipe_id": "asset_023_police_card",
+          "file": "assets/cutouts/asset_023_police_card.png",
+          "role": "card",
+          "requested_role": "card",
+          "tone": "source",
+          "edge": "torn",
+          "source_sha256": "47dddeb84f494b401b5e5af08dac742fb4cc467ddf035dd7f0a20d05f678effe",
+          "recipe_sha256": "7883d52b404a8dadf3cada068bfa6b0dd07e55bf4ec399f666eab51771bdd47a",
+          "output_sha256": "0a312c4e20922dddc8f9da6fd8dccbcd4f48eaa3169b26656c1f03c756a51bc4",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "resize-inside:2400:without-enlargement",
+            "tone:source",
+            "edge:torn",
+            "white-border",
+            "shadow-behind-border"
+          ],
+          "fal_calls": [],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 1264,
+            "height": 1072,
+            "opaquePixels": 1350943,
+            "coverage": 0.9970000177120726,
+            "bbox": {
+              "left": 0,
+              "top": 0,
+              "width": 1264,
+              "height": 1072
+            },
+            "connectedComponents": 3,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.5,
+              "maxCoverage": 1,
+              "maxConnectedComponents": 128
+            },
+            "outputWidth": 1376,
+            "outputHeight": 1184
+          },
+          "quality_warnings": []
+        }
+      ],
+      "description": "Illustration extracted from PDF page 25 of asset_013.pdf."
+    },
+    {
+      "id": "asset_024",
+      "title": "Nellie Before Judge Duffy",
+      "type": "print",
+      "era": "1887",
+      "source": "Wikimedia Commons (source: Internet Archive / Yale Cushing Whitney Medical Library)",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Ten_days_in_a_mad-house;_or,_Nellie_Bly's_experience_on_Blackwell's_island._Feigning_insanity_in_order_to_reveal_asylum_horrors._(IA_3304680.med.yale.edu).pdf",
+      "license": "Public Domain (pre-1931 US publication; CC Public Domain Mark 1.0)",
+      "confidence": "high",
+      "fact_level": "documented",
+      "contributor": "founder_seed",
+      "share_to_place": true,
+      "upload_role": null,
+      "status": "must_use",
+      "file": "assets/archive/asset_024.png",
+      "cutouts": [
+        {
+          "recipe_id": "asset_024_judge_duffy_card",
+          "file": "assets/cutouts/asset_024_judge_duffy_card.png",
+          "role": "card",
+          "requested_role": "card",
+          "tone": "source",
+          "edge": "torn",
+          "source_sha256": "ee5f928c3b177fcd4f7d39441b9f63dc78428c9e2e865ebd221360721a484250",
+          "recipe_sha256": "b06b147244cfb2bd2cc1f99068a14a47eebf9466b637f2a0112ddcefc12731fe",
+          "output_sha256": "5b9d1806431d3bb7609f29ed812f0b79508693ea05ecae0bf6055c60432951c4",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "resize-inside:2400:without-enlargement",
+            "tone:source",
+            "edge:torn",
+            "white-border",
+            "shadow-behind-border"
+          ],
+          "fal_calls": [],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 1257,
+            "height": 1348,
+            "opaquePixels": 1687716,
+            "coverage": 0.9960340785960639,
+            "bbox": {
+              "left": 0,
+              "top": 0,
+              "width": 1257,
+              "height": 1348
+            },
+            "connectedComponents": 3,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.5,
+              "maxCoverage": 1,
+              "maxConnectedComponents": 128
+            },
+            "outputWidth": 1369,
+            "outputHeight": 1460
+          },
+          "quality_warnings": []
+        }
+      ],
+      "description": "Illustration extracted from PDF page 28 of asset_013.pdf."
+    },
+    {
+      "id": "asset_025",
+      "title": "Nellie Bly Writing at Her Desk",
+      "type": "print",
+      "era": "1887",
+      "source": "Wikimedia Commons (source: Internet Archive / Yale Cushing Whitney Medical Library)",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Ten_days_in_a_mad-house;_or,_Nellie_Bly's_experience_on_Blackwell's_island._Feigning_insanity_in_order_to_reveal_asylum_horrors._(IA_3304680.med.yale.edu).pdf",
+      "license": "Public Domain (pre-1931 US publication; CC Public Domain Mark 1.0)",
+      "confidence": "high",
+      "fact_level": "documented",
+      "contributor": "founder_seed",
+      "share_to_place": true,
+      "upload_role": null,
+      "status": "must_use",
+      "file": "assets/archive/asset_025.png",
+      "cutouts": [
+        {
+          "recipe_id": "asset_025_nellie_writing_card",
+          "file": "assets/cutouts/asset_025_nellie_writing_card.png",
+          "role": "card",
+          "requested_role": "card",
+          "tone": "source",
+          "edge": "torn",
+          "source_sha256": "996fe8b9a651ebcbfb4136b84a427d28398f536a09eb095ef3c3c5d2623bc0b9",
+          "recipe_sha256": "f145f7e1ed55de28ebdad1f3403a0826b595f2b8aff16dc9c2f540d7c013ded0",
+          "output_sha256": "6d754bdd8025908ff4aeb8c7a676e6d1ed4be0f0a73370245c1d9f10143a1921",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "resize-inside:2400:without-enlargement",
+            "tone:source",
+            "edge:torn",
+            "white-border",
+            "shadow-behind-border"
+          ],
+          "fal_calls": [],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 531,
+            "height": 790,
+            "opaquePixels": 417363,
+            "coverage": 0.9949295573196024,
+            "bbox": {
+              "left": 0,
+              "top": 0,
+              "width": 531,
+              "height": 790
+            },
+            "connectedComponents": 1,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.5,
+              "maxCoverage": 1,
+              "maxConnectedComponents": 128
+            },
+            "outputWidth": 643,
+            "outputHeight": 902
+          },
+          "quality_warnings": [
+            "source_crop_is_531px_wide_no_upscale"
+          ]
+        }
+      ],
+      "description": "Chapter-opening illustration extracted from PDF page 7 of asset_013.pdf."
     }
   ]
 }

@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_024_judge_duffy_card",
+  "assetId": "asset_024",
+  "role": "card",
+  "actualRole": "card",
+  "source": {
+    "file": "assets/archive/asset_024.png",
+    "sha256": "ee5f928c3b177fcd4f7d39441b9f63dc78428c9e2e865ebd221360721a484250"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_024_judge_duffy_card.png",
+    "sha256": "5b9d1806431d3bb7609f29ed812f0b79508693ea05ecae0bf6055c60432951c4"
+  },
+  "cache": {
+    "sourceSha256": "ee5f928c3b177fcd4f7d39441b9f63dc78428c9e2e865ebd221360721a484250",
+    "recipeSha256": "b06b147244cfb2bd2cc1f99068a14a47eebf9466b637f2a0112ddcefc12731fe",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "27cd5a2f0cfdceb6963a323f6a33ab0046ff70c260147a14912987308cfdafcc",
+    "cacheKey": "0e6ecd4f326a94ce2864cbc94366c650d658a91ef1b15711e8c843b6a92f9328"
+  },
+  "selection": {
+    "tone": "source",
+    "edge": "torn"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "resize-inside:2400:without-enlargement",
+    "tone:source",
+    "edge:torn",
+    "white-border",
+    "shadow-behind-border"
+  ],
+  "mask": null,
+  "falCalls": [],
+  "qa": {
+    "width": 1257,
+    "height": 1348,
+    "opaquePixels": 1687716,
+    "coverage": 0.9960340785960639,
+    "bbox": {
+      "left": 0,
+      "top": 0,
+      "width": 1257,
+      "height": 1348
+    },
+    "connectedComponents": 3,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.5,
+      "maxCoverage": 1,
+      "maxConnectedComponents": 128
+    },
+    "outputWidth": 1369,
+    "outputHeight": 1460
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "Nellie Before Judge Duffy illustration and caption",
+  "preserve": "The complete courtroom illustration and printed caption.",
+  "exclude": "Surrounding body text from the scanned page.",
+  "qualityWarnings": [],
+  "createdAt": "2026-07-19T10:47:31.430Z"
+}
