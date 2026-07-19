@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_025_nellie_writing_card",
+  "assetId": "asset_025",
+  "role": "card",
+  "actualRole": "card",
+  "source": {
+    "file": "assets/archive/asset_025.png",
+    "sha256": "996fe8b9a651ebcbfb4136b84a427d28398f536a09eb095ef3c3c5d2623bc0b9"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_025_nellie_writing_card.png",
+    "sha256": "6d754bdd8025908ff4aeb8c7a676e6d1ed4be0f0a73370245c1d9f10143a1921"
+  },
+  "cache": {
+    "sourceSha256": "996fe8b9a651ebcbfb4136b84a427d28398f536a09eb095ef3c3c5d2623bc0b9",
+    "recipeSha256": "f145f7e1ed55de28ebdad1f3403a0826b595f2b8aff16dc9c2f540d7c013ded0",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "27cd5a2f0cfdceb6963a323f6a33ab0046ff70c260147a14912987308cfdafcc",
+    "cacheKey": "f7231fc845348cab40942b3844324cca1d4cab89a075419b590e126f8b79c3b2"
+  },
+  "selection": {
+    "tone": "source",
+    "edge": "torn"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "resize-inside:2400:without-enlargement",
+    "tone:source",
+    "edge:torn",
+    "white-border",
+    "shadow-behind-border"
+  ],
+  "mask": null,
+  "falCalls": [],
+  "qa": {
+    "width": 531,
+    "height": 790,
+    "opaquePixels": 417363,
+    "coverage": 0.9949295573196024,
+    "bbox": {
+      "left": 0,
+      "top": 0,
+      "width": 531,
+      "height": 790
+    },
+    "connectedComponents": 1,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.5,
+      "maxCoverage": 1,
+      "maxConnectedComponents": 128
+    },
+    "outputWidth": 643,
+    "outputHeight": 902
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "Nellie Bly writing at her desk beneath a hanging lamp",
+  "preserve": "The complete chapter-opening illustration.",
+  "exclude": "Surrounding heading and body text from the scanned page.",
+  "qualityWarnings": [
+    "source_crop_is_531px_wide_no_upscale"
+  ],
+  "createdAt": "2026-07-19T10:47:31.727Z"
+}

@@ -50,6 +50,8 @@
 
 - 前置校验:story ≥5 beats 且每个 beat 都有审核后的 generated frame 或 manual collage,否则引导回对应页;
 - `Generate the film` → 先 `/api/project/save` 镜像状态,再 `/api/generate/start`(写 `film-manifest.json` + 播预览);真实成片由本地 `scripts/render-film.mts` 消费 manifest,经 `/api/shot/*`(或直接 fal queue)出各镜头 I2V + FFmpeg xfade 合成 → `final/<slug>.mp4` → `scripts/sync-public.mjs`;付费运行需显式 `--yes`;
+- 真实 i2v 运行时逐镜头实时视图:每个镜头显示状态(submitting/animating/ready)、该镜头实际编译出的 motion prompt、以及镜头一出片就内嵌预览(不等整批);模拟/demo 环境仍走线性 checklist;
+- 合成把各镜头统一调色(muted blue-gray/sepia,提亮抬黑位)并片尾渐隐到黑,细节见 `spec/04-shot-router.md`「合成后期」;当前无音轨;
 - 播放器 + 模式说明(local preview / simulation);`+ Save to library`;
 - **Journey Book**:用到的档案来源(标题/年代/来源链接/license)+ 社区贡献署名 + "What the models did" 生成行为清单(生成物永不冒充档案——真实性红线)。
 

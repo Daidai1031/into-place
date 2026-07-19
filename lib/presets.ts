@@ -13,7 +13,8 @@ export interface PresetBeat {
   id: string;
   act: string;
   text: string;
-  transition?: string;
+  transition?: string; // freeform description (provenance)
+  transitionType?: "page_turn" | "wipe" | "match_cut" | "push_dissolve" | "custom"; // seeded transition to the NEXT beat
   narration?: string;
   references?: string[]; // asset ids fed to the frame model
 }
