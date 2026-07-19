@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_022_temporary_home_cutout",
+  "assetId": "asset_022",
+  "role": "cutout",
+  "actualRole": "cutout",
+  "source": {
+    "file": "assets/archive/asset_022.png",
+    "sha256": "768e3038465c1d4bc7589e7b92740b9717f1e42a0356c4eda8d412f6607aee90"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_022_temporary_home_cutout.png",
+    "sha256": "8b5e7db0742bb71b0b11e3df2d40cbc0c034d7f3e32d91ea637c4c3ff562d890"
+  },
+  "cache": {
+    "sourceSha256": "768e3038465c1d4bc7589e7b92740b9717f1e42a0356c4eda8d412f6607aee90",
+    "recipeSha256": "ced86008378570dcb1d12409a94d76fccde52e9257c9652886c8fbe94d07295c",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "27d39dce1a36d9ef087718d3c707fc9766ef0f4000784e001ed2356ce33dbc55",
+    "cacheKey": "9f770965fbed880adf773ece2d122f98bfdb232791762dc98527a281bd939104"
+  },
+  "selection": {
+    "tone": "source",
+    "edge": "none"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "normalized-crop:0.18,0.02,0.65,0.8",
+    "resize-inside:2400:without-enlargement",
+    "tone:source",
+    "cached-mask-alpha-only",
+    "edge:none"
+  ],
+  "mask": {
+    "provider": "local-paper",
+    "file": null,
+    "sha256": "d08c803596fd98c1a5e9e3200ce0c3e8136750aac97d7d6a8200f17df5cd000c",
+    "cacheKey": "f22f67e0d631b2f6d2e1ef5bd42e5ed42b12c2cf363645f83506a854f5a86f21",
+    "fallback": null
+  },
+  "falCalls": [],
+  "qa": {
+    "width": 960,
+    "height": 1080,
+    "opaquePixels": 363616,
+    "coverage": 0.3507098765432099,
+    "bbox": {
+      "left": 23,
+      "top": 5,
+      "width": 906,
+      "height": 1072
+    },
+    "connectedComponents": 481,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.01,
+      "maxCoverage": 0.65,
+      "maxConnectedComponents": 1024
+    },
+    "outputWidth": 960,
+    "outputHeight": 1080
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "The complete Temporary Home for Women building illustration",
+  "preserve": "The roof, complete facade, windows, shutters, stairs, railings, small doorway figure, and immediate hatched plants.",
+  "exclude": "The scanned paper background, printed caption, surrounding body text, and page artifacts.",
+  "qualityWarnings": [],
+  "createdAt": "2026-07-19T15:24:18.445Z"
+}

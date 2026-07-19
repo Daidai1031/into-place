@@ -4,103 +4,103 @@
 >
 > The place determines the film. The user directs the journey.
 
-Into Place 是一个以真实地方档案为起点的 AI 共创影像平台。用户从地图进入一个地点，策展有来源的历史素材，也可以贡献自己的照片；随后选择故事方向、修改叙事节拍、导演每一张分镜，并将它们发展为一部具有手工拼贴质感的创意地方短片。
+Into Place is an AI co-creation video platform that starts from the real archives of a place. Users enter a location from a map, curate sourced historical materials, and can also contribute their own photos; then they choose a story direction, revise the narrative beats, direct each storyboard frame, and develop them into a creative short film about the place with a handcrafted collage texture.
 
-**赛道：** fal × Sequoia 72-Hour Video Hackathon — Developer Track
+**Track:** fal × Sequoia 72-Hour Video Hackathon — Developer Track
 
-**首个案例：** Roosevelt Island（Blackwell's → Welfare → Roosevelt）
+**First case:** Roosevelt Island（Blackwell's → Welfare → Roosevelt）
 
-**开发者：** 单人开发 + AI coding agents（Claude Code / Codex）
+**Developer:** Solo developer + AI coding agents（Claude Code / Codex）
 
 ---
 
-## 为什么做 Into Place
+## Why build Into Place
 
-通用 AI 视频工具很容易把不同地方生成成相似的画面：虚构建筑、统一的复古滤镜，以及无法追溯的“历史感”。Into Place 采用四条不同的原则：
+General-purpose AI video tools tend to generate similar imagery for different places: fictional buildings, a uniform retro filter, and an untraceable "sense of history". Into Place takes four different principles:
 
-- **真实档案优先：** 历史照片、地图与文献必须保留来源、年代和许可信息。
-- **地方共同记忆：** 用户可以上传个人照片，并选择是否署名贡献给该地点的公共档案。
-- **人机共同导演：** 用户控制素材、故事方向、每个 beat、分镜画面和转场，而不是只输入一次 prompt。
-- **生成内容可辨认：** AI 分镜始终标记为生成内容，不与原始档案混淆；最终 Journey Book 记录所用素材与生成行为。
+- **Real archives first:** Historical photos, maps, and documents must retain their source, era, and license information.
+- **Shared memory of a place:** Users can upload personal photos and choose whether to contribute them, with attribution, to the place's public archive.
+- **Human-machine co-direction:** Users control the materials, story direction, every beat, storyboard frame, and transition, rather than entering a prompt just once.
+- **Generated content is recognizable:** AI storyboards are always marked as generated content and never confused with the original archives; the final Journey Book records the materials used and the generative actions taken.
 
-## 当前状态
+## Current status
 
-| 模块 | 状态 | 当前实现 |
+| Module | Status | Current Implementation |
 |---|---|---|
-| Atlas | ✅ 已完成 | 拼贴地图、Roosevelt Island 种子地点、Shaxi / Camino 待共创入口 |
-| Archive | ✅ 已完成 | 20 条档案记录、19 个已发布图层、素材筛选、tone / edge 调整、用户上传与模拟审核 |
-| Story | ✅ 已完成 | 基于所选档案生成 3 个故事方向，并生成、编辑、重写或插入 5–8 个叙事 beat |
-| Storyboard | ✅ 已完成 | 每个 beat 可选择 AI-generated frame 或 manual collage；支持参考素材、文字修改、拖入素材与转场备注 |
-| 逐镜视频生成 | ✅ 本地已接通 | Web 端逐镜提交 fal queue、轮询状态并在每个镜头完成后立即预览；支持 Kling / Happy Horse / Veo 3.1 |
-| Film / Journey Book | ✅ 本地已接通 | 按顺序生成镜头、显示实际模型 / prompt / 估算成本、调用 FFmpeg 合成、保存影片并列出来源与许可 |
-| 声音 | 🚧 开发中 | 当前 I2V 明确关闭模型音频，最终影片为静音；环境声、旁白和音乐尚未接入 |
-| 实时档案检索 | ⏳ 待实现 | 当前使用 Roosevelt Island 预策展包；Wikimedia 实时检索 API 仍为 stub |
+| Atlas | ✅ Done | Collage map, Roosevelt Island seed location, Shaxi / Camino co-creation entry points pending |
+| Archive | ✅ Done | 20 archive records, 19 published layers, asset filtering, tone / edge adjustment, user upload and simulated review |
+| Story | ✅ Done | Generate 3 story directions from the selected archives, and generate, edit, rewrite, or insert 5–8 narrative beats |
+| Storyboard | ✅ Done | Each beat can choose an AI-generated frame or manual collage; supports reference assets, text edits, dragged-in assets, and transition notes |
+| Per-shot video generation | ✅ Wired up locally | The Web client submits fal queue per shot, polls status, and previews immediately after each shot completes; supports Kling / Happy Horse / Veo 3.1 |
+| Film / Journey Book | ✅ Wired up locally | Generate shots in order, display the actual model / prompt / estimated cost, invoke FFmpeg to assemble, save the film, and list sources and licenses |
+| Sound | 🚧 In development | The current I2V explicitly disables model audio, and the final film is silent; ambient sound, narration, and music are not yet wired in |
+| Real-time archive retrieval | ⏳ To be implemented | Currently uses the Roosevelt Island pre-curated bundle; the Wikimedia real-time retrieval API is still a stub |
 
 ## End-to-end workflow
 
-最短版本：**档案素材 → 用户策展 → LLM 写故事 → 图像模型做分镜 → 用户确认 → I2V 模型逐镜动画 → FFmpeg 合成 → Film + Journey Book**。系统不会让一个模型直接生成整部影片；每一步的结构化输出都是下一步的输入，并在关键节点等待用户选择或确认。
+Shortest version: **archive materials → user curation → LLM writes the story → image model makes storyboards → user confirms → I2V model animates each shot → FFmpeg assembly → Film + Journey Book**. The system does not let a single model generate an entire film directly; the structured output of each step is the input to the next, and it waits for user choice or confirmation at key points.
 
 ```text
 Place + archive metadata
-  → [用户] must use / maybe / reject + 上传素材
-  → [Claude Sonnet 4.5 via fal any-llm] 3 个 directions
-  → [用户] 选择 direction
-  → [Claude Sonnet 4.5 via fal any-llm] 5–8 个 beats
-  → [用户] 编辑 / reroll / insert beat
-  → [图像模型] 每个 beat 的 16:9 frame，或 [手工] real-PNG collage
-  → [用户] 编辑 frame + 确认转场
-  → [Kling / Happy Horse / Veo 3.1] 每个已确认 frame → 一个 I2V clip
-  → [FFmpeg，无模型] clips + transitions → final/<slug>.mp4
+  → [User] must use / maybe / reject + upload assets
+  → [Claude Sonnet 4.5 via fal any-llm] 3 directions
+  → [User] selects a direction
+  → [Claude Sonnet 4.5 via fal any-llm] 5–8 beats
+  → [User] edit / reroll / insert beat
+  → [Image model] 16:9 frame for each beat, or [Manual] real-PNG collage
+  → [User] edits the frame + confirms the transition
+  → [Kling / Happy Horse / Veo 3.1] each confirmed frame → one I2V clip
+  → [FFmpeg, no model] clips + transitions → final/<slug>.mp4
   → Final Film + Journey Book
 ```
 
-### 每一步使用什么模型，input / output 是什么
+### What model each step uses, and its input / output
 
-下表以当前代码为准。`endpoint` 是 fal API 路径；“模型”是 endpoint 内实际选择的模型。所有 fal 调用只发生在 server route 或本地脚本中，`FAL_KEY` 不进入浏览器。
+The table below reflects the current code. `endpoint` is the fal API path; the "model" is the model actually selected within the endpoint. All fal calls happen only in server routes or local scripts, and `FAL_KEY` never enters the browser.
 
-| # | 阶段 | 模型 / endpoint | 主要 input | 主要 output | 下一步如何使用 |
+| # | Stage | Model / Endpoint | Main Input | Main Output | How It Is Used Next |
 |---|---|---|---|---|---|
-| 0 | 档案预处理（离线） | **SAM 3** · `fal-ai/sam-3/image`；失败时本地 `rembg:silueta`；裁剪与合成用 Sharp | 原始档案图像、recipe 中的主体 prompt、`apply_mask:false`、mask QA 阈值 | 主体 alpha mask、box / score；最终本地生成 `*_card.png` / `*_cutout.png` / `*_bg.png`，另写 provenance JSON | 通过人工 visual review 的 PNG 才进入地点 manifest 和 Archive 素材架 |
-| 1 | 素材策展 | **无模型** | place JSON、档案元数据、用户上传；用户给出 `must use / maybe / reject` | 被选中的 `AssetBrief[]`：`id/title/era/type/description/contributor` | 作为叙事 LLM 的事实边界，也作为后续图像模型的 reference set |
-| 2a | 生成故事方向 | **Claude Sonnet 4.5** · `fal-ai/any-llm` + `model=anthropic/claude-sonnet-4.5` | `PlaceBrief` + 用户策展后的 `AssetBrief[]` | 严格 JSON：3 个 `{id,title,premise}` + `requestId` | 用户选择其中一个 direction |
-| 2b | 生成故事 beats | 同上 | `PlaceBrief` + `AssetBrief[]` + 已选 `{title,premise}` | 严格 JSON：5–8 个 `{id,act,text}` + `requestId` | 每个 beat 对应一张分镜和最终一个视频镜头 |
-| 2c | 重写 / 插入 beat | 同上 | 地点、全部资产、当前 beats、`targetId`、`reroll` 或 `insert_after` | 单个 `{act,text}` + `requestId` | 替换目标 beat 或插在其后；用户仍可手工修改 |
-| 3a | AI-generated 分镜 | 默认 **nano-banana 2 / Gemini 3.1 Flash Image** · `fal-ai/nano-banana-2/edit`；可选 FLUX.2 Pro、Seedream 4、Imagen 4 | 编译后的 frame prompt（地点 + premise + beat + 风格约束）+ 最多 7 张 source image 组成的 reference contact sheet；同一 source asset 最多用于 2 个场景；固定 16:9、1 张图 | `{imageUrl,model,prompt,requestId,costUsd,source:"generated"}` | 用户可重生成、自然语言编辑、拖入一份新档案；确认后的 `imageUrl` 成为 I2V 首帧 |
-| 3b | Manual collage 自动布局 | **nano-banana edit** · `fal-ai/nano-banana/edit` 先生成临时构图参考；再用 **Claude Sonnet 4.5 Vision** · `fal-ai/any-llm/vision` | beat 文本、带编号的 cutout contact sheet、资产 id / role / aspect ratio；Vision 同时看 contact sheet 和临时构图 | `{layout:[{assetId,x,y,scale,rotation,z}],referenceUrl,requestIds,source}` | Canvas 按 JSON 排列**真实审核 PNG**；临时 AI 构图只作参考，不进入成片 |
-| 3c | 转场建议 | **Claude Sonnet 4.5** · `fal-ai/any-llm` | 相邻的 `fromBeat`、`toBeat` | `{type,note}`，type 为 `page_turn/wipe/match_cut/push_dissolve` | 用户可修改；合成时映射为 FFmpeg xfade |
-| 4 | 逐镜 image-to-video | 默认 **Kling v3 Turbo Standard** · `fal-ai/kling-video/v3/turbo/standard/image-to-video`；可选 Alibaba Happy Horse、Veo 3.1 | 已确认的 generated `frameUrl` + 编译后的 motion prompt + duration；Kling / Veo 强制 `generate_audio:false` | queue submit 返回 `requestId`；轮询完成后得到 `videoUrl` | 浏览器逐镜顺序生成并立即预览；所有 clip 完成后进入合成 |
-| 5 | 最终合成 | **无生成模型，FFmpeg** | 按 beat 顺序的 `{videoUrl,transitionType}[]` | 统一为 1280×720 / 30fps、统一调色、0.7s xfade、片尾 fade；输出 `final/<slug>.mp4` 和 `/films/<slug>.mp4` | Film 页面播放；Journey Book 展示故事、来源和生成记录 |
+| 0 | Archive preprocessing (offline) | **SAM 3** · `fal-ai/sam-3/image`; local `rembg:silueta` on failure; Sharp for cropping and compositing | Raw archive image, the subject prompt in the recipe, `apply_mask:false`, mask QA thresholds | Subject alpha mask, box / score; finally generates `*_card.png` / `*_cutout.png` / `*_bg.png` locally, plus a provenance JSON | Only PNGs that pass manual visual review enter the location manifest and the Archive asset shelf |
+| 1 | Asset curation | **No model** | place JSON, archive metadata, user uploads; the user gives `must use / maybe / reject` | The selected `AssetBrief[]`: `id/title/era/type/description/contributor` | Serves as the factual boundary for the narrative LLM, and as the reference set for the subsequent image model |
+| 2a | Generate story directions | **Claude Sonnet 4.5** · `fal-ai/any-llm` + `model=anthropic/claude-sonnet-4.5` | `PlaceBrief` + the user-curated `AssetBrief[]` | Strict JSON: 3 `{id,title,premise}` + `requestId` | The user selects one of the directions |
+| 2b | Generate story beats | Same as above | `PlaceBrief` + `AssetBrief[]` + the chosen `{title,premise}` | Strict JSON: 5–8 `{id,act,text}` + `requestId` | Each beat corresponds to one storyboard and, finally, one video shot |
+| 2c | Rewrite / insert beat | Same as above | Location, all assets, current beats, `targetId`, `reroll` or `insert_after` | A single `{act,text}` + `requestId` | Replaces the target beat or is inserted after it; the user can still edit it manually |
+| 3a | AI-generated storyboard | Default **nano-banana 2 / Gemini 3.1 Flash Image** · `fal-ai/nano-banana-2/edit`; optionally FLUX.2 Pro, Seedream 4, Imagen 4 | The compiled frame prompt (place + premise + beat + style constraints) + a reference contact sheet of up to 7 source images; the same source asset is used in at most 2 scenes; fixed 16:9, 1 image | `{imageUrl,model,prompt,requestId,costUsd,source:"generated"}` | The user can regenerate, edit in natural language, or drag in a new archive; the confirmed `imageUrl` becomes the I2V first frame |
+| 3b | Manual collage auto-layout | **nano-banana edit** · `fal-ai/nano-banana/edit` first generates a temporary composition reference; then **Claude Sonnet 4.5 Vision** · `fal-ai/any-llm/vision` | Beat text, a numbered cutout contact sheet, asset id / role / aspect ratio; Vision sees both the contact sheet and the temporary composition | `{layout:[{assetId,x,y,scale,rotation,z}],referenceUrl,requestIds,source}` | The Canvas arranges the **real, reviewed PNGs** according to the JSON; the temporary AI composition is only a reference and does not enter the final film |
+| 3c | Transition suggestion | **Claude Sonnet 4.5** · `fal-ai/any-llm` | Adjacent `fromBeat`, `toBeat` | `{type,note}`, where type is `page_turn/wipe/match_cut/push_dissolve` | The user can edit it; it maps to an FFmpeg xfade during assembly |
+| 4 | Per-shot image-to-video | Default **Kling v3 Turbo Standard** · `fal-ai/kling-video/v3/turbo/standard/image-to-video`; optionally Alibaba Happy Horse, Veo 3.1 | The confirmed generated `frameUrl` + the compiled motion prompt + duration; Kling / Veo force `generate_audio:false` | The queue submit returns `requestId`; after polling completes, you get `videoUrl` | The browser generates shots sequentially and previews immediately; assembly begins once all clips are done |
+| 5 | Final assembly | **No generative model, FFmpeg** | `{videoUrl,transitionType}[]` in beat order | Normalized to 1280×720 / 30fps, unified color grade, 0.7s xfade, fade-out at the end; outputs `final/<slug>.mp4` and `/films/<slug>.mp4` | The Film page plays it; the Journey Book shows the story, sources, and generation records |
 
-> 当前真实 I2V Web 流程只处理 `source:"generated"` 的分镜。Manual collage 可以用于分镜与项目保存，但尚未在 Film 页面自动栅格化为可提交给 I2V 的首帧。最终合成当前没有音轨。
+> The current real I2V Web flow only handles storyboards with `source:"generated"`. Manual collage can be used for storyboarding and project saving, but is not yet automatically rasterized on the Film page into a first frame that can be submitted to I2V. The final assembly currently has no audio track.
 
-### 模型路由与选择规则
+### Model routing and selection rules
 
-#### 叙事与转场
+#### Narrative and transitions
 
-Story direction、beats、单 beat 重写 / 插入和转场建议都通过 `fal-ai/any-llm` 调用 `anthropic/claude-sonnet-4.5`。输入不是整份原始文件，而是地点摘要与用户已选档案的结构化 metadata；输出被要求为严格 JSON，并由服务端解析后才写入项目状态。
+Story direction, beats, single-beat rewrite / insert, and transition suggestions are all invoked via `fal-ai/any-llm` calling `anthropic/claude-sonnet-4.5`. The input is not the entire raw file, but the location summary and the structured metadata of the user's selected archives; the output is required to be strict JSON, and is only written to project state after the server parses it.
 
-#### 分镜图像模型
+#### Storyboard image models
 
-| UI key | fal endpoint | Reference image | 支持编辑 | 用途 / 路由规则 |
+| UI Key | fal Endpoint | Reference Image | Supports Editing | Purpose / Routing Rule |
 |---|---|---:|---:|---|
-| `nano-banana-2`（默认） | `fal-ai/nano-banana-2/edit` | ✅ | ✅ | 初次分镜、自然语言改图、拖入素材都可用 |
-| `flux-2-pro` | `fal-ai/flux-2-pro` | ✅ | ❌ | 可生成 1280×720 分镜；进入编辑模式时自动切回 nano-banana 2 |
-| `seedream-4` | `fal-ai/bytedance/seedream/v4/text-to-image` | ❌ | ❌ | prompt-only 生成；不会收到 reference contact sheet |
-| `imagen-4` | `fal-ai/imagen4/preview` | ❌ | ❌ | prompt-only 生成；不会收到 reference contact sheet |
+| `nano-banana-2` (default) | `fal-ai/nano-banana-2/edit` | ✅ | ✅ | Available for initial storyboarding, natural-language edits, and dragged-in assets |
+| `flux-2-pro` | `fal-ai/flux-2-pro` | ✅ | ❌ | Can generate 1280×720 storyboards; automatically switches back to nano-banana 2 when entering edit mode |
+| `seedream-4` | `fal-ai/bytedance/seedream/v4/text-to-image` | ❌ | ❌ | Prompt-only generation; does not receive a reference contact sheet |
+| `imagen-4` | `fal-ai/imagen4/preview` | ❌ | ❌ | Prompt-only generation; does not receive a reference contact sheet |
 
-`generate` 模式把 reference cutouts 合成一张 contact sheet 后上传；`edit_prompt` 输入当前 frame + 用户指令；`edit_add_asset` 输入当前 frame + 新 cutout + drop position。三种模式都返回一张 16:9 frame。没有 `FAL_KEY`、运行在 Vercel 或模型失败时，route 返回明确写有 `AI-GENERATED FRAME — simulated` 的 SVG placeholder，不冒充真实生成结果。
+The `generate` mode composites the reference cutouts into a contact sheet and uploads it; `edit_prompt` inputs the current frame + the user instruction; `edit_add_asset` inputs the current frame + the new cutout + the drop position. All three modes return one 16:9 frame. Without a `FAL_KEY`, when running on Vercel, or when the model fails, the route returns an SVG placeholder explicitly labeled `AI-GENERATED FRAME — simulated`, and does not pass itself off as a real generation result.
 
-#### I2V 视频模型
+#### I2V video models
 
-| UI key | fal endpoint | 可选时长 | 当前规则 |
+| UI Key | fal Endpoint | Available Durations | Current Rule |
 |---|---|---|---|
-| `kling-v3-turbo-std`（默认） | `fal-ai/kling-video/v3/turbo/standard/image-to-video` | 5s / 10s | 默认平衡方案；输入字段为 `image_url`，关闭模型音频 |
-| `happy-horse` | `alibaba/happy-horse/image-to-video` | Web UI 3–8s；route 支持 3–15s | 目前固定 720p；输入字段为 `image_url` |
-| `veo3.1-hero` | `fal-ai/veo3.1/image-to-video` | 4s / 6s / 8s | hero-only；需要显式成本确认，关闭模型音频 |
+| `kling-v3-turbo-std` (default) | `fal-ai/kling-video/v3/turbo/standard/image-to-video` | 5s / 10s | The default balanced option; the input field is `image_url`, and model audio is disabled |
+| `happy-horse` | `alibaba/happy-horse/image-to-video` | 3–8s in the Web UI; the route supports 3–15s | Currently fixed at 720p; the input field is `image_url` |
+| `veo3.1-hero` | `fal-ai/veo3.1/image-to-video` | 4s / 6s / 8s | hero-only; requires explicit cost confirmation, and model audio is disabled |
 
-每个 I2V 请求只生成**一个 beat 对应的一个 clip**。`/api/shot/generate` 负责编译 motion prompt、估价和 queue submit；`/api/shot/status` 负责轮询并返回 `videoUrl`。这使失败或不满意时可以只重做一个镜头，而不推翻整部影片。
+Each I2V request generates only **one clip for one beat**. `/api/shot/generate` handles compiling the motion prompt, pricing, and the queue submit; `/api/shot/status` handles polling and returning `videoUrl`. This makes it possible to redo just one shot when it fails or is unsatisfactory, without overturning the entire film.
 
-### 关键数据对象如何向下传递
+### How the key data objects are passed downward
 
 ```text
 AssetBrief[]
@@ -122,129 +122,129 @@ Film
   { filmUrl, clips }
 ```
 
-项目交互状态以浏览器 `localStorage` 为主；本地环境还会镜像到 `data/project.json`。`/api/generate/start` 会额外生成 `data/scenes/generated/<slug>/film-manifest.json`，记录每个 beat 的 frame、模型、motion prompt 和转场，供脚本式渲染复用。
+The project's interaction state is held primarily in the browser's `localStorage`; the local environment also mirrors it to `data/project.json`. `/api/generate/start` additionally generates `data/scenes/generated/<slug>/film-manifest.json`, recording each beat's frame, model, motion prompt, and transition, for reuse by script-based rendering.
 
-核心实现入口：Story 使用 `app/api/story/generate` 与 `app/api/story/reroll`；分镜使用 `app/api/storyboard/frame` 与 `app/api/storyboard/layout`；I2V 使用 `app/api/shot/generate` 与 `app/api/shot/status`；最终合成使用 `app/api/assemble`。模型注册表位于 `lib/models.ts`，fal client 位于 `lib/fal-server.ts`，所有生成 prompt 集中在 `lib/llm.ts` 和 `lib/prompt-compiler.ts`。
+Core implementation entry points: Story uses `app/api/story/generate` and `app/api/story/reroll`; storyboarding uses `app/api/storyboard/frame` and `app/api/storyboard/layout`; I2V uses `app/api/shot/generate` and `app/api/shot/status`; final assembly uses `app/api/assemble`. The model registry is in `lib/models.ts`, the fal client is in `lib/fal-server.ts`, and all generation prompts are centralized in `lib/llm.ts` and `lib/prompt-compiler.ts`.
 
-### Prompt 编译与档案保护
+### Prompt compilation and archive protection
 
-`lib/llm.ts` 负责编译叙事 prompt，`lib/prompt-compiler.ts` 统一编译 frame、edit 和 motion prompt。I2V prompt 将运动限制为一个主要摄影机动作和一个主体 / 环境动作，并附加保护块：
+`lib/llm.ts` handles compiling narrative prompts, and `lib/prompt-compiler.ts` uniformly compiles frame, edit, and motion prompts. The I2V prompt restricts motion to one primary camera movement and one subject / environment movement, and appends a protection block:
 
 ```text
 no morphing, no new objects, no face changes, no costume changes,
 no architecture changes, preserve printed text, preserve collage layout
 ```
 
-SAM 3 只决定 alpha mask（`apply_mask:false`）；裁剪、调色、白边、阴影和 alpha 合成都在本地由 Sharp 完成。Generated frame 与 I2V clip 始终标记为 AI-generated，Manual collage 的最终 canvas 则只使用审核过的真实 PNG。
+SAM 3 only decides the alpha mask (`apply_mask:false`); cropping, color grading, white borders, shadows, and alpha compositing are all done locally by Sharp. Generated frames and I2V clips are always marked as AI-generated, while the final Manual collage canvas uses only reviewed, real PNGs.
 
-### 真实运行与 fallback 分支
+### Real runtime and fallback branches
 
-| 环境 | Story | Frame | I2V | Assembly |
+| Environment | Story | Frame | I2V | Assembly |
 |---|---|---|---|---|
-| 本地 + `FAL_KEY` + FFmpeg | 真实 LLM | 真实图像模型 | 真实 queue submit + polling | 写入 `final/` 和 `public/films/` |
-| 本地但无 `FAL_KEY` | 不能发起新的 LLM 生成；可继续使用已保存 / seed story | 有标识的 placeholder；manual collage 可用 | 不提交任务 | 播放已有的预渲染影片（如存在） |
-| Vercel | 配置 `FAL_KEY` 时可调用 LLM | 始终走有标识的 placeholder / manual collage | 不提交任务 | 播放预渲染 demo；不写文件 |
+| Local + `FAL_KEY` + FFmpeg | Real LLM | Real image model | Real queue submit + polling | Writes to `final/` and `public/films/` |
+| Local but no `FAL_KEY` | Cannot initiate new LLM generation; can continue using a saved / seed story | Labeled placeholder; manual collage available | Does not submit tasks | Plays an existing pre-rendered film (if present) |
+| Vercel | Can call the LLM when `FAL_KEY` is configured | Always uses a labeled placeholder / manual collage | Does not submit tasks | Plays the pre-rendered demo; does not write files |
 
-实时 Wikimedia 检索（`/api/research`）和 Place DNA（`/api/dna`）当前仍是明确返回 501 的 stub，不在上述生产 workflow 中。
+Real-time Wikimedia retrieval (`/api/research`) and Place DNA (`/api/dna`) are currently still stubs that explicitly return 501, and are not part of the production workflow above.
 
-## 素材预处理 v2
+## Asset preprocessing v2
 
-Roosevelt Island 的预处理由 `data/preprocess/roosevelt-island.json` 中的声明式 recipe 驱动：
+Roosevelt Island's preprocessing is driven by the declarative recipe in `data/preprocess/roosevelt-island.json`:
 
-- 历史素材默认使用中性黑白，现代照片保留原色；纸卡使用稳定的撕纸边，透明主体使用剪刀边。
-- fal SAM 3 只生成主体蒙版（`apply_mask: false`）；裁剪、调色、alpha 合成、白边与阴影都在本地确定性完成，原始 RGB 不交给模型重绘。
-- 处理过程禁止放大原图；低分辨率素材只记录质量警告并限制使用尺寸。
-- 输出采用明确的角色后缀：`*_card.png`、`*_cutout.png`、`*_bg.png`。
-- source review 与 visual review 分开记录；未通过视觉审核的输出不会进入 manifest 或场景。
-- `asset_013` 是等待人工选页的 PDF，当前明确跳过；`asset_020` 是只用于历史语境的参考视频，不进入影片素材选择。
+- Historical materials use neutral black-and-white by default, while modern photos keep their original color; paper cards use a stable torn-paper edge, and transparent subjects use a scissor edge.
+- fal SAM 3 only generates the subject mask (`apply_mask: false`); cropping, color grading, alpha compositing, white borders, and shadows are all done deterministically in local, and the raw RGB is not handed to the model to repaint.
+- Enlarging the original image is forbidden during processing; low-resolution materials only record a quality warning and limit the usage size.
+- Outputs use explicit role suffixes: `*_card.png`, `*_cutout.png`, `*_bg.png`.
+- source review and visual review are recorded separately; outputs that do not pass visual review do not enter the manifest or scenes.
+- `asset_013` is a PDF awaiting manual page selection and is currently explicitly skipped; `asset_020` is a reference video used only for historical context and does not enter the film's asset selection.
 
-## Roosevelt Island 故事研究
+## Roosevelt Island story research
 
-当前案例已经发展出两条主要叙事方向，完整五镜结构、旁白与历史框架见 [`spec/06-place-case.md`](spec/06-place-case.md)。
+The current case has developed two main narrative directions; for the complete five-shot structure, narration, and historical framing, see [`spec/06-place-case.md`](spec/06-place-case.md).
 
-| 方向 | 主角 / 视觉线索 | 核心问题 |
+| Direction | Protagonist / Visual Motif | Core Question |
 |---|---|---|
-| **The Island New York Used Twice** | 一艘由纽约规划图折成的纸船 | 城市如何决定隐藏什么，又选择展示什么？ |
-| **The Women Who Crossed the Water** | 一根成为 Nellie Bly 钢笔与连续墨线的鹅毛 | 谁拥有给女性贴上“危险”标签的权力，而声音如何越过围墙？ |
+| **The Island New York Used Twice** | A paper boat folded from a New York planning map | How does a city decide what to hide, and what to choose to show? |
+| **The Women Who Crossed the Water** | A quill that becomes Nellie Bly's pen and a continuous ink line | Who holds the power to label women as "dangerous", and how does a voice cross the walls? |
 
-两条方向都采用五段结构（Stasis → Peripeteia → Pathos → Anagnorisis → Katharsis），但产品中的 Narrative Agent 不锁死案例脚本：它会依据用户实际选择的档案提出 3 个方向和 5–8 个可编辑 beat。
+Both directions use a five-part structure (Stasis → Peripeteia → Pathos → Anagnorisis → Katharsis), but the Narrative Agent in the product does not lock into the case script: it proposes 3 directions and 5–8 editable beats based on the archives the user actually selects.
 
-## 技术栈
+## Tech stack
 
-- Next.js 15 App Router、React 19、TypeScript、Tailwind CSS 4
-- fal：LLM、vision、图像生成 / 编辑、SAM 3 与 image-to-video 的统一生成层
-- Sharp：本地裁剪、调色、alpha、纸张边缘处理，以及 manual collage 静态首帧合成
-- FFmpeg：Web 本地流程中的视频镜头归一化、统一调色、转场拼接与片尾淡出；音频尚未接入
-- localStorage：浏览器端项目状态；JSON 文件用于本地 I2V / 合成流程镜像
+- Next.js 15 App Router, React 19, TypeScript, Tailwind CSS 4
+- fal: a unified generation layer for LLM, vision, image generation / editing, SAM 3, and image-to-video
+- Sharp: local cropping, color grading, alpha, paper-edge processing, and the static-first-frame compositing for manual collage
+- FFmpeg: video shot normalization, unified color grading, transition stitching, and end fade-out in the Web local flow; audio is not yet wired in
+- localStorage: browser-side project state; JSON files are used to mirror the local I2V / assembly flow
 
-## 本地运行
+## Running locally
 
-### 环境要求
+### Requirements
 
 - Node.js 20+
 - npm
-- 可选：fal API key（没有 key 也可以走模拟帧与 manual collage）
-- 最终影片合成需要 FFmpeg / ffprobe
-- 仅在 SAM mask 不可用、预处理需要本地抠图 fallback 时需要 Python rembg
+- Optional: a fal API key (you can also use simulated frames and manual collage without a key)
+- FFmpeg / ffprobe are required for final film assembly
+- Python rembg is only required when the SAM mask is unavailable and preprocessing needs a local cutout fallback
 
-### 启动应用
+### Launch the app
 
 ```bash
 npm install
 ```
 
-如需真实 AI 调用，在根目录创建 `.env.local`：
+For real AI calls, create `.env.local` in the root directory:
 
 ```bash
 FAL_KEY=your_fal_key
 ```
 
-然后启动开发服务器：
+Then start the development server:
 
 ```bash
 npm run dev
 ```
 
-打开 [http://localhost:3000](http://localhost:3000)。
+Open [http://localhost:3000](http://localhost:3000).
 
-### 常用命令
+### Common commands
 
-| 命令 | 用途 |
+| Command | Purpose |
 |---|---|
-| `npm run dev` | 同步公开素材并启动 Next.js 开发服务器 |
-| `npm run build` | 同步公开素材并构建生产版本 |
-| `npm run preprocess` | 按 recipe 批量预处理档案素材 |
-| `npm run preprocess:review` | 生成预处理 contact sheet 供人工审核 |
-| `npm run test:preprocess` | 运行预处理测试 |
-| `npm run experiment -- <args>` | 运行 fal 视频模型实验 |
+| `npm run dev` | Sync public assets and start the Next.js development server |
+| `npm run build` | Sync public assets and build the production version |
+| `npm run preprocess` | Batch-preprocess archive materials according to the recipe |
+| `npm run preprocess:review` | Generate a preprocessing contact sheet for manual review |
+| `npm run test:preprocess` | Run the preprocessing tests |
+| `npm run experiment -- <args>` | Run fal video model experiments |
 
-预处理与 I2V 实验脚本的完整参数见 [`scripts/README.md`](scripts/README.md)。
+For the full arguments of the preprocessing and I2V experiment scripts, see [`scripts/README.md`](scripts/README.md).
 
-## 项目结构
+## Project structure
 
 ```text
-app/                    Next.js 页面与 server routes
+app/                    Next.js pages and server routes
 components/             Atlas / Archive / Story / Storyboard / Film UI
-lib/                    状态、模型配置、LLM 与 prompt 编译
-data/places/            地点与档案元数据
-data/preprocess/        recipe、蒙版、provenance 与审核记录
-assets/archive/         原始档案文件
-assets/cutouts/         审核后发布的 card / cutout / background 图层
-scripts/                预处理、同步与 fal I2V 实验工具
-spec/                   产品、数据、API、生成和案例规格
+lib/                    State, model configuration, LLM, and prompt compilation
+data/places/            Place and archive metadata
+data/preprocess/        Recipes, masks, provenance, and review records
+assets/archive/         Original archive files
+assets/cutouts/         Reviewed and published card / cutout / background layers
+scripts/                Preprocessing, sync, and fal I2V experiment tools
+spec/                   Product, data, API, generation, and case specifications
 ```
 
-## 文档索引
+## Documentation index
 
-- [`spec/00-index.md`](spec/00-index.md) — 实现规格入口
-- [`spec/01-data-model.md`](spec/01-data-model.md) — Project / Place / Asset / Scene / Shot 数据结构
-- [`spec/02-ui-pages.md`](spec/02-ui-pages.md) — 页面与交互规格
-- [`spec/03-api.md`](spec/03-api.md) — Server routes 与安全约定
-- [`spec/04-shot-router.md`](spec/04-shot-router.md) — 镜头路由与 prompt 编译规则
-- [`spec/05-assets-audio-files.md`](spec/05-assets-audio-files.md) — 素材、音频与文件约定
-- [`spec/06-place-case.md`](spec/06-place-case.md) — Roosevelt Island 案例研究
-- [`PLAN.md`](PLAN.md) — 功能清单、验证门与风险登记
-- [`CLAUDE.md`](CLAUDE.md) — AI coding agent 工程约定
+- [`spec/00-index.md`](spec/00-index.md) — Implementation spec entry point
+- [`spec/01-data-model.md`](spec/01-data-model.md) — Project / Place / Asset / Scene / Shot data structures
+- [`spec/02-ui-pages.md`](spec/02-ui-pages.md) — Page and interaction specs
+- [`spec/03-api.md`](spec/03-api.md) — Server routes and security conventions
+- [`spec/04-shot-router.md`](spec/04-shot-router.md) — Shot routing and prompt compilation rules
+- [`spec/05-assets-audio-files.md`](spec/05-assets-audio-files.md) — Asset, audio, and file conventions
+- [`spec/06-place-case.md`](spec/06-place-case.md) — Roosevelt Island case study
+- [`PLAN.md`](PLAN.md) — Feature list, verification gates, and risk register
+- [`CLAUDE.md`](CLAUDE.md) — AI coding agent engineering conventions
 
 ---
 

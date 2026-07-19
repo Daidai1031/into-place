@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import type { Place } from "@/lib/types";
-import { assetThumb } from "@/lib/types";
+import { assetThumb, cutoutUrl } from "@/lib/types";
 import type { StoryPreset } from "@/lib/presets";
 import { useProject } from "@/lib/hooks/useProject";
 import type {
@@ -60,7 +60,8 @@ export function StoryboardView({ place, preset }: { place: Place; preset?: Story
     const seeds = place.assets
       .filter((a) => (project.selections[a.id] ?? a.status) !== "rejected")
       .map((a) => {
-        const url = assetThumb(a);
+        const preferredCutout = a.cutouts?.find((cutout) => cutout.role === "cutout");
+        const url = preferredCutout ? cutoutUrl(preferredCutout.file) : assetThumb(a);
         if (!url) return null;
         const roles = a.cutouts?.map((c) => c.role) ?? [];
         const role = roles.includes("bg") ? "bg" : roles.includes("cutout") ? "cutout" : "card";

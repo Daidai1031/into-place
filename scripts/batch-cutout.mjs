@@ -256,9 +256,10 @@ function summarizeAction(state, args) {
   if (state.recipe.publish === false) {
     return `visual review rejected; use ${state.recipe.fallbackRecipeId ?? "recorded fallback"}`;
   }
-  const refresh = args.refreshMask && state.recipe.mask;
+  const refresh = args.refreshMask && state.recipe.mask?.provider === "fal";
   if (!args.force && !refresh && state.outputCache.valid) return "cached";
   if (refresh) return "refresh fal mask, then materialize";
+  if (state.recipe.mask?.provider === "local-paper") return "materialize with local paper/ink mask";
   if (state.maskCache.valid) return "materialize from cached fal mask";
   if (state.recipe.role === "cutout") return "materialize with local rembg/card fallback (no fal call)";
   return "materialize locally";

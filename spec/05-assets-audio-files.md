@@ -1,28 +1,28 @@
-# 05 · 素材预处理、音频与文件约定
+# 05 · Asset Preprocessing, Audio, and File Conventions
 
-## 素材预处理
+## Asset Preprocessing
 
-### 固定处理顺序
+### Fixed Processing Order
 
 ```text
-来源审核 → EXIF 摆正 → 语义 crop → 不放大尺寸门 → 本地 tone
-→ fal/local mask → 本地 edge → 白边/阴影 → 自动 QA
-→ 人工 contact sheet 审核 → staging 原子发布
+source review → EXIF orientation → semantic crop → no-upscale size gate → local tone
+→ fal/local mask → local edge → white border/shadow → automated QA
+→ manual contact-sheet review → atomic staging publication
 ```
 
-- 每个输出由声明式 recipe 驱动。recipe 必须写明素材身份、保留与排除内容、摆正后的归一化 crop、`card | cutout | bg` 角色、默认 tone/edge、mask prompt/ROI、回退策略、输出路径、`sourceSha256`、`recipeSha256` 和审核状态;不得在批处理脚本中另建隐式分流表。
-- 所有 resize 都必须禁止放大。默认最大长边 2400px,大图 recipe 可明确提高;低分辨率素材只记录质量警告并限制场景放大,**禁止调用超分模型**。
-- fal 只用于主体蒙版。调用前用 fal MCP 核对端点 schema 与当日价格;SAM 请求必须显式 `apply_mask:false`,不得把档案 RGB 交给模型重绘。返回 mask 缩放到本地工作尺寸后只写入 alpha。
-- 单个 mask 最多两次提示/ROI 尝试。失败顺序固定为 fal SAM → 本地 silueta/rembg → 裁剪纸卡;自动 QA 不合格时不得静默发布。request_id、模型、参数、核价时间与成本必须进入 provenance,严禁记录密钥。
-- `source | mono | sepia` 调色、`scissor | torn | none` 边缘、1–2px 白边和轻微投影均为本地确定性像素操作。`scissor` 是阈值化硬边加轻微抗锯齿;`torn` 用稳定 seed 对带透明 padding 的 alpha 边界做多尺度不规则侵蚀,同一输入与 recipe 重跑必须一致。
-- 默认值:历史素材 `mono`,现代照片 `source`;`card` 使用 `torn`,`cutout` 使用 `scissor`,`bg` 使用 `none`。未来 UI 可做全局选择与单素材覆盖,但不得改写 recipe 默认值。
-- 文件名必须带角色后缀:`assets/cutouts/{asset_id}_{part}_card.png`、`..._cutout.png` 或 `..._bg.png`;角色已有语义时不得省略后缀。`card` 可有透明撕纸外缘,`cutout` 必须是透明主体,`bg` 无边缘和阴影。
-- 缓存命中必须同时匹配 source hash、recipe hash、工具版本和 mask 配置;普通 `--force` 只重做本地像素阶段,只有显式 `--refresh-mask` 可以再次提交 fal。发布前先在 staging 生成并完成 QA,再原子替换正式输出。
-- 自动 QA 至少检查 alpha 非空、覆盖率、bbox、连通区域、尺寸和原始 RGB 来源;人工 contact sheet 同屏比较原图、crop、mask、hard 与 torn 结果。
-- 来源/crop 审核与产物视觉审核分开记录。视觉拒绝必须写 `review.visual: rejected`、`publish:false` 和 `fallbackRecipeId`;被拒绝 mask/provenance 仅保留在 `data/preprocess/` 供追溯,不得进入正式 cutouts、manifest 或场景。review/publish 状态不参与像素 recipe hash,避免审核动作使已付费 mask 失效。
-- `asset_013` 是扫描 PDF,未人工指定目标页码前跳过且不产生输出。
+- Every output is driven by a declarative recipe. The recipe must specify asset identity, content to preserve and exclude, normalized crop after orientation, `card | cutout | bg` role, default tone / edge, mask prompt / ROI, fallback strategy, output path, `sourceSha256`, `recipeSha256`, and review status. Do not create a separate implicit routing table in the batch-processing script.
+- All resizing must prohibit upscaling. The default maximum long edge is 2400px; a recipe for a large image may explicitly increase it. For low-resolution assets, record only a quality warning and limit their enlargement in the scene; **do not call an upscaling model**.
+- fal is used only for subject masks. Before calling, use the fal MCP to verify the endpoint schema and current-day price. SAM requests must explicitly set `apply_mask:false`; archival RGB must never be sent to a model for redrawing. Scale the returned mask to the local working dimensions and write it only to alpha.
+- Allow no more than two prompt / ROI attempts per mask. The fixed fallback order is fal SAM → local silueta / rembg → cropped paper card. Outputs that fail automated QA must not be silently published. The request_id, model, parameters, price-check time, and cost must enter provenance; never record secrets.
+- `source | mono | sepia` color treatment, `scissor | torn | none` edges, 1–2px white borders, and subtle shadows are all local deterministic pixel operations. `scissor` uses a thresholded hard edge with slight antialiasing; `torn` uses a stable seed to apply multi-scale irregular erosion to the alpha boundary with transparent padding. Rerunning the same input and recipe must produce the same result.
+- Defaults: historical assets use `mono`; modern photos use `source`; `card` uses `torn`; `cutout` uses `scissor`; `bg` uses `none`. A future UI may provide global selections and per-asset overrides, but it must not rewrite recipe defaults.
+- Filenames must include role suffixes: `assets/cutouts/{asset_id}_{part}_card.png`, `..._cutout.png`, or `..._bg.png`. Do not omit the suffix when the role already has semantic meaning. A `card` may have a transparent torn-paper outer edge; a `cutout` must be a transparent subject; a `bg` has no edge or shadow.
+- A cache hit must match the source hash, recipe hash, tool version, and mask configuration. Ordinary `--force` reruns only the local pixel stages; only an explicit `--refresh-mask` may submit to fal again. Before publication, generate in staging and complete QA, then atomically replace the formal output.
+- Automated QA must check at least non-empty alpha, coverage, bounding box, connected regions, dimensions, and original RGB source. The manual contact sheet compares the source image, crop, mask, hard-edge result, and torn-edge result side by side.
+- Record source / crop review separately from output visual review. A visual rejection must set `review.visual: rejected`, `publish:false`, and `fallbackRecipeId`. Rejected masks / provenance remain only in `data/preprocess/` for traceability and must not enter formal cutouts, manifests, or scenes. Review / publication status does not participate in the pixel recipe hash, preventing a review action from invalidating a paid mask.
+- `asset_013` is a scanned PDF. Skip it and produce no output until a target page number has been manually specified.
 
-预处理选择的公共接口:
+Public interface for preprocessing selections:
 
 ```ts
 type TonePreset = "source" | "mono" | "sepia";
@@ -38,18 +38,18 @@ type PreprocessSelection = {
 };
 ```
 
-`materializeCutout(recipeIdOrRecipe, selection = {}, context = {})` 必须只读取本地原始素材、声明式 recipe 和已缓存 mask,并返回确定性产物及 QA/provenance。传 recipe id 时默认从 `data/preprocess/roosevelt-island.json` 解析;视觉拒绝的 recipe 除 contact-sheet 预览外必须拒绝物化。该接口为后续 UI/API 复用,当前阶段不实现选择页面。
+`materializeCutout(recipeIdOrRecipe, selection = {}, context = {})` must read only local source assets, declarative recipes, and cached masks, and return deterministic outputs plus QA / provenance. When passed a recipe ID, it resolves from `data/preprocess/roosevelt-island.json` by default. A visually rejected recipe must refuse materialization except for contact-sheet preview. This interface is intended for later UI / API reuse; the selection page is not implemented at this stage.
 
-## 音频
+## Audio
 
-生成镜头(`fal_i2v`)输出始终不带声音/字幕;这样 TTS 旁白反复改词、字幕校对不需要重跑视频生成(省钱且更稳),字幕也能保证与档案原文逐字一致——这是既定策略,不是临时限制。
+Generated shots (`fal_i2v`) always contain no sound / subtitles. This allows TTS narration wording and subtitle proofreading to be revised repeatedly without rerunning video generation (cheaper and more stable), while ensuring subtitles match archival text exactly. This is an established strategy, not a temporary limitation.
 
-- 旁白:fal TTS 端点(Day 0 核实)或自录兜底;五幕各一两句;
-- 环境声(Roosevelt Island):缆车电机嗡鸣、East River 水声与风、海鸥、废墟内的空旷混响、远处曼哈顿车流——**优先自己上岛实录**,freesound 公共素材补齐;
-- FFmpeg 混音;声音与场景对应(靠近废墟场景时环境声切换),不做完整空间音频;
-- 全片默认无配乐;模型原生音轨一律禁用(prompt 固定块)。
+- Narration: a fal TTS endpoint (verified on Day 0), with self-recording as fallback; one or two sentences for each of the five acts.
+- Ambient sound (Roosevelt Island): tram motor hum, East River water and wind, seagulls, spacious reverberation inside the ruins, and distant Manhattan traffic—**prefer recording it on the island**, supplemented with public Freesound assets.
+- Mix with FFmpeg; align sound with scenes (switch ambience near the ruins), without implementing full spatial audio.
+- No music by default; always disable model-native audio tracks (fixed prompt block).
 
-## 目录约定
+## Directory Conventions
 
 ```text
 data/places/{slug}.json        data/project.json        data/day0-findings.md
@@ -60,4 +60,4 @@ audio/narration.mp3   audio/ambient/*.wav
 final/final.mp4
 ```
 
-`frames/{beat}.png` 保存 manual collage 导出的静态首帧或需要本地缓存的 generated frame;每个文件都必须能追溯到 project 中的 beat、references、prompt 与审核状态。`clips/{beat}.mp4` 只保存通过审核的 I2V 输出。
+`frames/{beat}.png` stores the static first frame exported from a manual collage or a generated frame that needs local caching. Every file must be traceable to its beat, references, prompt, and review status in the project. `clips/{beat}.mp4` stores only approved I2V outputs.

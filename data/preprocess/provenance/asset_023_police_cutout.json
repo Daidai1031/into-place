@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_023_police_cutout",
+  "assetId": "asset_023",
+  "role": "cutout",
+  "actualRole": "cutout",
+  "source": {
+    "file": "assets/archive/asset_023.png",
+    "sha256": "47dddeb84f494b401b5e5af08dac742fb4cc467ddf035dd7f0a20d05f678effe"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_023_police_cutout.png",
+    "sha256": "7da453def2546d48c20a3c8e9a9301af66ca214579b4f97e040917df73535cf2"
+  },
+  "cache": {
+    "sourceSha256": "47dddeb84f494b401b5e5af08dac742fb4cc467ddf035dd7f0a20d05f678effe",
+    "recipeSha256": "eb19dd9346c562adb22d845c55efcfe15c98f1e61270677e2b2043e7b8e6f486",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "27d39dce1a36d9ef087718d3c707fc9766ef0f4000784e001ed2356ce33dbc55",
+    "cacheKey": "811953e74ef0e6ba0974adbb06c0d817b92715ba58a434ff3d4e219f06dfa241"
+  },
+  "selection": {
+    "tone": "source",
+    "edge": "none"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "normalized-crop:0.16,0.03,0.7,0.8",
+    "resize-inside:2400:without-enlargement",
+    "tone:source",
+    "cached-mask-alpha-only",
+    "edge:none"
+  ],
+  "mask": {
+    "provider": "local-paper",
+    "file": null,
+    "sha256": "bb07e189bfd4c88418f06f8ee134c4a01c3c3b0a401dd2de8ba0ccb37a1a8c03",
+    "cacheKey": "10f5238833ad37bb8f6272971d444b7bc174e855fc7fe61d396400c17445fea1",
+    "fallback": null
+  },
+  "falCalls": [],
+  "qa": {
+    "width": 885,
+    "height": 858,
+    "opaquePixels": 149596,
+    "coverage": 0.19701052243425124,
+    "bbox": {
+      "left": 26,
+      "top": 0,
+      "width": 857,
+      "height": 858
+    },
+    "connectedComponents": 141,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.01,
+      "maxCoverage": 0.65,
+      "maxConnectedComponents": 1024
+    },
+    "outputWidth": 885,
+    "outputHeight": 858
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "The complete In the Hands of the Police group illustration",
+  "preserve": "All four complete people, their clothing and limbs, the street lamp, and the artist signature.",
+  "exclude": "The scanned paper background, printed caption, surrounding body text, and page artifacts.",
+  "qualityWarnings": [],
+  "createdAt": "2026-07-19T15:24:18.911Z"
+}

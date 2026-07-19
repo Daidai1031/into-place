@@ -1,83 +1,83 @@
-# PLAN — 功能清单（v4，frame-to-video 主路径）
+# PLAN — Feature Checklist (v4, Frame-to-Video Main Path)
 
-原则：状态必须一目了然；先保证随时有一部可播放的 demo，再推进真实付费生成。当前唯一视频主路径是 **approved storyboard frame → fal I2V → FFmpeg assembly**。
+Principle: status must be clear at a glance. First ensure that a playable demo is always available, then proceed with real paid generation. The only current video path is **approved storyboard frame → fal I2V → FFmpeg assembly**.
 
 ---
 
-## 素材处理管线
+## Asset Processing Pipeline
 
-目标：有来源的档案 → 通过审核的 card / cutout / background 图层。
+Goal: sourced archival materials → reviewed card / cutout / background layers.
 
-- [x] 声明式 recipe 批量处理 JPG / TIFF
-- [x] 历史素材默认 `tone:mono`，现代照片保留 `source`，`sepia` 备用
-- [x] fal SAM 3 / 本地 rembg 只生成 alpha；RGB 始终来自本地原图
-- [x] source review、visual review、QA 与 provenance 落盘
-- [x] 19 个已发布图层可用于 Storyboard
-- [ ] `asset_013` PDF 人工选页后再进入预处理——不阻塞 demo
+- [x] Process JPG / TIFF files in batches using declarative recipes
+- [x] Default historical assets to `tone:mono`; retain `source` for modern photos, with `sepia` as an alternative
+- [x] Use fal SAM 3 / local rembg only to generate alpha; RGB always comes from the local source image
+- [x] Persist source review, visual review, QA, and provenance
+- [x] Make 19 published layers available to Storyboard
+- [ ] Send the `asset_013` PDF through preprocessing after manual page selection—does not block the demo
 
-## App 工作流
+## App Workflow
 
-- [x] Atlas：Roosevelt Island 种子地点 + Shaxi / Camino 待共创入口
-- [x] Archive：时间轴、素材策展、tone / edge 调整、用户上传与模拟审核
-- [x] Story：3 个故事方向、5–8 个 beat、行内编辑、重写、插入与删除
-- [x] Storyboard：每 beat 可选 generated frame 或 manual collage
-- [x] Generated frame：参考档案、模型选择、文字编辑、拖入素材、provenance
-- [x] Manual collage：真实 cutout 布局、画笔、层级与 undo
-- [x] Film / Journey Book：预渲染样片、来源、许可、贡献者与生成行为清单
-- [x] Library：保存、like、favorite、remove，localStorage 持久化
-- [ ] Place DNA：可选增强项，`/api/dna` 当前保留 stub
+- [x] Atlas: Roosevelt Island seed location + Shaxi / Camino co-creation entry points pending
+- [x] Archive: timeline, asset curation, tone / edge adjustment, user upload, and simulated review
+- [x] Story: 3 story directions, 5–8 beats, inline editing, rewriting, insertion, and deletion
+- [x] Storyboard: choose a generated frame or manual collage for each beat
+- [x] Generated frame: archival references, model selection, text editing, drag-in assets, and provenance
+- [x] Manual collage: real cutout layout, brush, layer ordering, and undo
+- [x] Film / Journey Book: pre-rendered sample film, sources, licenses, contributors, and a generation-action list
+- [x] Library: save, like, favorite, and remove, persisted in localStorage
+- [ ] Place DNA: optional enhancement; `/api/dna` currently remains a stub
 
-## Frame-to-video 主路径
+## Frame-to-Video Main Path
 
-- [x] `lib/prompt-compiler.ts`：从 place / beat / references / motion 编译结构化 prompt
-- [x] `lib/models.ts`：只保留当前 T2I / image-edit / I2V 模型注册表
-- [x] 删除旧的分层视差视频框架与 headless-browser 截帧依赖
-- [ ] Manual collage 导出 1280×720 PNG：优先浏览器 Canvas，必要时服务端 Sharp
-- [ ] `/api/shot/generate`：接收审核后的 frame，queue submit I2V 任务
-- [ ] `/api/shot/status`：轮询任务状态并保存 request ID、成本与输出 URL
-- [ ] 每个镜头最多 3 次生成；之后必须修改 frame 或 prompt
-- [ ] 逐镜审核：身份、建筑、印刷文字、拼贴布局与新增物体检查
-- [ ] 将通过审核的镜头写入 project state
+- [x] `lib/prompt-compiler.ts`: compile a structured prompt from place / beat / references / motion
+- [x] `lib/models.ts`: retain only the current T2I / image-edit / I2V model registry
+- [x] Remove the old layered-parallax video framework and headless-browser frame-capture dependency
+- [ ] Export manual collages as 1280×720 PNGs: prefer browser Canvas, use server-side Sharp when necessary
+- [ ] `/api/shot/generate`: accept a reviewed frame and queue-submit an I2V task
+- [ ] `/api/shot/status`: poll task status and save the request ID, cost, and output URL
+- [ ] Allow no more than 3 generation attempts per shot; after that, the frame or prompt must be changed
+- [ ] Review each shot for identity, architecture, printed text, collage layout, and newly introduced objects
+- [ ] Write approved shots to project state
 
-## 合成与声音
+## Assembly and Sound
 
-- [ ] FFmpeg 拼接所有通过审核的镜头
-- [ ] page turn / wipe / match cut / crossfade 在后期完成
-- [ ] 加入环境声
-- [ ] 可选旁白（TTS 或自录）
-- [ ] 可选音乐，并与环境声 / 旁白做响度平衡
-- [ ] 输出最终 MP4，替换 `public/films/roosevelt-island.mp4`
+- [ ] Use FFmpeg to concatenate all approved shots
+- [ ] Complete page turn / wipe / match cut / crossfade transitions in post-production
+- [ ] Add ambient sound
+- [ ] Add optional narration (TTS or self-recorded)
+- [ ] Add optional music and balance its loudness with ambient sound / narration
+- [ ] Output the final MP4, replacing `public/films/roosevelt-island.mp4`
 
-## Demo 与提交
+## Demo and Submission
 
-- [ ] 全流程彩排 2 次，确认无 fal 时仍可播放预渲染片
-- [ ] 录制 3 分钟 demo
-- [ ] Repo 清理：截图、架构图、`.env.local.example`、无密钥痕迹
-- [ ] 最后 6 小时冻结新功能，只修阻塞 demo 的问题
+- [ ] Rehearse the full flow twice and confirm the pre-rendered film still plays without fal
+- [ ] Record a 3-minute demo
+- [ ] Clean up the repo: screenshots, architecture diagram, `.env.local.example`, and no traces of secrets
+- [ ] Freeze new features for the final 6 hours and fix only issues that block the demo
 
-### Demo 视频脚本（3:00）
+### Demo Video Script (3:00)
 
-| 时间 | 内容 | 对应评分 |
+| Time | Content | Scoring Category |
 |---|---|---|
-| 0:00–0:15 | 钩子：AI 视频抹平了地方，真实档案与社区记忆需要另一种方法 | Creativity |
-| 0:15–1:15 | Atlas → Archive 策展 / 上传 → 选择故事方向 → 修改 beat | User Value |
-| 1:15–2:00 | 生成或手工制作分镜帧 → 拖入档案素材 → 只重生成一个镜头 | Technical |
-| 2:00–2:35 | 播放约 31 秒成片 | Demo |
-| 2:35–3:00 | Journey Book：来源、许可、社区署名与生成记录 | Trust |
+| 0:00–0:15 | Hook: AI video flattens the character of places; real archives and community memory need a different approach | Creativity |
+| 0:15–1:15 | Atlas → Archive curation / upload → choose a story direction → edit a beat | User Value |
+| 1:15–2:00 | Generate or handcraft storyboard frames → drag in archival assets → regenerate only one shot | Technical |
+| 2:00–2:35 | Play the approximately 31-second finished film | Demo |
+| 2:35–3:00 | Journey Book: sources, licenses, community attribution, and generation records | Trust |
 
-## 预算纪律
+## Budget Discipline
 
-- 每次付费调用前复核 fal schema 与当日价格。
-- 单次预估成本超过 $5、hero 模型或累计成本异常时先确认。
-- 每个镜头最多 3 次尝试；request ID、模型、参数、成本和输出必须写入项目状态。
-- 生成视频失败时播放预渲染 demo，不伪装为实时生成结果。
+- Recheck the fal schema and current-day price before every paid call.
+- Confirm first when a single estimated cost exceeds $5, a hero model is used, or cumulative cost is abnormal.
+- Allow no more than 3 attempts per shot; the request ID, model, parameters, cost, and output must be written to project state.
+- If video generation fails, play the pre-rendered demo and do not present it as a real-time generation result.
 
-## 风险登记
+## Risk Register
 
-| 风险 | 触发信号 | 应对 |
+| Risk | Trigger Signal | Response |
 |---|---|---|
-| I2V 改写主体或建筑 | 人脸、文字、结构漂移 | 停止重 roll，简化 frame / prompt 或更换模型 |
-| Manual collage 无法稳定导出 | CORS、字体或尺寸差异 | 服务端用 Sharp 合成审核后的本地图层 |
-| fal queue 超时 | Film 页长时间 pending | 保存 job ID，允许刷新后继续轮询；demo 播预渲染片 |
-| 合成失败 | FFmpeg 参数或输入格式不一致 | 统一 16:9、帧率、编码与音频采样率后重试 |
-| 时间不足 | I2V / assembly 尚未接通 | 冻结增强项，保证 Storyboard + 预渲染片 + Journey Book 可演示 |
+| I2V rewrites the subject or architecture | Faces, text, or structures drift | Stop rerolling; simplify the frame / prompt or switch models |
+| Manual collage cannot be exported reliably | CORS, font, or dimension differences | Use server-side Sharp to composite the reviewed local layers |
+| fal queue times out | Film page remains pending for a long time | Save the job ID and allow polling to resume after refresh; play the pre-rendered film in the demo |
+| Assembly fails | FFmpeg parameters or input formats are inconsistent | Standardize 16:9, frame rate, codec, and audio sample rate, then retry |
+| Insufficient time | I2V / assembly is not yet connected | Freeze enhancements and ensure Storyboard + pre-rendered film + Journey Book remain demonstrable |

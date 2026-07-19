@@ -717,7 +717,7 @@
       "id": "asset_022_temporary_home_cutout",
       "assetId": "asset_022",
       "sourceSha256": "768e3038465c1d4bc7589e7b92740b9717f1e42a0356c4eda8d412f6607aee90",
-      "recipeSha256": "a65944a92b51af01be50e59f26515ffb0c788dcdb972f6f6e6cd4fbc2a7ca477",
+      "recipeSha256": "ced86008378570dcb1d12409a94d76fccde52e9257c9652886c8fbe94d07295c",
       "input": "assets/archive/asset_022.png",
       "output": "assets/cutouts/asset_022_temporary_home_cutout.png",
       "identity": "The complete Temporary Home for Women building illustration",
@@ -736,9 +736,9 @@
         "provider": "local-paper",
         "paperPercentile": 0.82,
         "blurSigma": 18,
-        "transparentThreshold": 14,
-        "opaqueThreshold": 78,
-        "qa": { "minCoverage": 0.01, "maxCoverage": 0.65, "maxConnectedComponents": 512 }
+        "transparentThreshold": 24,
+        "opaqueThreshold": 82,
+        "qa": { "minCoverage": 0.01, "maxCoverage": 0.65, "maxConnectedComponents": 1024 }
       }
     },
     {
@@ -765,7 +765,7 @@
       "id": "asset_023_police_cutout",
       "assetId": "asset_023",
       "sourceSha256": "47dddeb84f494b401b5e5af08dac742fb4cc467ddf035dd7f0a20d05f678effe",
-      "recipeSha256": "51d1e09d7d0ff796740822bb7e3728a6b900726696877807aa196bd5b4db2141",
+      "recipeSha256": "eb19dd9346c562adb22d845c55efcfe15c98f1e61270677e2b2043e7b8e6f486",
       "input": "assets/archive/asset_023.png",
       "output": "assets/cutouts/asset_023_police_cutout.png",
       "identity": "The complete In the Hands of the Police group illustration",
@@ -784,9 +784,9 @@
         "provider": "local-paper",
         "paperPercentile": 0.82,
         "blurSigma": 18,
-        "transparentThreshold": 14,
-        "opaqueThreshold": 78,
-        "qa": { "minCoverage": 0.01, "maxCoverage": 0.65, "maxConnectedComponents": 512 }
+        "transparentThreshold": 22,
+        "opaqueThreshold": 80,
+        "qa": { "minCoverage": 0.01, "maxCoverage": 0.65, "maxConnectedComponents": 1024 }
       }
     },
     {
@@ -813,7 +813,7 @@
       "id": "asset_024_judge_duffy_cutout",
       "assetId": "asset_024",
       "sourceSha256": "ee5f928c3b177fcd4f7d39441b9f63dc78428c9e2e865ebd221360721a484250",
-      "recipeSha256": "e5d9f72481a5da86ee0f3ea7332d5af337faf44432d962dfe52b0fb9b8b3adcc",
+      "recipeSha256": "f2ffcf24d37d35e8a9b055debfe6c4759c4ae3ee39f8b8e8c376627b0c18bad2",
       "input": "assets/archive/asset_024.png",
       "output": "assets/cutouts/asset_024_judge_duffy_cutout.png",
       "identity": "The complete Nellie Before Judge Duffy courtroom illustration",
@@ -832,9 +832,9 @@
         "provider": "local-paper",
         "paperPercentile": 0.82,
         "blurSigma": 18,
-        "transparentThreshold": 14,
-        "opaqueThreshold": 78,
-        "qa": { "minCoverage": 0.01, "maxCoverage": 0.65, "maxConnectedComponents": 512 }
+        "transparentThreshold": 22,
+        "opaqueThreshold": 80,
+        "qa": { "minCoverage": 0.01, "maxCoverage": 0.65, "maxConnectedComponents": 1024 }
       }
     },
     {
@@ -862,7 +862,7 @@
       "id": "asset_025_nellie_writing_cutout",
       "assetId": "asset_025",
       "sourceSha256": "996fe8b9a651ebcbfb4136b84a427d28398f536a09eb095ef3c3c5d2623bc0b9",
-      "recipeSha256": "23d9b49d9ddf1c03eb90187bb88842019200a1eb8fbb375c472e1f4492d12cfe",
+      "recipeSha256": "ebb42abf503ca11019eb2c715d65a424134ef3080d3493bd1537a8b9986b9c7d",
       "input": "assets/archive/asset_025.png",
       "output": "assets/cutouts/asset_025_nellie_writing_cutout.png",
       "identity": "The complete chapter-opening illustration of Nellie Bly writing at her desk",
@@ -882,9 +882,9 @@
         "provider": "local-paper",
         "paperPercentile": 0.82,
         "blurSigma": 14,
-        "transparentThreshold": 13,
-        "opaqueThreshold": 72,
-        "qa": { "minCoverage": 0.01, "maxCoverage": 0.65, "maxConnectedComponents": 512 }
+        "transparentThreshold": 20,
+        "opaqueThreshold": 76,
+        "qa": { "minCoverage": 0.01, "maxCoverage": 0.65, "maxConnectedComponents": 1024 }
       }
     },
     {

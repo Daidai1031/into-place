@@ -145,3 +145,51 @@ export const I2V_HERO = "veo3.1-hero";
 
 export const MAX_ATTEMPTS_PER_SHOT = 3;
 export const COST_CONFIRMATION_THRESHOLD_USD = 5;
+
+/**
+ * Audio pass (post-production, the last step before export). Two kinds:
+ *  - "video-to-audio": diegetic foley synchronized to a rendered clip's motion.
+ *  - "text-to-music":  one restrained score bed for the whole film.
+ * The i2v clips themselves stay muted (generate_audio:false); sound is added
+ * here so it stays curated and separable — see lib/prompt-compiler AUDIO block.
+ */
+export interface AudioModel {
+  endpointId: string;
+  displayName: string;
+  unitPrice: number;
+  unit: "seconds" | "30 seconds";
+  kind: "video-to-audio" | "text-to-music";
+  /** MMAudio-style models mux the audio back into a video and return `video`. */
+  returns: "video" | "audio";
+  verifyBeforeCall: boolean;
+  notes?: string;
+}
+
+export const MMAUDIO_V2: AudioModel = {
+  endpointId: "fal-ai/mmaudio-v2",
+  displayName: "MMAudio V2 (video→synced foley)",
+  unitPrice: 0.001,
+  unit: "seconds",
+  kind: "video-to-audio",
+  returns: "video",
+  verifyBeforeCall: false, // schema + $0.001/s verified via fal MCP 2026-07-19
+  notes:
+    "Input video_url + prompt (+ negative_prompt, duration, seed); generates audio timed to on-screen motion and returns the video with that audio muxed in.",
+};
+
+export const LYRIA2: AudioModel = {
+  endpointId: "fal-ai/lyria2",
+  displayName: "Lyria 2 (text→music)",
+  unitPrice: 0.1,
+  unit: "30 seconds",
+  kind: "text-to-music",
+  returns: "audio",
+  verifyBeforeCall: false, // schema + $0.10/30s verified via fal MCP 2026-07-19
+  notes:
+    "Google Lyria 2; input prompt (+ negative_prompt, seed), no duration control — loop/trim to film length in post.",
+};
+
+export const FOLEY_MODELS: Record<string, AudioModel> = { "mmaudio-v2": MMAUDIO_V2 };
+export const MUSIC_MODELS: Record<string, AudioModel> = { lyria2: LYRIA2 };
+export const FOLEY_DEFAULT = "mmaudio-v2";
+export const MUSIC_DEFAULT = "lyria2";

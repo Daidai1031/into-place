@@ -1812,6 +1812,65 @@
             "outputHeight": 1462
           },
           "quality_warnings": []
+        },
+        {
+          "recipe_id": "asset_022_temporary_home_cutout",
+          "file": "assets/cutouts/asset_022_temporary_home_cutout.png",
+          "role": "cutout",
+          "requested_role": "cutout",
+          "tone": "source",
+          "edge": "none",
+          "source_sha256": "768e3038465c1d4bc7589e7b92740b9717f1e42a0356c4eda8d412f6607aee90",
+          "recipe_sha256": "ced86008378570dcb1d12409a94d76fccde52e9257c9652886c8fbe94d07295c",
+          "output_sha256": "8b5e7db0742bb71b0b11e3df2d40cbc0c034d7f3e32d91ea637c4c3ff562d890",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "normalized-crop:0.18,0.02,0.65,0.8",
+            "resize-inside:2400:without-enlargement",
+            "tone:source",
+            "cached-mask-alpha-only",
+            "edge:none"
+          ],
+          "fal_calls": [],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 960,
+            "height": 1080,
+            "opaquePixels": 363616,
+            "coverage": 0.3507098765432099,
+            "bbox": {
+              "left": 23,
+              "top": 5,
+              "width": 906,
+              "height": 1072
+            },
+            "connectedComponents": 481,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.01,
+              "maxCoverage": 0.65,
+              "maxConnectedComponents": 1024
+            },
+            "outputWidth": 960,
+            "outputHeight": 1080
+          },
+          "quality_warnings": []
         }
       ],
       "description": "Illustration extracted from PDF page 13 of asset_013.pdf."
@@ -1888,6 +1947,65 @@
             },
             "outputWidth": 1376,
             "outputHeight": 1184
+          },
+          "quality_warnings": []
+        },
+        {
+          "recipe_id": "asset_023_police_cutout",
+          "file": "assets/cutouts/asset_023_police_cutout.png",
+          "role": "cutout",
+          "requested_role": "cutout",
+          "tone": "source",
+          "edge": "none",
+          "source_sha256": "47dddeb84f494b401b5e5af08dac742fb4cc467ddf035dd7f0a20d05f678effe",
+          "recipe_sha256": "eb19dd9346c562adb22d845c55efcfe15c98f1e61270677e2b2043e7b8e6f486",
+          "output_sha256": "7da453def2546d48c20a3c8e9a9301af66ca214579b4f97e040917df73535cf2",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "normalized-crop:0.16,0.03,0.7,0.8",
+            "resize-inside:2400:without-enlargement",
+            "tone:source",
+            "cached-mask-alpha-only",
+            "edge:none"
+          ],
+          "fal_calls": [],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 885,
+            "height": 858,
+            "opaquePixels": 149596,
+            "coverage": 0.19701052243425124,
+            "bbox": {
+              "left": 26,
+              "top": 0,
+              "width": 857,
+              "height": 858
+            },
+            "connectedComponents": 141,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.01,
+              "maxCoverage": 0.65,
+              "maxConnectedComponents": 1024
+            },
+            "outputWidth": 885,
+            "outputHeight": 858
           },
           "quality_warnings": []
         }
@@ -1968,6 +2086,65 @@
             "outputHeight": 1460
           },
           "quality_warnings": []
+        },
+        {
+          "recipe_id": "asset_024_judge_duffy_cutout",
+          "file": "assets/cutouts/asset_024_judge_duffy_cutout.png",
+          "role": "cutout",
+          "requested_role": "cutout",
+          "tone": "source",
+          "edge": "none",
+          "source_sha256": "ee5f928c3b177fcd4f7d39441b9f63dc78428c9e2e865ebd221360721a484250",
+          "recipe_sha256": "f2ffcf24d37d35e8a9b055debfe6c4759c4ae3ee39f8b8e8c376627b0c18bad2",
+          "output_sha256": "848fca20f8be27f0ccb057cfecd3a3574d5f488c0dab3bf4db96b89afd42697f",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "normalized-crop:0.15,0.03,0.74,0.78",
+            "resize-inside:2400:without-enlargement",
+            "tone:source",
+            "cached-mask-alpha-only",
+            "edge:none"
+          ],
+          "fal_calls": [],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 930,
+            "height": 1051,
+            "opaquePixels": 247442,
+            "coverage": 0.2531557247066286,
+            "bbox": {
+              "left": 16,
+              "top": 18,
+              "width": 894,
+              "height": 1031
+            },
+            "connectedComponents": 91,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.01,
+              "maxCoverage": 0.65,
+              "maxConnectedComponents": 1024
+            },
+            "outputWidth": 930,
+            "outputHeight": 1051
+          },
+          "quality_warnings": []
         }
       ],
       "description": "Illustration extracted from PDF page 28 of asset_013.pdf."
@@ -2044,6 +2221,67 @@
             },
             "outputWidth": 643,
             "outputHeight": 902
+          },
+          "quality_warnings": [
+            "source_crop_is_531px_wide_no_upscale"
+          ]
+        },
+        {
+          "recipe_id": "asset_025_nellie_writing_cutout",
+          "file": "assets/cutouts/asset_025_nellie_writing_cutout.png",
+          "role": "cutout",
+          "requested_role": "cutout",
+          "tone": "source",
+          "edge": "none",
+          "source_sha256": "996fe8b9a651ebcbfb4136b84a427d28398f536a09eb095ef3c3c5d2623bc0b9",
+          "recipe_sha256": "ebb42abf503ca11019eb2c715d65a424134ef3080d3493bd1537a8b9986b9c7d",
+          "output_sha256": "50bf2cb8ea52f9b4490910f63872ac77bab6d589e87c05ddf14ad7e740fdf780",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "normalized-crop:0.08,0.01,0.88,0.84",
+            "resize-inside:2400:without-enlargement",
+            "tone:source",
+            "cached-mask-alpha-only",
+            "edge:none"
+          ],
+          "fal_calls": [],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 467,
+            "height": 664,
+            "opaquePixels": 84178,
+            "coverage": 0.2714648744872423,
+            "bbox": {
+              "left": 0,
+              "top": 8,
+              "width": 467,
+              "height": 656
+            },
+            "connectedComponents": 331,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.01,
+              "maxCoverage": 0.65,
+              "maxConnectedComponents": 1024
+            },
+            "outputWidth": 467,
+            "outputHeight": 664
           },
           "quality_warnings": [
             "source_crop_is_531px_wide_no_upscale"

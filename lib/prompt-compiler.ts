@@ -40,8 +40,84 @@ export const AVOID =
 export const PRESERVATION =
   "no morphing, no new objects, no face changes, no costume changes, no architecture changes, preserve printed text, preserve collage layout";
 
-/** Audio block — generation is always muted; narration/subtitles added later. */
+/** Audio block — the i2v GENERATION is always muted; a curated audio pass
+ * (foley + music) is added later in post, compiled by the helpers below. */
 export const AUDIO = "Diegetic sounds only. No music. No dialogue. No subtitles.";
+
+/**
+ * Sound design (post-production audio pass). Declarative, per-beat, mirroring the
+ * collage-recipe discipline: cues live in the preset and are compiled here — the
+ * prompt is never hand-written. `diegetic` are discrete, on-screen foley cues
+ * ("a quill pen scratching on paper"); `ambient` is the continuous room/place
+ * bed ("faint institutional room tone, distant indistinct murmuring").
+ */
+export interface BeatSound {
+  diegetic?: string[];
+  ambient?: string;
+}
+
+/** Kept OUT of the diegetic foley track: no score, no intelligible words. Voices
+ * (crowd murmur, an orator's cadence) are allowed only as indistinct ambience. */
+export const SOUND_NEGATIVE =
+  "music, musical score, melody, background music, singing, lyrics, intelligible speech, clear spoken words, dialogue, narration, voiceover, subtitles, modern city traffic, car engines, sirens, phone notifications, electronic beeps, synth, distortion, harsh clipping noise";
+
+/** Kept OUT of the music bed: nothing that fights the calm archival mood. */
+export const MUSIC_NEGATIVE =
+  "harsh, aggressive, horror, eerie, ominous, suspenseful, dissonant, distorted, heavy drums, percussion-driven, EDM, electronic beats, pop, vocals, singing, lyrics, upbeat commercial jingle, triumphant fanfare, low quality";
+
+/**
+ * MMAudio-style prompt for one clip's diegetic foley. Timed to on-screen motion;
+ * sparse, close, period-appropriate. No music (that comes from the score bed).
+ */
+export function compileSoundPrompt(sound: BeatSound, beat?: { act?: string }): string {
+  const cues = sound.diegetic?.length ? sound.diegetic.join("; ") : "";
+  const bed = sound.ambient?.trim();
+  return [
+    "Diegetic sound design for a quiet, tactile, hand-made archival collage film — realistic, close, restrained foley only, timed to the motion on screen.",
+    beat?.act ? `Scene mood: ${beat.act}.` : "",
+    cues ? `Foreground sounds: ${cues}.` : "",
+    bed ? `Continuous background bed: ${bed}.` : "",
+    "Keep it sparse, intimate and period-appropriate. Any human voices are distant and indistinct — never intelligible words, never a clear speaker. No music, no score.",
+  ]
+    .filter(Boolean)
+    .join(" ");
+}
+
+/**
+ * One merged foley prompt for the whole assembled film (fallback when per-clip
+ * renders are unavailable and MMAudio runs on the final cut). Dedupes cues in
+ * beat order so the soundscape reads as a single continuous passage.
+ */
+export function compileWholeFilmSoundPrompt(beats: { sound?: BeatSound; act?: string }[]): string {
+  const cues: string[] = [];
+  const beds: string[] = [];
+  for (const b of beats) {
+    for (const c of b.sound?.diegetic ?? []) if (!cues.includes(c)) cues.push(c);
+    const bed = b.sound?.ambient?.trim();
+    if (bed && !beds.includes(bed)) beds.push(bed);
+  }
+  return [
+    "Diegetic sound design for a short, quiet, hand-made archival collage film — a single continuous passage of realistic, close, restrained foley timed to the motion on screen.",
+    cues.length ? `Foreground sounds, unfolding in order: ${cues.join("; ")}.` : "",
+    beds.length ? `Shifting background bed: ${beds.join("; then ")}.` : "",
+    "Keep it sparse, intimate and period-appropriate. Any human voices are distant and indistinct — never intelligible words. No music, no score.",
+  ]
+    .filter(Boolean)
+    .join(" ");
+}
+
+/**
+ * Text-to-music prompt for the score bed. Derived from the film's mood, not
+ * hand-tuned per run; deliberately low-energy so it sits under the foley.
+ */
+export function compileMusicPrompt(args: { title?: string; premise?: string } = {}): string {
+  return [
+    "An original instrumental score for a reflective historical documentary collage film about a place and the voices it tried to contain.",
+    "Warm, sparse and nostalgic: soft solo piano with subtle warm strings and a low sustained drone, slow tempo, gentle and human, quietly hopeful.",
+    "Restrained, calm and contemplative — like leafing through an old family archive; never eerie, never somber, never suspenseful, never grand or triumphant.",
+    "Low, even dynamics so it can sit softly beneath narration and diegetic sound. Muted, aged, analog warmth, gentle tape hiss. Instrumental only, no vocals, no drums.",
+  ].join(" ");
+}
 
 /** A sparse collage reads more clearly and keeps each archival source legible. */
 export const MAX_SOURCE_IMAGES_PER_FRAME = 7;
