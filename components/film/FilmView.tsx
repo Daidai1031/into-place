@@ -14,6 +14,25 @@ interface GenStep {
   label: string;
 }
 type Phase = "idle" | "running" | "done" | "failed";
+type SceneStatus = "waiting" | "queued" | "rendering" | "done" | "failed";
+interface SceneState {
+  beatId: string;
+  act: string;
+  status: SceneStatus;
+  motionPrompt?: string;
+  model?: string;
+  costUsd?: number;
+  videoUrl?: string;
+  error?: string;
+}
+
+const SCENE_STATUS_LABEL: Record<SceneStatus, string> = {
+  waiting: "queued to start",
+  queued: "submitting to the model…",
+  rendering: "animating — this takes 1–3 min…",
+  done: "ready — preview below",
+  failed: "failed",
+};
 interface Caps {
   isLocal: boolean;
   canRunPipeline: boolean;
@@ -36,6 +55,8 @@ export function FilmView({ place }: { place: Place }) {
   const [phase, setPhase] = useState<Phase>("idle");
   const [steps, setSteps] = useState<GenStep[]>([]);
   const [stepIndex, setStepIndex] = useState(0);
+  const [scenes, setScenes] = useState<SceneState[]>([]);
+  const [assembling, setAssembling] = useState(false);
   const [mode, setMode] = useState<string>("simulated");
   const [filmUrl, setFilmUrl] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
@@ -101,12 +122,15 @@ export function FilmView({ place }: { place: Place }) {
     throw new Error("shot timed out");
   }
 
+  const patchScene = (i: number, patch: Partial<SceneState>) =>
+    setScenes((prev) => prev.map((s, idx) => (idx === i ? { ...s, ...patch } : s)));
+
   async function runReal() {
     setMode("local");
-    setSteps([
-      ...renderableShots.map((s, i) => ({ label: `Animating scene ${i + 1}: ${s.beat.act}` })),
-      { label: "Assembling the film" },
-    ]);
+    setAssembling(false);
+    setScenes(
+      renderableShots.map((s) => ({ beatId: s.beat.id, act: s.beat.act, status: "waiting" })),
+    );
     await fetch("/api/project/save", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -115,8 +139,8 @@ export function FilmView({ place }: { place: Place }) {
 
     const clips: { videoUrl: string; transitionType: string | null }[] = [];
     for (let i = 0; i < renderableShots.length; i++) {
-      setStepIndex(i);
       const { beat, next } = renderableShots[i];
+      patchScene(i, { status: "queued" });
       const gen = await fetch("/api/shot/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -129,16 +153,33 @@ export function FilmView({ place }: { place: Place }) {
         }),
       }).then((r) => r.json());
       if (gen.status !== "queued") {
-        throw new Error(gen.error ?? `scene ${i + 1}: ${gen.status ?? "failed"}`);
+        const msg = gen.error ?? `scene ${i + 1}: ${gen.status ?? "failed"}`;
+        patchScene(i, { status: "failed", error: msg, motionPrompt: gen.motionPrompt });
+        throw new Error(msg);
       }
-      const videoUrl = await pollShot(gen.endpointId, gen.requestId);
+      // Surface exactly what the model was told + which model + cost, live.
+      patchScene(i, {
+        status: "rendering",
+        motionPrompt: gen.motionPrompt,
+        model: gen.model,
+        costUsd: gen.estimatedCostUsd,
+      });
+      let videoUrl: string;
+      try {
+        videoUrl = await pollShot(gen.endpointId, gen.requestId);
+      } catch (e) {
+        patchScene(i, { status: "failed", error: e instanceof Error ? e.message : "shot failed" });
+        throw e;
+      }
+      // Preview this clip immediately — don't wait for the other scenes.
+      patchScene(i, { status: "done", videoUrl });
       const transitionType = next
         ? (project.transitions[`${beat.id}->${next.id}`]?.type ?? null)
         : null;
       clips.push({ videoUrl, transitionType });
     }
 
-    setStepIndex(renderableShots.length);
+    setAssembling(true);
     const asm = await fetch("/api/assemble", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -147,7 +188,7 @@ export function FilmView({ place }: { place: Place }) {
     const asmData = await asm.json();
     if (!asm.ok) throw new Error(asmData.error ?? "assembly failed");
     setFilmUrl(asmData.filmUrl);
-    setStepIndex(renderableShots.length + 1);
+    setAssembling(false);
     setPhase("done");
   }
 
@@ -183,6 +224,8 @@ export function FilmView({ place }: { place: Place }) {
     setPhase("running");
     setError(null);
     setStepIndex(0);
+    setScenes([]);
+    setAssembling(false);
     cancelled.current = false;
     try {
       if (canRunReal) await runReal();
@@ -311,7 +354,89 @@ export function FilmView({ place }: { place: Place }) {
         </div>
       )}
 
-      {phase === "running" && (
+      {/* Live per-scene view (real image-to-video run): status, the exact prompt
+          each scene is animated with, and an inline preview the moment a clip lands. */}
+      {phase === "running" && scenes.length > 0 && (
+        <div className="mx-auto mt-12 max-w-2xl">
+          <p className="mb-4 text-center font-typewriter text-xs text-ink-soft">
+            {scenes.filter((s) => s.status === "done").length} of {scenes.length} scenes rendered
+            {assembling ? " · stitching the film…" : ""}
+          </p>
+          <div className="flex flex-col gap-5">
+            {scenes.map((s, i) => {
+              const active = s.status === "queued" || s.status === "rendering";
+              return (
+                <div
+                  key={s.beatId}
+                  className={`border bg-paper-deep/20 p-3 ${
+                    s.status === "done"
+                      ? "border-accent/40"
+                      : s.status === "failed"
+                        ? "border-stamp/50"
+                        : active
+                          ? "border-ink/40"
+                          : "border-ink/12"
+                  }`}
+                >
+                  <div className="flex items-baseline justify-between gap-3">
+                    <span className="font-typewriter text-sm text-ink">
+                      Scene {i + 1} · {s.act}
+                    </span>
+                    <span
+                      className={`font-typewriter text-[11px] ${
+                        s.status === "done"
+                          ? "text-accent"
+                          : s.status === "failed"
+                            ? "text-stamp"
+                            : "text-ink-soft"
+                      }`}
+                    >
+                      {s.status === "done" ? "✓ " : s.status === "failed" ? "✕ " : ""}
+                      {SCENE_STATUS_LABEL[s.status]}
+                      {active && <span className="animate-pulse">…</span>}
+                    </span>
+                  </div>
+
+                  {(s.model || typeof s.costUsd === "number") && (
+                    <p className="mt-1 font-typewriter text-[10px] uppercase tracking-widest text-ink-soft/70">
+                      {s.model ? I2V_MODELS[s.model]?.displayName ?? s.model : ""}
+                      {typeof s.costUsd === "number" ? ` · ~$${s.costUsd.toFixed(2)}` : ""}
+                    </p>
+                  )}
+
+                  {s.motionPrompt && (
+                    <details className="mt-2" open={active}>
+                      <summary className="cursor-pointer font-typewriter text-[11px] text-ink-soft hover:text-stamp">
+                        motion prompt
+                      </summary>
+                      <p className="mt-1 whitespace-pre-wrap border-l-2 border-ink/15 pl-2 font-mono text-[11px] leading-relaxed text-ink-soft">
+                        {s.motionPrompt}
+                      </p>
+                    </details>
+                  )}
+
+                  {s.error && (
+                    <p className="mt-2 font-typewriter text-[11px] text-stamp">{s.error}</p>
+                  )}
+
+                  {s.videoUrl && (
+                    <video
+                      src={s.videoUrl}
+                      controls
+                      loop
+                      muted
+                      className="mt-3 w-full border border-ink/10"
+                    />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Simulated / demo run keeps the simple linear checklist. */}
+      {phase === "running" && scenes.length === 0 && (
         <div className="mx-auto mt-12 max-w-md">
           {steps.map((step, i) => (
             <div key={step.label} className="flex items-center gap-3 py-2">

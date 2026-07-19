@@ -10,6 +10,7 @@ import { CollageButton } from "@/components/ui/CollageButton";
 import { StoryLoadingState } from "./StoryLoadingState";
 import { DirectionPicker, type Direction } from "./DirectionPicker";
 import { BeatCard } from "./BeatCard";
+import { AristotelianArc } from "./AristotelianArc";
 
 const MIN_BEATS = 5;
 const MAX_BEATS = 8;
@@ -165,13 +166,16 @@ export function StoryView({ place, preset }: { place: Place; preset?: StoryPrese
   const chosen = story?.directions.find((d) => d.id === story.chosenDirectionId);
 
   return (
-    <main className="mx-auto max-w-4xl px-6 pb-24 pt-8">
+    <main className="mx-auto max-w-7xl px-4 pb-24 pt-8 sm:px-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="text-3xl">The story continues</h2>
-          <p className="mt-1 font-typewriter text-sm text-ink-soft">
-            {assetBriefs.length} curated archive items feed the narrative. AI
-            drafts, you decide.
+          <p className="font-typewriter text-[10px] uppercase tracking-[0.22em] text-stamp">
+            Step 02 / Story
+          </p>
+          <h1 className="mt-1 text-3xl">Shape the narrative</h1>
+          <p className="mt-1 max-w-xl font-typewriter text-xs leading-relaxed text-ink-soft">
+            {assetBriefs.length} curated archive items feed the narrative. AI drafts the material;
+            you decide its emotional shape.
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -241,65 +245,86 @@ export function StoryView({ place, preset }: { place: Place; preset?: StoryPrese
           </div>
         )
       ) : (
-        <section className="mt-8">
-          <div className="mb-5 border-l-4 border-stamp/60 bg-paper-deep/30 px-4 py-2">
+        <section className="mt-10">
+          <div className="mb-8 border-l-2 border-stamp bg-paper-deep/25 px-4 py-3">
             <span className="font-typewriter text-[10px] uppercase tracking-widest text-ink-soft">
-              Direction
+              Chosen direction
             </span>
             <p className="font-display text-base">
               {chosen.title} — <span className="text-ink-soft">{chosen.premise}</span>
             </p>
           </div>
 
-          <div className="flex flex-col gap-4">
-            {story.beats.map((beat, i) => (
-              <div key={beat.id}>
-                <BeatCard
-                  beat={beat}
-                  index={i}
-                  canDelete={story.beats.length > MIN_BEATS}
-                  busy={busy !== null}
-                  onEdit={(text) =>
-                    update((prev) => ({
-                      ...prev,
-                      story: prev.story && {
-                        ...prev.story,
-                        beats: prev.story.beats.map((b) =>
-                          b.id === beat.id ? { ...b, text } : b,
-                        ),
-                      },
-                    }))
-                  }
-                  onReroll={() => void reroll(beat.id, "reroll")}
-                  onDelete={() =>
-                    update((prev) => ({
-                      ...prev,
-                      story: prev.story && {
-                        ...prev.story,
-                        beats: prev.story.beats.filter((b) => b.id !== beat.id),
-                      },
-                    }))
-                  }
-                />
-                {i < story.beats.length - 1 && story.beats.length < MAX_BEATS && (
-                  <div className="flex justify-center py-1">
-                    <button
-                      onClick={() => void reroll(beat.id, "insert_after")}
-                      disabled={busy !== null}
-                      className="cursor-pointer font-hand text-sm text-ink-soft/60 hover:text-accent disabled:opacity-30"
-                      title="Ask AI to add a beat here"
-                    >
-                      + add a beat here
-                    </button>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+          <AristotelianArc
+            beats={story.beats}
+            preset={preset}
+            assets={place.assets.filter(
+              (asset) => (project.selections[asset.id] ?? asset.status) !== "rejected",
+            )}
+          />
 
-          <p className="mt-3 text-center font-typewriter text-[11px] text-ink-soft">
-            {story.beats.length} of {MAX_BEATS} beats · a story needs {MIN_BEATS}–{MAX_BEATS}
-          </p>
+          <details className="group mx-auto mt-10 max-w-4xl" open>
+            <summary className="flex cursor-pointer list-none items-center justify-between border-b border-ink/25 pb-3">
+              <div>
+                <p className="font-typewriter text-[10px] uppercase tracking-[0.2em] text-stamp">
+                  Story workbench
+                </p>
+                <h2 className="mt-1 text-2xl">Refine the five beats</h2>
+              </div>
+              <span className="font-hand text-sm text-ink-soft group-open:hidden">open notes +</span>
+              <span className="hidden font-hand text-sm text-ink-soft group-open:inline">hide notes &minus;</span>
+            </summary>
+
+            <div className="mt-5 flex flex-col gap-4">
+              {story.beats.map((beat, i) => (
+                <div key={beat.id}>
+                  <BeatCard
+                    beat={beat}
+                    index={i}
+                    canDelete={story.beats.length > MIN_BEATS}
+                    busy={busy !== null}
+                    onEdit={(text) =>
+                      update((prev) => ({
+                        ...prev,
+                        story: prev.story && {
+                          ...prev.story,
+                          beats: prev.story.beats.map((b) =>
+                            b.id === beat.id ? { ...b, text } : b,
+                          ),
+                        },
+                      }))
+                    }
+                    onReroll={() => void reroll(beat.id, "reroll")}
+                    onDelete={() =>
+                      update((prev) => ({
+                        ...prev,
+                        story: prev.story && {
+                          ...prev.story,
+                          beats: prev.story.beats.filter((b) => b.id !== beat.id),
+                        },
+                      }))
+                    }
+                  />
+                  {i < story.beats.length - 1 && story.beats.length < MAX_BEATS && (
+                    <div className="flex justify-center py-1">
+                      <button
+                        onClick={() => void reroll(beat.id, "insert_after")}
+                        disabled={busy !== null}
+                        className="cursor-pointer font-hand text-sm text-ink-soft/60 hover:text-accent disabled:opacity-30"
+                        title="Ask AI to add a beat here"
+                      >
+                        + add a beat here
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <p className="mt-3 text-center font-typewriter text-[11px] text-ink-soft">
+              {story.beats.length} of {MAX_BEATS} beats · a story needs {MIN_BEATS}–{MAX_BEATS}
+            </p>
+          </details>
 
           <div className="mt-8 flex justify-end">
             <Link
