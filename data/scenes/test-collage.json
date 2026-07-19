@@ -1,5 +1,5 @@
 {
-  "_note": "HyperFrames spike 用的最小测试场景,不是最终 collage——只有 asset_002 一张真实素材,重复用在两层上验证视差/相机管线。真正的手工拼贴还是开发者自己在 Figma/cutout.mjs 里做。",
+  "_note": "Legacy Day 0 parallax spike fixture. Retained only for preprocess regression coverage; not part of the active frame-to-video pipeline.",
   "planes": [
     { "asset": "assets/cutouts/asset_002_asylum_card.png", "z": 0.85, "x": 0.05, "y": 0.05, "scale": 0.07, "shadow": true },
     { "asset": "assets/cutouts/asset_002_asylum_card.png", "z": 0.15, "x": -0.15, "y": -0.1, "scale": 0.18, "shadow": false }

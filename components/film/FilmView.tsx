@@ -31,8 +31,13 @@ export function FilmView({ place }: { place: Place }) {
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
 
   const beats = project.story?.beats ?? [];
-  const laidOutCount = beats.filter((b) => (project.layouts[b.id]?.items.length ?? 0) > 0).length;
-  const ready = beats.length >= 5 && laidOutCount === beats.length;
+  const readyCount = beats.filter((b) => {
+    const beatMode = project.beatMode[b.id] ?? "generated";
+    return beatMode === "generated"
+      ? Boolean(project.frames[b.id]?.imageUrl)
+      : (project.layouts[b.id]?.items.length ?? 0) > 0;
+  }).length;
+  const ready = beats.length >= 5 && readyCount === beats.length;
 
   async function generate() {
     setPhase("running");
@@ -98,8 +103,8 @@ export function FilmView({ place }: { place: Place }) {
         <div>
           <h2 className="text-3xl">The film</h2>
           <p className="mt-1 font-typewriter text-sm text-ink-soft">
-            {beats.length} scenes · {laidOutCount} collaged ·{" "}
-            {mode === "local" ? "live pipeline" : "simulation mode"}
+            {beats.length} scenes · {readyCount} storyboarded ·{" "}
+            {mode === "local-preview" ? "local preview" : "simulation mode"}
           </p>
         </div>
         {filmsHydrated && films.length > 0 && (
@@ -117,7 +122,7 @@ export function FilmView({ place }: { place: Place }) {
           <p className="font-hand text-xl text-ink-soft">
             {beats.length < 5
               ? "The film needs a story first."
-              : `${beats.length - laidOutCount} scene${beats.length - laidOutCount > 1 ? "s" : ""} still need a collage.`}
+              : `${beats.length - readyCount} scene${beats.length - readyCount > 1 ? "s" : ""} still need an approved frame.`}
           </p>
           <Link
             href={`/p/${place.slug}/${beats.length < 5 ? "story" : "storyboard"}`}
@@ -131,8 +136,8 @@ export function FilmView({ place }: { place: Place }) {
       {ready && phase === "idle" && (
         <div className="mt-12 flex flex-col items-center gap-4">
           <p className="max-w-md text-center font-hand text-xl text-ink-soft">
-            Every scene is collaged from sourced archive pixels. Ready when you
-            are.
+            Every scene has an approved start frame. Ready to prepare the film
+            preview.
           </p>
           <CollageButton onClick={() => void generate()} className="px-8 py-3 text-base">
             🎬 Generate the film
@@ -178,16 +183,16 @@ export function FilmView({ place }: { place: Place }) {
             ) : (
               <div className="flex aspect-video items-center justify-center">
                 <p className="max-w-sm text-center font-typewriter text-sm text-paper/80">
-                  No rendered film yet — scene definitions were written for the
-                  render pipeline. Run it locally, then refresh.
+                  No rendered film yet — connect I2V generation and assembly,
+                  then refresh.
                 </p>
               </div>
             )}
           </div>
           <div className="mt-2 flex items-center justify-between">
             <p className="font-typewriter text-[11px] text-ink-soft">
-              {mode === "local"
-                ? "Scene definitions written to data/scenes/generated/ — deterministic render, archive pixels untouched."
+              {mode === "local-preview"
+                ? "Storyboard state saved locally — I2V generation and assembly are not connected yet."
                 : "Simulation mode: playing the pre-rendered demonstration film."}
             </p>
             {filmUrl && !saved && (

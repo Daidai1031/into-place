@@ -7,7 +7,6 @@
     "preprocess": "node --env-file-if-exists=.env.local scripts/batch-cutout.mjs",
     "preprocess:review": "node scripts/preprocess-contact-sheet.mjs",
     "test:preprocess": "node --test tests/*.test.mjs tests/preprocess/*.test.mjs",
-    "render-frame": "node scripts/render-scene.mjs",
     "experiment": "node --env-file-if-exists=.env.local --import tsx scripts/run-experiment.mjs",
     "sync-public": "node scripts/sync-public.mjs",
     "dev": "node scripts/sync-public.mjs && next dev",
@@ -17,7 +16,6 @@
   "dependencies": {
     "@fal-ai/client": "^1.2.0",
     "next": "^15.3.4",
-    "puppeteer": "^23.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "server-only": "^0.0.1",
@@ -28,14 +26,12 @@
     "@types/node": "^22.15.0",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
-    "hyperframes": "^0.7.63",
     "tailwindcss": "^4.1.10",
     "tsx": "^4.19.0",
     "typescript": "^5.8.0"
   },
   "allowScripts": {
     "esbuild@0.28.1": true,
-    "puppeteer@23.11.1": true,
     "sharp@0.33.5": true,
     "@google/genai@1.52.0": true,
     "esbuild@0.25.12": true,

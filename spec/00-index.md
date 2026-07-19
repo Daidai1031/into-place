@@ -4,10 +4,10 @@
 
 | 文件 | 内容 |
 |---|---|
-| `01-data-model.md` | Project / Place / Asset / Scene / Shot 数据结构 |
+| `01-data-model.md` | Project / Place / Asset / Frame / Shot 数据结构 |
 | `02-ui-pages.md` | 地图落地页 + 4 个工作页的规格 |
 | `03-api.md` | Server routes 与安全约定 |
-| `04-shot-router.md` | 镜头类型 → 引擎/模型路由,prompt 编译规则 |
+| `04-shot-router.md` | 分镜帧 → I2V 模型路由、prompt 与转场规则 |
 | `05-assets-audio-files.md` | 素材预处理、音频、文件目录约定 |
 | `06-place-case.md` | 首个案例(Roosevelt Island)五幕大纲;沙溪备选;共创档案机制 |
 
@@ -17,4 +17,4 @@ Three.js / XYZ 拖拽 / 摄影机关键帧编辑器 · 时间线编辑器 · 积
 
 ## 竞争定位一句话(用于 demo 与 repo)
 
-通用 AI 分镜工作台(如 Preview.io)帮你更快地生成任何画面;Into Place 只帮你讲述**一个真实地方**——素材必须有来源,视差镜头零生成、零幻觉,个人照片成为地方公共档案的一部分。
+通用 AI 分镜工作台(如 Preview.io)帮你更快地生成任何画面;Into Place 只帮你讲述**一个真实地方**——素材必须有来源,档案与生成内容始终分层标注,个人照片可以成为地方公共档案的一部分。

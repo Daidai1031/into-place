@@ -42,7 +42,7 @@ type PreprocessSelection = {
 
 ## 音频
 
-生成镜头(fal_i2v/fal_flf)输出始终不带声音/字幕;这样 TTS 旁白反复改词、字幕校对不需要重跑视频生成(省钱且更稳),字幕也能保证与档案原文逐字一致——这是既定策略,不是临时限制。
+生成镜头(`fal_i2v`)输出始终不带声音/字幕;这样 TTS 旁白反复改词、字幕校对不需要重跑视频生成(省钱且更稳),字幕也能保证与档案原文逐字一致——这是既定策略,不是临时限制。
 
 - 旁白:fal TTS 端点(Day 0 核实)或自录兜底;五幕各一两句;
 - 环境声(Roosevelt Island):缆车电机嗡鸣、East River 水声与风、海鸥、废墟内的空旷混响、远处曼哈顿车流——**优先自己上岛实录**,freesound 公共素材补齐;
@@ -54,10 +54,10 @@ type PreprocessSelection = {
 ```text
 data/places/{slug}.json        data/project.json        data/day0-findings.md
 assets/archive/   assets/user/   assets/cutouts/
-renders/{scene}_start.png  {scene}_end.png  {scene}_depth.png(灰度,MVP 只存不用)
-clips/{scene}.mp4
+frames/{beat}.png
+clips/{beat}.mp4
 audio/narration.mp3   audio/ambient/*.wav
 final/final.mp4
 ```
 
-depth guide 规则:白=近景、灰=中景、黑=远景;由 `spatial.planes` 的 z 值自动栅格化,零额外成本,为未来 depth-condition 模型保留数据结构。
+`frames/{beat}.png` 保存 manual collage 导出的静态首帧或需要本地缓存的 generated frame;每个文件都必须能追溯到 project 中的 beat、references、prompt 与审核状态。`clips/{beat}.mp4` 只保存通过审核的 I2V 输出。

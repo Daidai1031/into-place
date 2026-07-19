@@ -1,0 +1,56 @@
+{
+  "place_slug": "roosevelt-island",
+  "direction": {
+    "id": "dir_default",
+    "title": "THE ISLAND NEW YORK USED TWICE",
+    "premise": "New York used Blackwell's Island to remove poverty, illness, crime, and people labeled insane from Manhattan's view; today the same island displays Cornell Tech's future-facing ambition. The story asks how urban power decides what to hide and what to display."
+  },
+  "protagonist": {
+    "name": "A paper boat folded from a New York City planning map",
+    "reason": "Urban planning as an active force: city map → paper boat → institutional plan → Cornell Tech blueprint → paper boat again. Handmade fragility carrying institutional power."
+  },
+  "ending_text": "A city reveals its values through what it hides — and what it puts on display.",
+  "master_style_prompt": "Handmade, tactile, editorial collage animation about the hidden history of Roosevelt Island: layered 2.5D parallax, multiplane depth, stacked paper cutouts, archival photos, map fragments, newspaper clippings, hand-drawn textures, torn paper edges, vintage typography, masked image layers. Muted blue-gray and sepia tones, historical texture overlays, vintage print feeling, restrained but expressive; thoughtful, hidden, reflective, slightly haunting, not horror. Avoid tourism-ad / glossy / drone-commercial / polished-3D / bright-cheerful / generic-city-montage / sleek-motion-graphics / corporate-infographic looks.",
+  "beats": [
+    {
+      "id": "beat_1",
+      "act": "Stasis — The City Expands",
+      "text": "Nineteenth-century Manhattan fills with crowds, tenements, smoke, disease notices and reports of poverty and crime. An unseen hand folds the congested city map into a paper boat.",
+      "transition": "city map → paper boat",
+      "narration": "As New York grew, so did everything it did not want to see.",
+      "references": ["asset_003", "asset_010"]
+    },
+    {
+      "id": "beat_2",
+      "act": "Peripeteia — The River Becomes a Wall",
+      "text": "Paper figures stamped POOR, SICK, CRIMINAL and INSANE are placed inside the paper boat. As it crosses toward Blackwell's Island, the flat East River rises into a transparent wall of water.",
+      "transition": "river on map → vertical wall of water",
+      "narration": "The city sent them across the water.",
+      "references": ["asset_003", "asset_002", "asset_006"]
+    },
+    {
+      "id": "beat_3",
+      "act": "Pathos — The City's Back Room",
+      "text": "The boat unfolds into an island plan. The penitentiary, workhouse, almshouse, women's asylum and smallpox hospital rise as paper structures while human figures shrink into case files and Manhattan becomes visually cleaner.",
+      "transition": "boat → island plan → institutional archive",
+      "narration": "The river became a wall, and the island became the city's back room.",
+      "references": ["asset_006", "asset_005", "asset_007", "asset_002", "asset_001"]
+    },
+    {
+      "id": "beat_4",
+      "act": "Anagnorisis — From Back Room to Showroom",
+      "text": "The historical plan flips like tracing paper. Stone corridors align with Cornell Tech's glass buildings, lawns and research spaces, while the Renwick Ruin remains beside the new campus like a mark the blueprint cannot erase.",
+      "transition": "institutional plan → Cornell Tech blueprint → present-day",
+      "narration": "Today, the same island displays New York's vision of the future.",
+      "references": ["asset_001", "asset_018", "asset_015", "asset_017"]
+    },
+    {
+      "id": "beat_5",
+      "act": "Katharsis — What Does the City Show?",
+      "text": "On the campus blueprint, the word INNOVATION is printed over the faint word UNWANTED. A goose steps across both layers. The camera pulls back to the island and Manhattan skyline as the blueprint begins folding into a paper boat again.",
+      "transition": "blueprint → aerial island view → paper begins folding",
+      "narration": "The island changed. Did the logic of visibility?",
+      "references": ["asset_009", "asset_003", "asset_018"]
+    }
+  ]
+}

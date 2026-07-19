@@ -43,6 +43,69 @@ export async function callLlm({
   return { output: data.output, requestId: result.requestId };
 }
 
+export interface ImageResult {
+  imageUrl: string;
+  requestId: string;
+  raw: unknown;
+}
+
+/**
+ * Text-to-image / image-edit call (storyboard frames). Blocking subscribe —
+ * T2I is fast. `input` is passed through verbatim so per-model param names
+ * (from lib/models.ts) stay the caller's responsibility. Returns the first
+ * output image url.
+ */
+export async function callImageModel(
+  endpointId: string,
+  input: Record<string, unknown>,
+): Promise<ImageResult> {
+  const result = await fal.subscribe(endpointId, { input });
+  const data = result.data as {
+    images?: { url: string }[];
+    image?: { url: string };
+    error?: string | null;
+  };
+  if (data.error) throw new Error(`Image model error: ${data.error}`);
+  const imageUrl = data.images?.[0]?.url ?? data.image?.url;
+  if (!imageUrl) throw new Error("Image model returned no image url");
+  return { imageUrl, requestId: result.requestId, raw: result.data };
+}
+
+/** Upload a Blob (e.g. a reference cutout or contact sheet) to fal storage. */
+export async function uploadToFal(blob: Blob): Promise<string> {
+  return fal.storage.upload(blob);
+}
+
+/**
+ * Video queue helpers (CLAUDE.md: 视频任务一律 queue 模式,submit + 轮询).
+ * Submit returns a request id; the client/route polls status then fetches the
+ * result — never a synchronous wait on a long video job.
+ */
+export async function submitVideoJob(
+  endpointId: string,
+  input: Record<string, unknown>,
+): Promise<{ requestId: string }> {
+  const { request_id } = await fal.queue.submit(endpointId, { input });
+  return { requestId: request_id };
+}
+
+export async function videoJobStatus(
+  endpointId: string,
+  requestId: string,
+): Promise<{ status: string; raw: unknown }> {
+  const res = await fal.queue.status(endpointId, { requestId });
+  return { status: (res as { status: string }).status, raw: res };
+}
+
+export async function videoJobResult(
+  endpointId: string,
+  requestId: string,
+): Promise<{ videoUrl: string | null; raw: unknown }> {
+  const res = await fal.queue.result(endpointId, { requestId });
+  const data = res.data as { video?: { url: string } };
+  return { videoUrl: data?.video?.url ?? null, raw: res.data };
+}
+
 /** Extract the first JSON object/array from an LLM reply (fences tolerated). */
 export function extractJson<T>(raw: string): T {
   const cleaned = raw.replace(/```(?:json)?/g, "").trim();

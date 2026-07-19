@@ -1,94 +1,191 @@
 # Into Place
 
 > **Step inside the layered stories of a place.**
+>
 > The place determines the film. The user directs the journey.
 
-Into Place 是一个地方记忆的 AI 共创平台:在风格化地图上走进一个地点,系统检索**有来源的真实档案**(历史照片、地图、材料、符号),用户上传自己的照片成为该地方公共档案的一部分,策展、选主人公、修改分镜,系统将真实素材拼成多层 collage keyframes,再通过 **确定性 2.5D 视差渲染 + fal 视频模型受控转场** 的混合引擎,输出一部具有拼贴定格质感、可穿行的地方历史短片。
+Into Place 是一个以真实地方档案为起点的 AI 共创影像平台。用户从地图进入一个地点，策展有来源的历史素材，也可以贡献自己的照片；随后选择故事方向、修改叙事节拍、导演每一张分镜，并将它们发展为一部具有手工拼贴质感的地方短片。
 
-**赛道:** fal × Sequoia 72-Hour Video Hackathon — Developer Track
-**首个案例:** Roosevelt Island(Blackwell's → Welfare → Roosevelt;备选:沙溪古镇)
-**开发者:** 单人 + AI coding agents (Claude Code / Codex / Gemini)
+项目不试图让生成式 AI “还原历史”。档案与生成内容始终分层标注：原始素材保留来源、年代、许可与贡献者信息；AI 负责提出叙事和视觉可能性，用户保留每一步的选择、修改与否决权。
+
+**赛道：** fal × Sequoia 72-Hour Video Hackathon — Developer Track
+
+**首个案例：** Roosevelt Island（Blackwell's → Welfare → Roosevelt）
+
+**开发者：** 单人开发 + AI coding agents（Claude Code / Codex）
 
 ---
 
-## 1. 核心问题
+## 为什么做 Into Place
 
-现有 AI 视频工具把每个地方都生成得一样:虚构建筑、通用复古滤镜、无来源的"历史"。Into Place 的回答:
+通用 AI 视频工具很容易把不同地方生成成相似的画面：虚构建筑、统一的复古滤镜，以及无法追溯的“历史感”。Into Place 采用四条不同的原则：
 
-- **真实性优先** — 素材来自公共领域档案与社区贡献,每张图保留来源、年代、版权状态;
-- **共创档案** — 用户上传的照片经同意进入该地方的公共档案并署名;地图上未点亮的地方等待被贡献;
-- **人机共创** — 研究、策展、主人公、分镜每一步都有确认与否决权,支持单镜头局部重生成;
-- **受控生成** — 生成式模型只出现在物理上不可能的瞬间(穿越、材料聚合);视差镜头由确定性渲染完成。素材预处理中的 fal 只返回主体蒙版,原始 RGB 不交给模型重绘,蒙版只作用于 alpha。
+- **真实档案优先：** 历史照片、地图与文献必须保留来源、年代和许可信息。
+- **地方共同记忆：** 用户可以上传个人照片，并选择是否署名贡献给该地点的公共档案。
+- **人机共同导演：** 用户控制素材、故事方向、每个 beat、分镜画面和转场，而不是只输入一次 prompt。
+- **生成内容可辨认：** AI 分镜始终标记为生成内容，不与原始档案混淆；最终 Journey Book 记录所用素材与生成行为。
 
-## 2. 混合渲染引擎(技术核心)
+## 当前状态
 
-```text
-镜头类型                     引擎                        档案保真度
-─────────────────────────────────────────────────────────────
-Parallax Walk / Dolly /     HyperFrames 确定性渲染        100%(像素级)
-Archive Hold / Crane Out    (分层 PNG + CSS 3D 摄影机)
-─────────────────────────────────────────────────────────────
-Push Through / Material     fal 首尾帧模型                受 preservation
-Transformation              (Veo 3.1 FLF / Kling FLF)    constraints 约束
-─────────────────────────────────────────────────────────────
-```
+| 模块 | 状态 | 当前实现 |
+|---|---|---|
+| Atlas | ✅ 已完成 | 拼贴地图、Roosevelt Island 种子地点、Shaxi / Camino 待共创入口 |
+| Archive | ✅ 已完成 | 20 条档案记录、19 个已发布图层、素材筛选、tone / edge 调整、用户上传与模拟审核 |
+| Story | ✅ 已完成 | 基于所选档案生成 3 个故事方向，并生成、编辑、重写或插入 5–8 个叙事 beat |
+| Storyboard | ✅ 已完成 | 每个 beat 可选择 AI-generated frame 或 manual collage；支持参考素材、文字修改、拖入素材与转场备注 |
+| Film / Journey Book | 🟡 可演示 | 保存项目与分镜状态、展示生成进度、播放预渲染样片、列出来源与许可 |
+| 逐镜视频生成 | 🚧 开发中 | I2V 模型配置与 prompt compiler 已加入；queue submit / polling 尚未接通 |
+| 自动合成与声音 | 🚧 开发中 | FFmpeg 拼接、环境声、可选旁白和音乐尚未接入 Web 流程 |
+| 实时档案检索 | ⏳ 待实现 | 当前使用 Roosevelt Island 预策展包；Wikimedia 实时检索 API 仍为 stub |
 
-两种引擎共用同一份场景定义:HyperFrames 直接渲染视差;把场景拍平截帧即成为 fal 转场的 start/end frame,镜头间无缝衔接。Shot Router 按 `shot_type` 分流(spec/04)。
-
-## 3. Pipeline
+## 产品流程
 
 ```text
-Atlas 地图选择地点(seeded / 待共创)
+Atlas
+选择已点亮的地点，或发现一个等待社区贡献的地点
     ↓
-Research(种子档案 + Wikimedia 实时检索 + 用户贡献)
-    ↓  用户策展:删除 / 收藏 / 锁定;上传照片可署名进入地方档案
-Place DNA 提取(颜色 / 材料 / 符号,只读展示)
+Archive
+浏览有来源的种子档案 → 选择 must use / maybe / reject
+上传个人照片 → 选择用途、署名与是否进入地方档案
     ↓
-Narrative Agent:3 个主人公候选 + 地方连接理由 → 用户选择
+Story
+AI 根据地点与所选素材提出 3 个故事方向
+用户选择一个方向 → 生成 5–8 个 beat → 逐段编辑、重写或插入
     ↓
-Storyboard:5 个分镜(亚里士多德五段结构)→ 用户改旁白 / 换图
+Storyboard
+为每个 beat 生成 16:9 分镜帧，或切换到手工 collage 模式
+选择参考档案 → 文字修改 / 拖入素材 → 编辑镜头间转场
     ↓
-预处理:来源审核、语义裁剪、调色、蒙版、剪刀/手撕边 → 分层 PNG → Collage 场景定义
+Video（开发中）
+结构化 prompt → fal image-to-video → 逐镜审核与局部重生成
     ↓
-Shot Router:确定性渲染 或 fal 生成(queue 模式)
-    ↓  用户逐镜头审核,可局部重生成
-Assembly:拼接 + 实录环境声 + 旁白 → Final Film + Journey Book
+Assembly（开发中）
+镜头拼接 + 环境声 + 可选旁白 / 音乐
+    ↓
+Final Film + Journey Book
 ```
 
-### 素材预处理 v2
+## 技术核心
 
-- `data/preprocess/roosevelt-island.json` 以声明式 recipe 记录每张素材是什么、保留/排除什么、裁剪框、输出角色和审核状态;`asset_013` 是待人工选页的 PDF,当前明确跳过。
-- 历史素材默认中性黑白,现代照片保留原色;纸卡默认稳定 seed 的手撕边,透明主体默认硬剪边,地图无边缘。未来 UI 可全局选择 `source | mono | sepia` 与 `scissor | torn`,并对单张素材覆盖。
-- fal SAM 只生成蒙版(`apply_mask:false`);调色、裁剪、alpha 合成、边缘、白边和阴影全部在本地确定性完成。蒙版失败时按 fal → 本地 rembg/silueta → 裁剪纸卡回退,坏蒙版不得静默发布。
-- 预处理禁止放大。低分辨率素材只写质量警告并限制场景 scale,不调用超分模型。
-- 输出名用角色后缀明确语义:`*_card.png`(矩形纸卡)、`*_cutout.png`(透明主体)、`*_bg.png`(背景)。缓存由 source/recipe/tool/mask hash 共同判定;每个输出保存像素来源、操作、fal request/cost 与人工审核状态。
-- 旧文件中“有些带 `_card`、有些不带”的差异来自 v1 的 `paper/auto` 两条硬编码分支,不是素材类别本身。v2 已删除这些无角色后缀的兼容文件;今后后缀就是可依赖的角色契约。
-- contact sheet 人工审核是发布门。`review.visual: rejected` 的主体 recipe 保留 mask/provenance 供追溯,但 `publish:false`、不会进入 manifest 或场景;本轮 001/002/012/015/018 回退到已审核 card,014/017 保留透明 cutout。
+### 1. 档案与生成内容分层
 
-## 4. 成片结构(Roosevelt Island,~31s,5 镜头)
+每条档案素材都包含 `source_url`、`era`、`license`、`contributor` 与处理记录。AI-generated frame 是独立产物，只引用档案 ID，不会被重新标记为档案。界面中的生成帧和模拟占位帧都有显式标签。
 
-| # | 幕 | 内容 | 引擎 |
-|---|---|------|------|
-| 1 | Stasis | East River 上安静的农场小岛 | HyperFrames |
-| 2 | Peripeteia | 囚犯开采的石块定格堆叠成收容所高墙 | fal FLF |
-| 3 | Pathos | 收容的世纪:疯人院、监狱、天花医院组成时间走廊 | HyperFrames |
-| 4 | Anagnorisis | 穿过 1880s 档案照片门洞 → 用户实拍的 Renwick 废墟 | Veo 3.1 FLF (hero) |
-| 5 | Katharsis | 拉远回到档案墙:被保存下来的是什么? | HyperFrames |
+### 2. 双路径分镜
 
-主人公:一块片麻岩——囚犯开采的石头砌成了关押他们自己的墙。完整大纲见 spec/06。
+每个 beat 可以独立选择：
 
-## 5. MVP 范围
+- **Generated frame（主路径）：** 从故事 beat、影片 premise 与参考档案编译 prompt，生成 16:9 分镜；支持自然语言修改，也可以把档案 cutout 拖到画面指定位置继续编辑。
+- **Manual collage（保真回退）：** 直接排列真实 PNG 图层，支持移动、旋转、缩放、层级、画笔与 undo。AI 只提供构图参考，canvas 始终使用原始档案像素；模型失败时使用规则化布局。进入视频生成前，collage 将导出为一张 16:9 静态首帧。
 
-**做:** Atlas 地图落地页 + 4 个工作页 · 种子档案 + Wikimedia 检索 + 社区贡献机制 · 5 镜头成片 · 单镜头局部重生成 · 来源追溯 Journey Book
+### 3. 结构化 prompt
 
-**不做:** 3D 编辑器 / XYZ 拖拽 / Three.js · 时间线编辑器 · 游戏化积分 · 版本分支 · Mapbox · 本地部署视频模型 · 自动版权判定 · 多项目并行 · Preview.io 集成(无开发者 API;作为通用 AI 分镜工作台是我们的竞争参照,见 spec/00)
+故事、分镜帧与视频 prompt 都从地点、beat、镜头动作和参考素材等结构化数据编译，集中在 `lib/llm.ts` 与 `lib/prompt-compiler.ts`，而不是散落在 UI 或 route 中手写。生成请求保留模型、prompt、request ID、参考素材和估算成本，便于追溯。
 
-## 6. 技术栈
+### 4. 可降级的 demo 路径
 
-Next.js (App Router) · Vercel · fal API (server-side, queue mode) · HyperFrames (确定性渲染 + 合成) · FFmpeg (回退与混音) · JSON 文件存储
+- 本地且配置 `FAL_KEY` 时，Story 与 Storyboard 可以调用 fal。
+- 没有密钥或模型调用失败时，分镜返回带标签的模拟帧，manual collage 使用规则化布局，完整产品流程不会被阻塞。
+- Vercel 当前按只读演示环境处理，Film 页播放 `public/films/roosevelt-island.mp4`；本地 Film 流程会把项目镜像到 `data/project.json`，供后续 I2V queue 与合成流程读取。
 
-## 7. 文档索引
+## 素材预处理 v2
 
-- `spec/` — 实现权威:数据模型、页面、API、路由、素材音频、案例(00–06)
-- `CLAUDE.md` — AI coding agent 工程约定与花费纪律
-- `PLAN.md` — 72 小时 checklist、验证门与回退路径
+Roosevelt Island 的预处理由 `data/preprocess/roosevelt-island.json` 中的声明式 recipe 驱动：
+
+- 历史素材默认使用中性黑白，现代照片保留原色；纸卡使用稳定的撕纸边，透明主体使用剪刀边。
+- fal SAM 3 只生成主体蒙版（`apply_mask: false`）；裁剪、调色、alpha 合成、白边与阴影都在本地确定性完成，原始 RGB 不交给模型重绘。
+- 处理过程禁止放大原图；低分辨率素材只记录质量警告并限制使用尺寸。
+- 输出采用明确的角色后缀：`*_card.png`、`*_cutout.png`、`*_bg.png`。
+- source review 与 visual review 分开记录；未通过视觉审核的输出不会进入 manifest 或场景。
+- `asset_013` 是等待人工选页的 PDF，当前明确跳过；`asset_020` 是只用于历史语境的参考视频，不进入影片素材选择。
+
+## Roosevelt Island 故事研究
+
+当前案例已经发展出两条主要叙事方向，完整五镜结构、旁白与历史框架见 [`spec/06-place-case.md`](spec/06-place-case.md)。
+
+| 方向 | 主角 / 视觉线索 | 核心问题 |
+|---|---|---|
+| **The Island New York Used Twice** | 一艘由纽约规划图折成的纸船 | 城市如何决定隐藏什么，又选择展示什么？ |
+| **The Women Who Crossed the Water** | 一根成为 Nellie Bly 钢笔与连续墨线的鹅毛 | 谁拥有给女性贴上“危险”标签的权力，而声音如何越过围墙？ |
+
+两条方向都采用五段结构（Stasis → Peripeteia → Pathos → Anagnorisis → Katharsis），但产品中的 Narrative Agent 不锁死案例脚本：它会依据用户实际选择的档案提出 3 个方向和 5–8 个可编辑 beat。
+
+## 技术栈
+
+- Next.js 15 App Router、React 19、TypeScript、Tailwind CSS 4
+- fal API：LLM、vision、图像生成 / 编辑、SAM 3；视频 I2V 接入中
+- Sharp：本地裁剪、调色、alpha、纸张边缘处理，以及 manual collage 静态首帧合成
+- FFmpeg：视频镜头拼接、转场与混音（Web 自动化接入中）
+- localStorage：浏览器端项目状态；JSON 文件用于本地渲染管线镜像
+
+## 本地运行
+
+### 环境要求
+
+- Node.js 20+
+- npm
+- 可选：fal API key（没有 key 也可以走模拟帧与 manual collage）
+- 仅在运行离线渲染 / 预处理脚本时需要：FFmpeg、Python rembg
+
+### 启动应用
+
+```bash
+npm install
+```
+
+如需真实 AI 调用，在根目录创建 `.env.local`：
+
+```bash
+FAL_KEY=your_fal_key
+```
+
+然后启动开发服务器：
+
+```bash
+npm run dev
+```
+
+打开 [http://localhost:3000](http://localhost:3000)。
+
+### 常用命令
+
+| 命令 | 用途 |
+|---|---|
+| `npm run dev` | 同步公开素材并启动 Next.js 开发服务器 |
+| `npm run build` | 同步公开素材并构建生产版本 |
+| `npm run preprocess` | 按 recipe 批量预处理档案素材 |
+| `npm run preprocess:review` | 生成预处理 contact sheet 供人工审核 |
+| `npm run test:preprocess` | 运行预处理测试 |
+| `npm run experiment -- <args>` | 运行 fal 视频模型实验 |
+
+预处理与渲染脚本的完整参数见 [`scripts/README.md`](scripts/README.md)。
+
+## 项目结构
+
+```text
+app/                    Next.js 页面与 server routes
+components/             Atlas / Archive / Story / Storyboard / Film UI
+lib/                    状态、模型配置、LLM 与 prompt 编译
+data/places/            地点与档案元数据
+data/preprocess/        recipe、蒙版、provenance 与审核记录
+assets/archive/         原始档案文件
+assets/cutouts/         审核后发布的 card / cutout / background 图层
+scripts/                预处理、同步与 fal I2V 实验工具
+spec/                   产品、数据、API、渲染和案例规格
+```
+
+## 文档索引
+
+- [`spec/00-index.md`](spec/00-index.md) — 实现规格入口
+- [`spec/01-data-model.md`](spec/01-data-model.md) — Project / Place / Asset / Scene / Shot 数据结构
+- [`spec/02-ui-pages.md`](spec/02-ui-pages.md) — 页面与交互规格
+- [`spec/03-api.md`](spec/03-api.md) — Server routes 与安全约定
+- [`spec/04-shot-router.md`](spec/04-shot-router.md) — 镜头路由与 prompt 编译规则
+- [`spec/05-assets-audio-files.md`](spec/05-assets-audio-files.md) — 素材、音频与文件约定
+- [`spec/06-place-case.md`](spec/06-place-case.md) — Roosevelt Island 案例研究
+- [`PLAN.md`](PLAN.md) — 功能清单、验证门与风险登记
+- [`CLAUDE.md`](CLAUDE.md) — AI coding agent 工程约定
+
+---
+
+**Into Place does not ask AI to invent a place. It asks people and archives how that place should be remembered.**

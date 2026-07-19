@@ -13,28 +13,189 @@ demo 台词:"这不是我的素材库,这是这个地方正在生长的公共记
 
 ## 主案例:Roosevelt Island(Blackwell's → Welfare → Roosevelt)
 
-选择理由:功能四次转变(农场 → 收容之岛 → 福利机构 → 住宅社区/科技校园);公共领域档案极丰富(NYPL Digital Collections、Library of Congress、Wikimedia);开发者在纽约,可实拍现代照片与环境声;评委零解释成本。
+**Format:** ~31-second collage animation, 5 shots  
 
-**主人公候选(供 Narrative Agent 输出):**
+---
 
-1. **一块片麻岩石块**(推荐)——囚犯在岛上开采的石头,砌成了关押他们自己的高墙、Octagon 与灯塔;石头至今在防波堤和废墟里。历史相关性/材料关联/跨时代能力:高。
-2. 灯塔——1872 年建,岛北端,用岛上石头砌成,伴随传说;
-3. 缆车——1976 年"临时"通勤方案成为永久身份符号,连接岛与城的视角。
+# Direction One — *THE ISLAND NEW YORK USED TWICE*
 
-**五幕大纲(~31s,5 镜头):**
+## Core Premise
 
-| # | 幕 | 内容 | 镜头 | 引擎 |
-|---|---|------|------|------|
-| 1 | Stasis | East River 上安静的农场小岛,Blackwell 农舍,水与风 | Slow Dolly + 轻视差 | HyperFrames |
-| 2 | Peripeteia | 城市买下小岛;石块被开采、以定格方式堆叠成收容所高墙 | Material Transformation(石块堆叠) | fal FLF (Kling) |
-| 3 | Pathos | 收容的世纪:疯人院(Nellie Bly 1887 卧底报道)、监狱、天花医院;地图与照片组成时间走廊,更名 Welfare Island | Parallax Walk / Time Corridor | HyperFrames |
-| 4 | Anagnorisis | 穿过 1880s 天花医院档案照片的门洞 → 用户今天实拍的 Renwick 废墟/缆车照片 | Push Through(hero) | Veo 3.1 FLF |
-| 5 | Katharsis | 拉远回到完整档案墙;旁白:一座为了藏起"不被想看见的人"而建的岛,如今是人们选择居住、回望城市的地方。被保存下来的是什么? | Crane Out | HyperFrames |
+In the nineteenth century, New York used Blackwell’s Island to remove poverty, illness, crime, and people labeled “insane” from Manhattan’s view. The East River functioned as a natural wall around a concentrated landscape of prisons, hospitals, workhouses, and asylums.
 
-**种子档案清单(Phase 0 采集,12–20 张,全部公共领域):** 天花医院(Renwick)、Octagon/疯人院、监狱、灯塔、Blackwell 农舍、各时期地图(1820s–1970s)、Nellie Bly 相关报纸版面、采石场/石墙细节、早期 East River 视角版画;材质:片麻岩纹理、砖、河水。
+Today, the same island contains preserved ruins beside Cornell Tech, where New York displays research, education, and technological ambition.
 
-## 备选案例:沙溪古镇(茶马古道)
+The story is not simply “a dark past became a better present.” It asks how urban power decides what should be hidden and what should be displayed.
 
-主题完美(贸易路线 → 衰落 → 遗产修复 → 旅游),保留为地图上的 `empty` 标记与 V2 目标。**未启用原因:** 公共领域历史影像稀缺、版权不明,72 小时内无法完成可信的种子策展;英文评委背景成本高。切换方式:替换 `data/places/shaxi.json` 的种子档案 + 本文件的五幕大纲,代码零改动。
+> In the nineteenth century, New York placed what it did not want to see on the island. In the twenty-first century, it placed what it most wants the world to see there.
 
-Camino de Santiago 同样保留为 `empty` 标记(原 PRD 案例,素材调研已完成,可作 V2 快速点亮)。
+## Core Theme
+
+**Urban development, spatial exclusion, visibility, and power.**
+
+The island changes from the city’s hidden back room into its future-facing showroom. Its purpose changes, but it remains a space shaped by metropolitan priorities.
+
+## Default Protagonist
+
+### A Paper Boat Folded from a New York City Planning Map
+
+The paper boat represents urban planning as an active force. It carries the city’s decisions across the river and transforms with each historical stage:
+
+- city map → paper boat;
+- paper boat → institutional plan;
+- institutional plan → Cornell Tech blueprint;
+- blueprint → paper boat again.
+
+Its handmade fragility contrasts with the institutional power it carries.
+
+## Optional User-Selectable Protagonist
+
+**A one-way ticket from Manhattan to Blackwell’s Island.** It emphasizes forced removal and later transforms into a modern round-trip transit ticket.
+
+## Five-Shot Structure
+
+### 1. Stasis — The City Expands | 0–5s
+
+Nineteenth-century Manhattan fills with crowds, tenements, smoke, disease notices, and reports of poverty and crime. An unseen hand folds the congested city map into a paper boat.
+
+**Transition:** city map → paper boat  
+**Narration:** “As New York grew, so did everything it did not want to see.”
+
+### 2. Peripeteia — The River Becomes a Wall | 5–11s
+
+Paper figures are stamped **POOR**, **SICK**, **CRIMINAL**, and **INSANE**, then placed inside the boat. As it crosses toward Blackwell’s Island, the flat East River rises into a transparent wall.
+
+**Transition:** river on map → vertical wall of water  
+**Narration:** “The city sent them across the water.”
+
+### 3. Pathos — The City’s Back Room | 11–18s
+
+The boat unfolds into an island plan. The penitentiary, workhouse, almshouse, women’s asylum, charity hospital, and smallpox hospital rise as paper structures. Human figures shrink into case files while Manhattan becomes visually cleaner.
+
+**Transition:** boat → island plan → institutional archive  
+**Narration:** “The river became a wall, and the island became the city’s back room.”
+
+### 4. Anagnorisis — From Back Room to Showroom | 18–25s
+
+The historical plan flips like tracing paper. Stone corridors align with Cornell Tech’s glass buildings, lawns, and research spaces. The Renwick Ruin remains beside the new campus like a mark the blueprint cannot erase.
+
+**Transition:** institutional plan → Cornell Tech blueprint → present-day footage  
+**Narration:** “Today, the same island displays New York’s vision of the future.”
+
+### 5. Katharsis — What Does the City Show? | 25–31s
+
+On the campus blueprint, **INNOVATION** is printed over the faint word **UNWANTED**. A goose steps across both layers. The camera pulls back to the island and Manhattan skyline as the blueprint begins folding into a boat again.
+
+**Transition:** blueprint → aerial island view → paper begins folding  
+**Narration:** “The island changed. Did the logic of visibility?”
+
+## Ending Text
+
+> **A city reveals its values through what it hides—and what it puts on display.**
+
+Alternative:
+
+> **FIRST A BACK ROOM. NOW A SHOWROOM.**
+
+## Emotional Arc
+
+Expansion → removal → confinement → transformation → unresolved reflection.
+
+---
+
+# Direction Two — *THE WOMEN WHO CROSSED THE WATER*
+
+## Core Premise
+
+Blackwell’s and later Welfare Island repeatedly confined women labeled insane, immoral, obscene, criminal, or politically dangerous. It also depended on the largely unnamed labor of women who cleaned, sewed, nursed, and cared for people inside its institutions.
+
+Nellie Bly provides the central narrative. In 1887, the twenty-three-year-old reporter entered the women’s asylum under the name **Nellie Brown**, stopped pretending to be mentally ill once admitted, and discovered that her rational behavior did not restore her credibility. Her reporting exposed cold baths, spoiled food, violence, neglect, and overcrowding.
+
+Her investigation helped force public scrutiny and reform while expanding the possibilities of investigative journalism for women. Later, the island also confined women such as Emma Goldman for political speech and Mae West for theatrical sexual expression.
+
+The story asks who has the power to label a woman dangerous—and how women transform confinement into testimony, speech, performance, and change.
+
+## Core Theme
+
+**Women, institutional labels, invisible care work, resistance, and the struggle to be believed.**
+
+Nellie Bly is the main character. Other women appear as historical echoes rather than separate biographies.
+
+## Protagonist
+
+### A Goose Feather That Becomes an Unbroken Line of Ink
+
+A present-day goose feather falls into an archival record and becomes Nellie Bly’s pen. Its ink continues through different forms:
+
+- admission record;
+- asylum corridor;
+- newspaper column;
+- Emma Goldman’s speech waveform;
+- Mae West’s script underline;
+- a line leading to a present-day female student’s computer.
+
+The feather is the visible form of a female voice that institutions repeatedly try, but fail, to contain.
+
+## Historical Frame
+
+**Before Nellie:** women entered island institutions as diagnoses, crimes, case numbers, workers, and unnamed caregivers.  
+**Nellie Bly, 1887:** she entered under a false name, documented ten days of abuse, and carried the evidence back across the river.  
+**After Nellie:** the institutions faced scrutiny, but women continued to be punished for political, social, and sexual transgression.  
+**Today:** women study, build, and shape the future on the same island where women were once classified and silenced.
+
+## Five-Shot Structure
+
+### 1. Stasis — Women Enter the Record | 0–5s
+
+A goose feather falls into an admission ledger. Pages fill with anonymous women stamped **POOR**, **INSANE**, **IMMIGRANT**, and **INMATE**. Behind the records, women clean, sew, and care for others without names.
+
+**Transition:** goose feather → archival pen  
+**Narration:** “Before Nellie Bly, thousands of women entered this island as diagnoses, crimes, and case numbers.”
+
+### 2. Peripeteia — Nellie Brown Enters | 5–11s
+
+The feather writes **NELLIE BROWN, 1887**. Her name passes through police, court, hospital, and ferry documents before entering the Octagon-shaped asylum door. She removes her performed expression of madness, but an **INSANE** stamp covers her face.
+
+**Transition:** written name → document corridor → asylum door  
+**Narration:** “She entered under a false name—and stopped pretending when the door closed.”
+
+### 3. Pathos — Ten Days Inside | 11–18s
+
+The ink line moves through cold bathwater, spoiled food, rigid benches, violent hands, and women whose mouths are covered by diagnoses. Nellie records each scene until the ink begins seeping into the walls.
+
+**Transition:** bathwater → ink → spreading wall crack  
+**Narration:** “The more sanely she spoke, the less she was believed.”
+
+### 4. Anagnorisis — The Voices Cross the Water | 18–25s
+
+The crack becomes a newspaper column. Printed evidence crosses the river toward Manhattan. The ink briefly transforms into Emma Goldman’s speech waveform and an underline beneath Mae West’s *Sex*, while official labels attempt to cover both.
+
+**Transition:** wall crack → newspaper → speech wave → script line  
+**Narration:** “The island held their bodies, but their words crossed the water.”
+
+### 5. Katharsis — A Different Future | 25–31s
+
+The archival Octagon doorway becomes its present-day entrance. The ink line continues toward Cornell Tech, enters a female student’s computer screen, and becomes code, writing, or a new design. Children play nearby while archival women remain faintly reflected in the glass.
+
+**Transition:** archival doorway → present day → computer screen  
+**Narration:** “Their voices changed what the city could no longer ignore.”
+
+## Ending Text
+
+> **THE WATER HELD THEIR BODIES. NOT THEIR VOICES.**
+
+Alternative:
+
+> **WHO GETS TO NAME A WOMAN DANGEROUS?**
+
+## Emotional Arc
+
+Erasure → infiltration → disbelief → public testimony → inherited agency.
+
+---
+
+# Relationship Between the Directions
+
+- **Direction One** examines the island at the scale of urban planning.
+- **Direction Two** examines it through women’s bodies, labor, and voices.
+- Both use the East River as a boundary and a channel: it isolates people, but cannot permanently contain memory, evidence, or ideas.

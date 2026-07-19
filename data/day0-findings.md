@@ -2,6 +2,8 @@
 
 来源:fal MCP `search_models` / `get_model_schema` / `get_pricing`,2026-07-18 查询,仅查价未执行任何生成任务。价格随时可能变动,正式调用前按 CLAUDE.md 规则 1 重新核价。
 
+> **历史调研记录:** 本表不再充当运行时模型注册表或预算规则。当前单首帧 I2V 候选以 `lib/models.ts` 为准,确认阈值以 `CLAUDE.md` 为准。
+
 | Endpoint ID | 模型 | 价格 | 最长时长 | 分辨率选项 | 首尾帧参数名 | 备注 |
 |---|---|---|---|---|---|---|
 | `fal-ai/kling-video/o1/image-to-video` | Kling O1 FLF [Pro] | $0.112/s | 3–10s | 未在 schema 中暴露(由模型固定输出) | `start_image_url` (必填) / `end_image_url` (选填) | end_image_url 选填,不填则退化为普通 i2v |
@@ -26,18 +28,26 @@
 - `fal-ai/ltx23-trainer-v2/interpolate` — 这是"训练一个关键帧插值 LoRA"的训练端点,不是直接推理用的 i2v 模型,不计入候选。
 - `fal-ai/ffmpeg-api/extract-frame` — 用于从视频提取首/中/尾帧的工具端点,不是生成模型。
 
-## 建议的日常测试候选(符合 CLAUDE.md §fal 使用纪律:5s/720p/16:9 上限)
+## 当时建议的日常测试候选（历史记录）
 
-按单价从低到高:`fal-ai/pixverse/v6/transition`($0.005/s)→ `fal-ai/framepack/flf2v`($0.0333/s,480p)→ `fal-ai/kling-video/v2.5-turbo/pro/image-to-video`($0.07/s)→ `fal-ai/wan-flf2v`($0.40/video 封顶)。Veo 3.1 系列仅用于 scene_04 hero shot,且需在调用前确认单次成本不超过 $2 或先向开发者确认。
+当时按单价比较了 PixVerse transition、Framepack FLF2V、Kling v2.5 与 Wan FLF2V。该排序和旧 $2 阈值已经失效,不得据此直接发起调用。
 
-## HyperFrames spike 结论(确定性引擎,PLAN Phase 0 第 5 项)
+## 早期分层视差 spike（已退役）
 
-**通过,直接采用,没有走到回退方案。** `hyperframes`(npm 包,HeyGen 出品,`heygen-com/hyperframes`)是真实存在、可以直接 `npm install` 的 CLI,不是要另外调研的假设性工具。
+Day 0 曾验证过独立的分层视差视频方案：真实档案图能够以多层相机运动输出 MP4，内容不会在该阶段被模型重绘。这个实验完成了技术验证，但产品随后转向 **approved storyboard frame → fal I2V → FFmpeg assembly**，因此相关 CLI、headless-browser 截帧脚本和 npm 依赖已于 2026-07-19 移除。
 
-验证方式:真实档案图(`asset_002`,1853 年疯人院版画)经 `scripts/cutout.mjs`(rembg 抠图 + 撕纸毛边 + 投影)处理后,用 `scripts/scene-to-hyperframes.mjs` 翻译成 HyperFrames composition(相机路径交给 GSAP 的 `x/y/z` tween 一个 `transform-style:preserve-3d` 容器,不用手算逐帧 transform),`hyperframes render` 实际渲染出 150 帧、5.0 秒、623.8KB 的 MP4,14.3 秒渲染完成,ffmpeg 编码正常;抽取首尾帧确认相机确实移动、画面内容零形变。`hyperframes preview` 的 live studio 也确认可用(`http://localhost:3002`)。
+保留这条记录只为解释仓库中早期 `data/scenes/` fixture 的来源；它们不是当前运行路径，也不应重新加入依赖。实验中仍有效的 Sharp alpha 合成经验已经保留在 `CLAUDE.md` 的素材处理约定中。
 
-环境依赖(本机已装好,新终端应该直接可用):FFmpeg 通过 `winget install Gyan.FFmpeg`;rembg 通过 `pip install rembg[cli] onnxruntime`,两者的可执行文件目录都已永久加入 User PATH。
+## 生成式主路径端点核实（2026-07-19，fal MCP 未连接本会话）
 
-`scripts/render-scene.mjs`(Puppeteer 直接截静帧)保留作为 CLAUDE.md 回退路径里写的方案,已验证可用,不是没试过的纸面选项——HyperFrames 一旦真的用不了,可以直接切过去,场景 JSON 格式不用改。
+本会话 **fal MCP 未连接**，以下端点改用 fal 模型页 + 文档核实“存在性 + 大致价格”，**未跑 get_model_schema/get_pricing**；`lib/models.ts` 中 `verifyBeforeCall:true` 的端点在首次付费调用前仍须用 fal MCP 复核参数名与当日价格。
 
-细节 & 已知坑记在 `CLAUDE.md`「拼贴渲染管线」小节(sharp `joinChannel` vs `dest-in` 的坑、Puppeteer `file://` 加载的坑、HyperFrames composition 的 `class="clip"` / track 冲突规则)。
+| 用途 | Endpoint | 抓取价 | 关键参数 |
+|---|---|---|---|
+| T2I 默认 | `fal-ai/nano-banana-2/edit` | ~$0.04/图 | `prompt` + `image_urls`(≤14 参考图,Gemini 3.1 Flash Image)+ `aspect_ratio` |
+| T2I 备选 | `fal-ai/flux-2-pro` | $0.03/首 MP + $0.015/额外 MP | `prompt`,`image_size`,参考图字段名待复核 |
+| I2V 默认 | `fal-ai/kling-video/v3/turbo/standard/image-to-video` | $0.112/s | `image_url` + `prompt` + `duration`(枚举字符串)+ `generate_audio`(强制 false) |
+| I2V 预算 | `alibaba/happy-horse/image-to-video` | $0.14/s@720p、$0.28@1080p | `image_url` + `prompt`(选填,≤2500 字)+ `duration`(数值 3–15)+ `resolution` |
+| I2V hero | `fal-ai/veo3.1/image-to-video` | $0.20/s@720p 无音频、$0.40 有音频 | `image_url` + `prompt` + `duration`(`"8s"` 式)|
+
+**已实跑验证:** 用 `fal-ai/nano-banana-2/edit` + 真实 cutout 参考图 + 风格锚链生成了 Roosevelt Island Direction-One 五张分镜帧(`data/storyboard-preview/`),风格统一、贴合叙事,成本远低于 $5。I2V 尚未付费实跑,`scripts/render-film.mts --yes` 待开发者放行。

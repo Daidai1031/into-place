@@ -1,53 +1,81 @@
-# 04 · Shot Router 与 Prompt 编译
+# 04 · Frame-to-video Router 与 Prompt 编译
 
-## 路由表
+## 主路径
 
-| shot_type | 引擎 | 模型(Day 0 在 fal 核实后写入 `lib/models.ts`) | 备注 |
-|---|---|---|---|
-| archive_hold | deterministic | — | 极轻 dolly,档案像素零改动 |
-| parallax_walk | deterministic | — | 前中后景速度差 |
-| dolly / crane_out | deterministic | — | |
-| material_transformation | fal_flf | Kling FLF(候选) | 石块堆叠 / 木屑聚合,首尾帧必备 |
-| push_through | fal_flf | Veo 3.1 FLF(仅 hero)/ Kling FLF(测试) | 首尾帧必备 |
-| breathing_photo | fal_i2v | Kling I2V 弱运动 / Vidu small(候选) | 可选,无方向性的轻微起伏(呼吸感) |
-| subject_motion | fal_i2v | Kling I2V(候选) | 裁剪人物/主体的具体动作(坐下、转身、抬手),一镜头一个主动作 |
-| environment_motion | fal_i2v | Kling I2V(候选) | 环境元素移动(车辆行驶、水流、缆车缆索、烟雾),与 breathing_photo 的区别是有明确方向性 |
+每个 beat 先产生一张用户审核过的 16:9 frame，再生成视频：
 
-规则:文档中的端点名是调研记录,**必须先经 fal Sandbox/MCP 核实存在性与当日价格**,再作为常量写入 `lib/models.ts`;禁止在代码中硬编码猜测端点。
+```text
+generated frame ─┐
+                 ├→ approved start frame → prompt compiler → fal I2V queue → shot review
+manual collage ──┘  （先导出 PNG）
+```
 
-## 确定性引擎(HyperFrames)
+不再维护独立的分层视频渲染器或 headless-browser 截帧回退。Manual collage 的档案像素保真发生在静态首帧导出阶段；视频输出必须明确标记为 AI-generated。
 
-- 输入:`spatial.planes`(分层 PNG + z/x/y/scale/shadow)+ `camera_path`;
-- 实现:HTML 模板,planes 映射为 `translateZ` 不同的绝对定位图层,摄影机 = 容器 transform 缓动;HyperFrames CLI 逐帧渲染为 MP4;
-- 回退:Puppeteer 截帧序列 + FFmpeg 合成(同一 HTML,格式不变);
-- 同一场景 `render-frame` 截取首/尾静帧,供 fal 转场使用,保证镜头衔接。
+## Frame 路由
 
-## 转场引擎
-
-`transition.type` 默认 `push_dissolve`,现已扩展候选形式,**确定性实现优先于 fal 生成版**(省钱且不冒内容风险,遇到效果不够再升级):
-
-| type | 确定性(HyperFrames)实现 | fal 升级路径 |
+| frame source | 输入 | 进入 I2V 前的处理 |
 |---|---|---|
-| push_dissolve | 放大穿过 + 交叉溶解(已验证的回退路径) | Kling/Veo FLF |
-| page_turn | 把 outgoing plane 包一层 `transform-style:preserve-3d` 容器,GSAP tween `rotateY` 做翻页 | FLF prompt 描述 "page turning" |
-| wipe | `clip-path` 从一侧展开动画 | FLF prompt 描述 "wipe reveal" |
-| match_cut | outgoing/incoming 两帧在同位置同缩放处交叉切,靠 collage 布局对齐,不需要额外生成 | FLF prompt 描述 "match cut" |
-| torn_reveal | 已有的撕纸蒙版图层做位移揭开 | FLF prompt 描述 "torn paper reveal" |
+| `generated` | fal-hosted `BeatFrame.imageUrl` | 校验 16:9、审核状态、references 与 provenance |
+| `manual_collage` | `BeatLayout.items` + brush overlay | 浏览器 Canvas 导出 1280×720 PNG；遇到 CORS / 稳定性问题时用服务端 Sharp 合成 |
+| `placeholder` | 带模拟标签的 SVG/data URL | 只允许走 demo preview，不得提交付费 I2V 或冒充正式镜头 |
 
-## Prompt 编译(`lib/prompt-compiler.ts`)
+## I2V 模型路由
 
-从 shot JSON 编译,不手写:
+候选模型只允许来自 `lib/models.ts`。端点与价格是易变信息，首次付费调用前必须重新核实 schema 与当日价格。
 
-1. camera 段(一个镜头只描述**一个主要摄影机动作**);
-2. layers 段(前/中/后景 + 相对速度:foreground fast, midground moderate, background nearly fixed);
-3. object_motion 段:允许具体的主体/环境动作描述(人物坐下、车辆移动等),但一个镜头最多**一个相机动作 + 一个主体/环境动作**,两者分句描述,不合并成一句 "everything moves dynamically";
-4. preservation 固定块(所有生成镜头必带):
-   `no morphing, no new objects, no face changes, no costume changes, no architecture changes, preserve printed text, preserve collage layout`
-   —— 这组约束防止的是**身份/材质被改写**(换脸、换装、建筑变形、新增物体),**不禁止**姿态/位置类动作;两者不矛盾。
-5. 音频固定块:`Diegetic sounds only. No music. No dialogue. No subtitles.`
-   —— 策略:生成阶段永远 mute,旁白/字幕后期用 FFmpeg 统一叠加,见 05-assets-audio-files.md。
-6. style 段:`handmade archival collage, paper cutout, 8 fps stop-motion feeling`。
+| 用途 | 默认候选 | 规则 |
+|---|---|---|
+| 普通镜头 | `kling-v3-turbo-std` | 平衡质量与成本，接收一张 start frame |
+| 预算对照 | `happy-horse` | 只在 schema / 价格复核后使用 |
+| Hero 镜头 | `veo3.1-hero` | 仅显式 hero 标记可选，调用前人工确认 |
 
-## 预算纪律(路由器强制)
+所有任务使用 queue submit + polling；不得在 HTTP 请求中同步等待长视频生成。每镜头最多 3 次尝试，失败后必须修改 frame、motion 或 prompt。
 
-测试参数上限 5s / 720p / 16:9;`attempts >= max_attempts(3)` 时拒绝生成并提示改 collage;Veo 端点仅当 shot 被标记 `hero: true` 时可选;单次预估 > $2 需人工确认;每次调用的成本写入 `generation.cost_usd`。
+实现：in-app 走 `/api/shot/generate`(submit)+ `/api/shot/status`(poll);整片合成走本地 `scripts/render-film.mts`(读 `data/scenes/generated/<slug>/film-manifest.json` → 逐镜头 I2V → FFmpeg xfade → `final/<slug>.mp4`),付费运行需 `--yes`,hero/超 $5 需 `--confirm`。`placeholder` 来源的帧会被跳过,不提交付费 I2V。
+
+## Prompt 编译（`lib/prompt-compiler.ts`）
+
+Prompt 从 place、film premise、beat、frame references 与 motion 结构编译，不在 route 或 UI 中拼接自由文本：
+
+1. scene intent：当前 beat 中观众看到什么；
+2. camera：最多一个主要摄影机动作；
+3. subject / environment motion：最多一个主要动作，与 camera 分句描述；
+4. style：`handmade archival collage, paper cutout, stop-motion feeling`；
+5. preservation：`no morphing, no new objects, no face changes, no costume changes, no architecture changes, preserve printed text, preserve collage layout`；
+6. audio：`Diegetic sounds only. No music. No dialogue. No subtitles.`。
+
+保护约束防止身份、材质、建筑与文字被重写，但不禁止用户明确要求的姿态或位置动作。
+
+## 转场
+
+常规转场在镜头生成之后由 FFmpeg 完成：
+
+| type | 后期实现 |
+|---|---|
+| `cut` | 直接切 |
+| `crossfade` / `push_dissolve` | 视频交叉淡化 |
+| `wipe` | FFmpeg wipe transition |
+| `page_turn` | 优先用简化 wipe / overlay 模拟纸页翻动 |
+| `match_cut` | Storyboard 阶段先对齐构图，后期直接切或短 crossfade |
+| `custom` | 保存用户备注，合成前人工确认实现方式 |
+
+生成式转场不是默认路径。只有普通后期无法表达必要叙事动作时，才单独评估 FLF 模型。
+
+## 审核与追溯
+
+每个 shot 必须保存：
+
+- beat ID、start frame URL / hash 与 reference asset IDs；
+- 编译后的 prompt、模型、参数、request ID、估算与实际成本；
+- 尝试次数、状态、输出 URL；
+- 人工审核结果与失败原因。
+
+审核重点：人脸、建筑结构、印刷文字、拼贴布局、意外新增物体和来源标注。未通过的镜头不能进入最终合成。
+
+## 预算纪律
+
+- 单次预估成本超过 $5、hero 模型或累计成本异常时先确认。
+- 价格不可换算为美元时，不得自动调用。
+- 每镜头 3 次后停止生成并分析原因。
+- demo 无实时生成结果时播放明确标注的预渲染影片。
