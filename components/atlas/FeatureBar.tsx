@@ -85,12 +85,20 @@ export function FeatureBar() {
                 <p className="mt-2 max-w-[15rem] font-body text-sm leading-relaxed text-paper/60">
                   {f.blurb}
                 </p>
-                <span
+                <svg
+                  width="20"
+                  height="12"
+                  viewBox="0 0 20 12"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   aria-hidden
-                  className="mt-3 inline-block text-orange transition-transform group-hover:translate-x-1"
+                  className="mt-3 block text-orange transition-transform group-hover:translate-x-1"
                 >
-                  ↳
-                </span>
+                  <path d="M1 6h16M12 1l5.5 5-5.5 5" />
+                </svg>
               </Link>
             </li>
           ))}

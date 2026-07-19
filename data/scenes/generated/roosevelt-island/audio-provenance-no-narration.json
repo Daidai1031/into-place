@@ -1,0 +1,16 @@
+{
+  "slug": "roosevelt-island",
+  "mode": "per-clip",
+  "filmDurationSec": 27.1,
+  "totalCostUsd": 0.1,
+  "foley": [],
+  "music": {
+    "file": "E:\\Cornell\\26summer\\into-place/renders/roosevelt-island/audio/music.wav",
+    "model": "fal-ai/lyria2",
+    "requestId": "019f7b5b-eeb7-7b80-ab54-3462b55e1e3f",
+    "prompt": "An original instrumental score for a reflective historical documentary collage film about a place and the voices it tried to contain. Warm, sparse and nostalgic: soft solo piano with subtle warm strings and a low sustained drone, slow tempo, gentle and human, quietly hopeful. Restrained, calm and contemplative — like leafing through an old family archive; never eerie, never somber, never suspenseful, never grand or triumphant. Low, even dynamics so it can sit softly beneath narration and diegetic sound. Muted, aged, analog warmth, gentle tape hiss. Instrumental only, no vocals, no drums.",
+    "negativePrompt": "harsh, aggressive, horror, eerie, ominous, suspenseful, dissonant, distorted, heavy drums, percussion-driven, EDM, electronic beats, pop, vocals, singing, lyrics, upbeat commercial jingle, triumphant fanfare, low quality",
+    "params": {},
+    "costUsd": 0.1
+  }
+}

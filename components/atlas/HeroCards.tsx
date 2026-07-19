@@ -17,7 +17,19 @@ export function ArchiveCTACard() {
         className="mt-4 inline-flex items-center gap-2 font-ui text-xs font-bold uppercase tracking-[0.12em] text-orange transition-colors hover:text-ink"
       >
         Explore the map
-        <span aria-hidden>↳</span>
+        <svg
+          width="16"
+          height="10"
+          viewBox="0 0 16 10"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden
+        >
+          <path d="M1 5h13M9 1l4.5 4L9 9" />
+        </svg>
       </Link>
     </div>
   );
