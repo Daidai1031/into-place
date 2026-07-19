@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import type { Place } from "@/lib/types";
+import type { StoryPreset } from "@/lib/presets";
 import { useProject } from "@/lib/hooks/useProject";
 import type { StoryBeat } from "@/lib/local-store";
 import { CollageButton } from "@/components/ui/CollageButton";
@@ -13,8 +14,20 @@ import { BeatCard } from "./BeatCard";
 const MIN_BEATS = 5;
 const MAX_BEATS = 8;
 
-export function StoryView({ place }: { place: Place }) {
+export function StoryView({ place, preset }: { place: Place; preset?: StoryPreset | null }) {
   const { project, update, hydrated } = useProject(place.slug);
+
+  function useDefaultStory() {
+    if (!preset) return;
+    update((prev) => ({
+      ...prev,
+      story: {
+        directions: [preset.direction],
+        chosenDirectionId: preset.direction.id,
+        beats: preset.beats.map((b) => ({ id: b.id, act: b.act, text: b.text })),
+      },
+    }));
+  }
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -170,6 +183,14 @@ export function StoryView({ place }: { place: Place }) {
             <CollageButton onClick={() => void draftDirections()} disabled={assetBriefs.length < 3}>
               Draft story directions
             </CollageButton>
+            {preset && (
+              <button
+                onClick={useDefaultStory}
+                className="cursor-pointer font-hand text-sm text-ink-soft underline decoration-dotted hover:text-stamp"
+              >
+                or use the built-in “{preset.direction.title}” story
+              </button>
+            )}
             {assetBriefs.length < 3 && (
               <p className="font-typewriter text-xs text-stamp">
                 Select at least 3 archive items first.

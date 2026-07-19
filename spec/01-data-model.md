@@ -23,15 +23,24 @@
 
 ```jsonc
 {
-  "id": "ri-001",
-  "place_slug": "roosevelt-island",
-  "theme": "功能四次转变的小岛",
-  "stage": "research | dna | story | storyboard | direct | film",
-  "protagonist": { "name": "一块片麻岩", "reason": "囚犯开采的石头砌成了关押他们自己的墙" },
-  "place_dna": { "colors": [], "materials": [], "symbols": [] },
-  "scenes": [ /* Scene[],见 §4 */ ]
+  "slug": "roosevelt-island",
+  "selections": { "asset_012": "must_use" },
+  "tuning": { "asset_012": { "tone": "mono", "edge": "torn" } },
+  "uploads": [],
+  "story": {
+    "directions": [{ "id": "dir_1", "title": "…", "premise": "…" }],
+    "chosenDirectionId": "dir_1",
+    "beats": [{ "id": "beat_1", "act": "Stasis", "text": "…" }]
+  },
+  "frames": { "beat_1": { /* BeatFrame,见 §4 */ } },
+  "beatMode": { "beat_1": "generated | collage" },
+  "layouts": { "beat_1": { "items": [], "brushDataUrl": null } },
+  "transitions": { "beat_1->beat_2": { "type": "match_cut", "note": "…" } },
+  "updatedAt": "2026-07-19T00:00:00Z"
 }
 ```
+
+浏览器端 `localStorage` 是项目状态真值。本地开发环境在 Film 流程前将同一结构镜像到 `data/project.json`;Vercel 不写文件。
 
 ## 3. Asset(研究卡片 / 素材 / 社区贡献)
 
@@ -91,53 +100,48 @@
 
 `source` / `license` 为必填;无来源素材不允许写入。`cutouts` 必须是对象数组,不得退回仅含路径的字符串数组。每个对象都要记录角色、三组 hash、像素来源、操作链、fal 调用和审核状态;没有 fal 调用的纸卡/背景写空数组。`pixel_origin.rgb` 必须指向本地原始素材,fal mask 只能作为 `pixel_origin.alpha`,不能成为 RGB 来源。缓存与发布规则见 spec/05。
 
-## 4. Scene 与 Shot
+## 4. Frame 与 Shot
 
 ```jsonc
 {
-  "scene_id": "scene_04",
-  "act": "anagnorisis",             // stasis|peripeteia|pathos|anagnorisis|katharsis
-  "title": "The Ruin Today",
-  "narration": "……",
-  "assets": ["asset_012", "user_001"],
-  "transition": {                    // 与前一场景之间的转场,默认确定性,fal 是可选升级
-    "type": "push_dissolve | page_turn | wipe | match_cut | torn_reveal",
-    "engine": "deterministic | fal_flf",
-    "duration_seconds": 1.5
+  "beat_id": "beat_04",
+  "frame": {
+    "source": "generated | manual_collage",
+    "imageUrl": "https://fal.media/... | data:image/png;base64,...",
+    "model": "nano-banana-2 | manual",
+    "prompt": "compiled frame prompt",
+    "references": ["asset_012", "user_001"],
+    "edits": [{ "kind": "prompt", "instruction": "…", "at": "…" }],
+    "requestId": "…",
+    "costUsd": 0.04,
+    "attempts": 1,
+    "approved": true
   },
   "shot": {
-    "shot_id": "scene_04_shot_01",
-    "shot_type": "push_through",    // 路由见 04-shot-router.md
-    "engine": "fal_flf",            // 路由器写入:deterministic | fal_i2v | fal_flf
-    "duration_seconds": 6,
-    "start_frame": "renders/scene_04_start.png",
-    "end_frame": "renders/scene_04_end.png",
-    "camera": { "movement": "dolly_in", "speed": "slow", "path": "straight",
-                "parallax_strength": "strong", "end_focus": "user_photo" },
-    "layers": { "foreground": "torn paper edges",
-                "midground": "1880s hospital photograph with doorway",
-                "background": "user's photo of the Renwick ruin (revealed)" },
-    "object_motion": { "archival_people": "sits down slowly on bench", "vehicle": "tram car moves left to right", "paper": "subtle jitter" },
-    // 允许具体的主体/环境动作描述,但一个镜头只挑一个主体/环境主动作,不与 camera 动作叠成 "everything moves"
-    "preservation": ["preserve all faces", "preserve architecture",
-                     "preserve printed text", "do not add objects", "no morphing"],
-    "style": ["handmade archival collage", "paper cutout", "8 fps stop-motion feeling"],
-    "generation": { "model": null, "request_id": null, "cost_usd": null,
-                    "attempts": 0, "max_attempts": 3,
-                    "status": "pending | queued | done | failed",
-                    "output": "clips/scene_04.mp4" }
+    "shot_id": "beat_04_shot_01",
+    "engine": "fal_i2v",
+    "duration_seconds": 5,
+    "start_frame": "frame.imageUrl",
+    "camera": { "movement": "dolly_in", "speed": "slow" },
+    "object_motion": { "subject": "sits down slowly" },
+    "preservation": ["preserve faces", "preserve architecture", "preserve printed text", "no new objects", "no morphing"],
+    "style": ["handmade archival collage", "paper cutout", "stop-motion feeling"],
+    "generation": {
+      "model": "kling-v3-turbo-std",
+      "request_id": null,
+      "cost_usd": null,
+      "attempts": 0,
+      "max_attempts": 3,
+      "status": "pending | queued | done | failed | approved | rejected",
+      "output": null
+    }
   },
-  "spatial": {                       // HyperFrames 确定性渲染的场景定义
-    "planes": [
-      { "asset": "assets/cutouts/....png", "z": 0.9, "x": 0, "y": 0, "scale": 1.2, "shadow": true },
-      { "asset": "...", "z": 0.5 },
-      { "asset": "...", "z": 0.1 }
-    ],
-    "camera_path": { "from": {"z": 0, "x": 0}, "to": {"z": 0.4, "x": 0.05}, "easing": "ease-in-out" }
+  "transition_out": {
+    "type": "cut | crossfade | page_turn | wipe | match_cut | custom",
+    "note": "…",
+    "engine": "ffmpeg"
   }
 }
 ```
 
-两种引擎共用 `spatial`:确定性镜头直接渲染它;fal 镜头把它拍平截帧作为 start/end frame。Prompt 一律由 `lib/prompt-compiler.ts` 从 shot JSON 编译,不手写。
-
-`transition` 同理:deterministic 版本用 HyperFrames 关键帧动画实现(翻页 = plane 的 `rotateY` 3D 翻转,擦除 = `clip-path` 动画,匹配剪辑 = 同位置同缩放交叉切),fal 版本把 `transition.type` 编译进 FLF prompt——确定性优先,fal 是可选升级,细节见 04-shot-router.md。
+Generated frame 可以直接进入 I2V;manual collage 必须先导出为单张 16:9 PNG。Prompt 一律由 `lib/prompt-compiler.ts` 从 beat、frame references 和 motion 数据编译。常规转场由 FFmpeg 在镜头生成后完成,不要求第二套视频渲染引擎。

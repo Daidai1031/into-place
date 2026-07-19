@@ -53,6 +53,34 @@ export interface TransitionNote {
   note: string;
 }
 
+/** A single edit applied to a generated storyboard frame. */
+export interface FrameEdit {
+  kind: "add_asset" | "prompt";
+  assetId?: string; // add_asset
+  instruction?: string; // prompt
+  at?: string; // ISO
+}
+
+/**
+ * Generated storyboard frame (pivot 2026-07-19). This is now the primary
+ * per-beat artifact; it is ALWAYS labeled as AI-generated in the UI. Archive
+ * assets listed in `references` keep their own provenance elsewhere.
+ */
+export interface BeatFrame {
+  imageUrl: string; // fal-hosted URL preferred (localStorage quota)
+  model: string; // key into T2I_MODELS
+  prompt: string; // compiled prompt used
+  references: string[]; // asset ids fed as visual references
+  edits: FrameEdit[];
+  requestId: string | null;
+  costUsd: number | null;
+  source: "generated" | "placeholder";
+  attempts: number;
+}
+
+/** Per-beat authoring mode: generated frame (default) or manual collage (fallback). */
+export type BeatMode = "generated" | "collage";
+
 export interface FilmEntry {
   id: string;
   placeSlug: string;
@@ -69,7 +97,9 @@ export interface ProjectState {
   tuning: Record<string, { tone?: Tone; edge?: Edge }>;
   uploads: UserUpload[];
   story: StoryState | null;
-  layouts: Record<string, BeatLayout>; // key: beat id
+  frames: Record<string, BeatFrame>; // key: beat id — generated storyboard frame (primary)
+  beatMode: Record<string, BeatMode>; // key: beat id — default "generated"
+  layouts: Record<string, BeatLayout>; // key: beat id — manual collage (fallback path)
   transitions: Record<string, TransitionNote>; // key: `${beatA}->${beatB}`
   updatedAt: string;
 }
@@ -81,6 +111,8 @@ export function emptyProject(slug: string): ProjectState {
     tuning: {},
     uploads: [],
     story: null,
+    frames: {},
+    beatMode: {},
     layouts: {},
     transitions: {},
     updatedAt: new Date().toISOString(),

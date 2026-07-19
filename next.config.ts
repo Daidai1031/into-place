@@ -5,8 +5,8 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/**": ["data/**", "public/films/**"],
   },
-  // Pipeline-only packages must never be bundled into routes.
-  serverExternalPackages: ["puppeteer", "sharp"],
+  // Pixel preprocessing stays server-only and outside route bundles.
+  serverExternalPackages: ["sharp"],
 };
 
 export default nextConfig;

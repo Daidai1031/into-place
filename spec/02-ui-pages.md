@@ -1,6 +1,6 @@
 # 02 · 页面规格(2026-07-19 与实现同步:地图落地页 + 4 个工作页 + 影片库)
 
-全英文界面。工作流:**Atlas → Archive → Story → Storyboard → Film → Library**,顶栏 `StepNav` 面包屑(Archive → Story → Storyboard → Film)。朴素 Tailwind v4,无组件库;拼贴美学 = 纸纹背景(inline SVG turbulence)+ 撕纸边(三套确定性 clip-path 变体)+ 胶带/印章/手写体点缀。用户态(选素材、调参、上传、story、layout、影片库)全部存 localStorage,详见 spec/03 环境分裂机制。
+全英文界面。工作流:**Atlas → Archive → Story → Storyboard → Film → Library**,顶栏 `StepNav` 面包屑(Archive → Story → Storyboard → Film)。朴素 Tailwind v4,无组件库;拼贴美学 = 纸纹背景(inline SVG turbulence)+ 撕纸边(三套稳定 clip-path 变体)+ 胶带/印章/手写体点缀。用户态(选素材、调参、上传、story、frames、layouts、影片库)全部存 localStorage,详见 spec/03 环境分裂机制。
 
 ## Page 0 — Atlas(`/`)
 
@@ -35,20 +35,22 @@
 
 ## Page 3 — Storyboard(`/p/[slug]/direct` 原 Direct 重做为 `/p/[slug]/storyboard`)
 
-**逐 beat collage canvas**:
+**逐 beat 双路径分镜**:
 
-- `BeatStrip`:横向 beat 缩略条(●=已排版),beat 之间转场 chip(page_turn / wipe / match_cut / push_dissolve / custom + 备注,可 "Suggest with AI");
+- `BeatStrip`:横向 beat 缩略条(●=已有审核帧),beat 之间转场 chip(page_turn / wipe / match_cut / push_dissolve / custom + 备注,可 "Suggest with AI");
+- 默认 `Generated frame`:从 beat、film premise 与选定 archive references 编译 prompt,生成 16:9 frame;支持模型选择、自然语言编辑、把 cutout 拖到指定位置继续编辑;所有结果标注 AI-generated 并记录 request ID / prompt / cost / references;
+- 可切换 `Manual collage`:16:9 `CollageCanvas` 使用真实 cutout,支持拖拽、旋转、缩放、层级、画笔与 undo;进入 I2V 前导出为静态 PNG;
 - 16:9 canvas(`CollageCanvas`):纯 pointer events + CSS transform,拖拽移动、单角柄旋转+缩放、层级前后移、移除;坐标归一化存 `{assetId,x,y,scale,rotation,z}`;
 - `AssetShelf`:已策展素材点击上画布,每 beat 3–8 个(推荐 5);
-- **AI 初始排版**:客户端拼 contact sheet → 图像模型出参考稿 → vision LLM 出布局 JSON → 真实 cutout 像素按 JSON 摆放;参考稿只折叠展示且带 "AI-generated reference — not archive, not the output" 标注;AI 不可用时确定性排版兜底,永不阻塞;
+- **AI 初始排版(manual collage)**:客户端拼 contact sheet → 图像模型出参考稿 → vision LLM 出布局 JSON → 真实 cutout 像素按 JSON 摆放;参考稿只折叠展示且带 "AI-generated reference — not archive, not the output" 标注;AI 不可用时规则化布局兜底,永不阻塞;
 - **画笔**(`BrushOverlay`):顶层 canvas 手绘(5 色 + 粗细),笔迹序列化 PNG 持久化;undo 快照栈(布局+笔迹);
-- 全部 beat 排版完成 → "Continue to Film"。
+- 全部 beat 都有 generated frame 或 manual collage → "Continue to Film"。
 
 ## Page 4 — Film(`/p/[slug]/film`)
 
-- 前置校验:story ≥5 beats 且全部 beat 已排版,否则引导回对应页;
-- `Generate the film` → 先 `/api/project/save` 镜像状态,再 `/api/generate/start`;进度四步演出(Compiling scenes → Rendering parallax shots → Building transitions → Assembling);本地模式同时真写 project.json + generated scene JSONs;
-- 播放器 + 模式说明(live pipeline / simulation);`+ Save to library`;
+- 前置校验:story ≥5 beats 且每个 beat 都有审核后的 generated frame 或 manual collage,否则引导回对应页;
+- `Generate the film` → 先 `/api/project/save` 镜像状态,再 `/api/generate/start`(写 `film-manifest.json` + 播预览);真实成片由本地 `scripts/render-film.mts` 消费 manifest,经 `/api/shot/*`(或直接 fal queue)出各镜头 I2V + FFmpeg xfade 合成 → `final/<slug>.mp4` → `scripts/sync-public.mjs`;付费运行需显式 `--yes`;
+- 播放器 + 模式说明(local preview / simulation);`+ Save to library`;
 - **Journey Book**:用到的档案来源(标题/年代/来源链接/license)+ 社区贡献署名 + "What the models did" 生成行为清单(生成物永不冒充档案——真实性红线)。
 
 ## Library(`/library`)
