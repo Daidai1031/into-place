@@ -23,7 +23,17 @@ export interface ImageModel {
   priceNote: string;
   promptParam: string;
   imageRefsParam?: string;
+  /** Param name for aspect ratio / size. */
   aspectRatioParam?: string;
+  /**
+   * Value to send for a 16:9 frame. Formats differ per family:
+   *  - Gemini/Imagen accept the string "16:9".
+   *  - FLUX / Seedream accept an { width, height } object (or an enum preset).
+   * Defaults to the string "16:9" when omitted.
+   */
+  aspectRatioValue?: string | { width: number; height: number };
+  /** Fixed model-specific params merged into every call (after num_images). */
+  extraInput?: Record<string, unknown>;
   supportsEdit: boolean;
   verifyBeforeCall: boolean;
   notes?: string;
@@ -36,6 +46,7 @@ export const NANO_BANANA_2: ImageModel = {
   promptParam: "prompt",
   imageRefsParam: "image_urls",
   aspectRatioParam: "aspect_ratio",
+  aspectRatioValue: "16:9",
   supportsEdit: true,
   verifyBeforeCall: true,
   notes: "Primary model for initial frames, dragged assets, and language edits.",
@@ -48,14 +59,43 @@ export const FLUX_2_PRO: ImageModel = {
   promptParam: "prompt",
   imageRefsParam: "image_urls",
   aspectRatioParam: "image_size",
+  // FLUX rejects "16:9" — needs an explicit size (or an enum like landscape_16_9).
+  aspectRatioValue: { width: 1280, height: 720 },
   supportsEdit: false,
   verifyBeforeCall: true,
   notes: "High-quality generation candidate; edits fall back to nano-banana 2.",
 };
 
+export const SEEDREAM_4: ImageModel = {
+  endpointId: "fal-ai/bytedance/seedream/v4/text-to-image",
+  displayName: "Seedream 4.0",
+  priceNote: "~$0.03/image (captured estimate; recheck via fal MCP before use)",
+  promptParam: "prompt",
+  // Seedream text-to-image is prompt-only here (no reference sheet).
+  aspectRatioParam: "image_size",
+  aspectRatioValue: { width: 1280, height: 720 },
+  supportsEdit: false,
+  verifyBeforeCall: true,
+  notes: "ByteDance Seedream 4 candidate; strong photoreal/print look.",
+};
+
+export const IMAGEN_4: ImageModel = {
+  endpointId: "fal-ai/imagen4/preview",
+  displayName: "Imagen 4",
+  priceNote: "~$0.04/image (captured estimate; recheck via fal MCP before use)",
+  promptParam: "prompt",
+  aspectRatioParam: "aspect_ratio",
+  aspectRatioValue: "16:9",
+  supportsEdit: false,
+  verifyBeforeCall: true,
+  notes: "Google Imagen 4 candidate; clean text, prompt-only (no reference sheet).",
+};
+
 export const T2I_MODELS: Record<string, ImageModel> = {
   "nano-banana-2": NANO_BANANA_2,
   "flux-2-pro": FLUX_2_PRO,
+  "seedream-4": SEEDREAM_4,
+  "imagen-4": IMAGEN_4,
 };
 export const T2I_DEFAULT = "nano-banana-2";
 

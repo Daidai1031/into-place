@@ -17,9 +17,9 @@ export const STYLE = {
   medium:
     "a handmade, tactile, editorial paper-collage still: layered 2.5D multiplane depth built from stacked paper cutouts, archival photographs, map fragments, newspaper clippings, hand-drawn textures, torn paper edges, vintage typography and masked image layers; materials overlap with clear hierarchy and spatial logic — a 2D frame with a 3D sense of space",
   palette:
-    "muted blue-gray and sepia tones, historical texture overlays, tactile paper textures, a vintage print feeling, restrained but expressive",
+    "low-saturation vintage print palette: warm sepia and faded cream with soft muted blue-gray accents, aged-paper warmth, gentle historical texture overlays, tactile paper textures, a nostalgic archival photo feeling, restrained but warm — evenly and softly lit, never dark or high-contrast",
   mood:
-    "thoughtful, hidden, reflective and slightly haunting, but never horror; not a tourism ad",
+    "thoughtful, quiet, reflective and nostalgic; warm and human, like leafing through an old family archive — calm, not eerie, not somber, not haunting",
   grain:
     "texture overlays, roughened edges, paper grain and delicate film grain, irregular handmade imperfections",
   motion:
@@ -30,7 +30,7 @@ export const STYLE = {
 
 /** Negative / avoid block — every generated frame and shot carries it. */
 export const AVOID =
-  "Avoid a tourism-ad look, glossy travel visuals, drone-commercial energy, overly polished 3D rendering, bright cheerful colors, generic city montage, sleek motion graphics, and clean corporate infographic looks.";
+  "Avoid any horror, eerie, creepy, ominous, unsettling or ghostly mood; avoid dark shadows, gloomy low-key lighting, heavy vignettes, cold desaturated grays, sickly green/teal color casts and high contrast. Also avoid a tourism-ad look, glossy travel visuals, drone-commercial energy, overly polished 3D rendering, bright oversaturated cheerful colors, generic city montage, sleek motion graphics, and clean corporate infographic looks.";
 
 /**
  * Preservation block (CLAUDE.md fixed constraints). Guards identity/material

@@ -29,6 +29,8 @@ const SOFT_ATTEMPT_WARN = 3; // gentle nudge; hard cap is reserved for paid vide
 const T2I_OPTIONS = [
   { key: "nano-banana-2", label: "nano-banana 2" },
   { key: "flux-2-pro", label: "FLUX.2 pro" },
+  { key: "seedream-4", label: "Seedream 4.0" },
+  { key: "imagen-4", label: "Imagen 4" },
 ];
 
 type LayoutPhase = "idle" | "sheet" | "generating" | "done";
