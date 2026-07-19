@@ -192,10 +192,4 @@ Alternative:
 
 Erasure → infiltration → disbelief → public testimony → inherited agency.
 
----
 
-# Relationship Between the Directions
-
-- **Direction One** examines the island at the scale of urban planning.
-- **Direction Two** examines it through women’s bodies, labor, and voices.
-- Both use the East River as a boundary and a channel: it isolates people, but cannot permanently contain memory, evidence, or ideas.

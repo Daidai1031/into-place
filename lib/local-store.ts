@@ -24,6 +24,7 @@ export interface StoryBeat {
   id: string;
   act: string; // e.g. "Stasis", "Peripeteia" — LLM may extend beyond five
   text: string; // 1–2 sentences
+  visualDirection?: string; // optional preset-authored staging; does not alter the story text
 }
 
 export interface StoryState {

@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_029_mae_west_cutout",
+  "assetId": "asset_029",
+  "role": "cutout",
+  "actualRole": "cutout",
+  "source": {
+    "file": "assets/archive/asset_029.jpg",
+    "sha256": "92a1f621c01e26273fcbdf0ead203227fb88b1cd348e121ca453160c6e0ffbf9"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_029_mae_west_cutout.png",
+    "sha256": "b290fe6fb9bafe5f6d4d89df62d064df016302f669d58d7a7310e1fed6fd4f42"
+  },
+  "cache": {
+    "sourceSha256": "92a1f621c01e26273fcbdf0ead203227fb88b1cd348e121ca453160c6e0ffbf9",
+    "recipeSha256": "3d41c950e8f59a1d0b2a61a3a73cfb35152cd3f3a7d2e0b5bcecca03b4b74bae",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "ada972a34555fc5e2e86c50ae5849815e2b36e4d0270d9a15deea9a554d7f1c6",
+    "cacheKey": "7759aeeca3b8b66dea3d3da29221d5ddb4aaf294912a992463c384c96b9474fc"
+  },
+  "selection": {
+    "tone": "source",
+    "edge": "scissor"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "resize-inside:2400:without-enlargement",
+    "tone:source",
+    "cached-mask-alpha-only",
+    "edge:scissor",
+    "white-border",
+    "shadow-behind-border"
+  ],
+  "mask": {
+    "provider": "fal-cache",
+    "file": "data/preprocess/masks/asset_029_mae_west_cutout.png",
+    "sha256": "efadfcf268a218f4b9171a4cd97d754aba0b172c8b3c645b197071d077010d5f",
+    "cacheKey": "5c88fc0fe4a744ec21d73f8e5cedbfd8bd8ed8044e1d4071fac94721139d79ef",
+    "fallback": null
+  },
+  "falCalls": [
+    {
+      "attempt": 1,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f7a45-15d9-7433-9034-2a94cf41b409",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "Mae West's complete visible figure, including all hair, both arms and hands, jewelry, and dress to the bottom edge",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "failed",
+      "submitted_at": "2026-07-19T12:06:15.719Z",
+      "error": "fal result did not contain masks[0].url",
+      "completed_at": "2026-07-19T12:06:19.340Z",
+      "schema_checked_at": "2026-07-18",
+      "price_checked_at": "2026-07-18",
+      "unit_price_usd": 0.005,
+      "pricing_unit": "request"
+    },
+    {
+      "attempt": 2,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f7a45-2404-79e2-a0f3-07b73de82515",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "the entire foreground woman from the top of her hair through the full visible dress",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "completed",
+      "submitted_at": "2026-07-19T12:06:19.343Z",
+      "qa": {
+        "valid": true,
+        "coverage": 0.4345413260672116,
+        "minCoverage": 0.25,
+        "maxCoverage": 0.85
+      },
+      "result": {
+        "mask_url": "(redacted fal result URL)",
+        "score": 0.9829111695289612,
+        "box": [
+          0.5691982445989707,
+          0.5104825623830159,
+          0.7657028115088024,
+          0.9787089474995931
+        ],
+        "width": 734,
+        "height": 900
+      },
+      "completed_at": "2026-07-19T12:06:23.009Z",
+      "schema_checked_at": "2026-07-18",
+      "price_checked_at": "2026-07-18",
+      "unit_price_usd": 0.005,
+      "pricing_unit": "request"
+    }
+  ],
+  "qa": {
+    "width": 734,
+    "height": 900,
+    "opaquePixels": 287058,
+    "coverage": 0.43454132606721163,
+    "bbox": {
+      "left": 139,
+      "top": 21,
+      "width": 557,
+      "height": 879
+    },
+    "connectedComponents": 1,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.25,
+      "maxCoverage": 0.85,
+      "maxConnectedComponents": 64
+    },
+    "outputWidth": 846,
+    "outputHeight": 1012
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "Mae West portrait from She Done Him Wrong",
+  "preserve": "Mae West's complete visible figure from hair through both hands and the full visible dress to the bottom edge.",
+  "exclude": "The dark studio background and upholstered settee.",
+  "qualityWarnings": [],
+  "createdAt": "2026-07-19T12:06:23.360Z"
+}

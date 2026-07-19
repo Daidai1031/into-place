@@ -1,8 +1,9 @@
 /**
- * Phase B verification (2026-07-19): generate the five Direction-One storyboard
- * frames with fal nano-banana-2/edit, using the real archival cutouts as
- * references and the compiled master-style prompt. A style anchor (frame 1) is
- * chained into frames 2–5 to hold palette / paper / grain consistent.
+ * Generate the five "Women Who Crossed the Water" storyboard frames with fal
+ * nano-banana-2/edit. Each beat uses at most seven real archival references,
+ * and one source asset may appear in at most two scenes. The shared compiled
+ * style prompt holds continuity without repeating a previous frame as a style
+ * anchor across the whole film.
  *
  * Run:  npx tsx scripts/gen-storyboard-preview.mts
  * Reads FAL_KEY from .env.local. Never prints the key.
@@ -68,37 +69,36 @@ async function callModel(input: Record<string, unknown>): Promise<{ url: string;
   }
 }
 
-const STYLE_MATCH =
-  "\n\nStyle continuity: match the exact visual style, muted blue-gray + sepia palette, paper texture, film grain, lighting and handmade collage treatment of the FIRST reference image. Do NOT copy its specific buildings or composition — only its look and materials.";
-
 const results: { beat: string; requestId: string; file: string; refs: string[] }[] = [];
-let anchorUrl: string | null = null;
+const sceneUseCounts = new Map<string, number>();
+for (const beat of preset.beats) {
+  if (beat.references.length > 7) throw new Error(`${beat.id} has more than seven source images`);
+  for (const id of new Set<string>(beat.references)) {
+    const next = (sceneUseCounts.get(id) ?? 0) + 1;
+    if (next > 2) throw new Error(`${id} appears in more than two scenes`);
+    sceneUseCounts.set(id, next);
+  }
+}
 
 for (let i = 0; i < preset.beats.length; i++) {
   const beat = preset.beats[i];
-  const refIds: string[] = beat.references;
+  const refIds: string[] = beat.references.slice(0, 7);
   process.stdout.write(`\n[${i + 1}/5] ${beat.act} — refs: ${refIds.join(", ")}\n`);
 
   const refUrls = await Promise.all(refIds.map(uploadCutout));
   const references = refIds.map((id) => briefById.get(id)!).filter(Boolean);
 
-  let prompt = compileFramePrompt({ place: placeBrief, beat, references, filmPremise });
-  const imageUrls = [...refUrls];
-  if (anchorUrl) {
-    imageUrls.unshift(anchorUrl);
-    prompt += STYLE_MATCH;
-  }
+  const prompt = compileFramePrompt({ place: placeBrief, beat, references, filmPremise });
 
   const { url, requestId } = await callModel({
     prompt,
-    image_urls: imageUrls,
+    image_urls: refUrls,
     aspect_ratio: "16:9",
     num_images: 1,
   });
 
   const dest = `${OUT}/beat_0${i + 1}.png`;
   await download(url, dest);
-  if (i === 0) anchorUrl = url;
   results.push({ beat: beat.act, requestId, file: dest, refs: refIds });
   process.stdout.write(`   ✓ ${requestId} → ${dest}\n`);
 }

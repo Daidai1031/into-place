@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { getPlace } from "@/lib/places";
+import { getPreset } from "@/lib/presets";
 import { ArchiveView } from "@/components/archive/ArchiveView";
 
 export default async function ArchivePage({
@@ -10,5 +11,5 @@ export default async function ArchivePage({
   const { slug } = await params;
   const place = getPlace(slug);
   if (!place) notFound();
-  return <ArchiveView place={place} />;
+  return <ArchiveView place={place} preset={getPreset(slug)} />;
 }

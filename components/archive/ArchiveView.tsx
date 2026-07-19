@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Place, PlaceAsset, Tone, Edge, AssetStatus } from "@/lib/types";
+import type { StoryPreset } from "@/lib/presets";
 import { assetThumb } from "@/lib/types";
 import { bucketByEra } from "@/lib/era";
 import { useProject } from "@/lib/hooks/useProject";
@@ -28,7 +29,7 @@ function assetDefaults(asset: PlaceAsset): { tone: Tone; edge: Edge } {
   return { tone: first?.tone ?? "mono", edge: first?.edge ?? "torn" };
 }
 
-export function ArchiveView({ place }: { place: Place }) {
+export function ArchiveView({ place, preset }: { place: Place; preset?: StoryPreset | null }) {
   const { project, update, hydrated } = useProject(place.slug);
   const [uploadOpen, setUploadOpen] = useState(false);
   const [tunerTarget, setTunerTarget] = useState<
@@ -75,6 +76,29 @@ export function ArchiveView({ place }: { place: Place }) {
       body: JSON.stringify({ slug: place.slug, assetId: id, ...tuning }),
     }).catch(() => {});
   };
+
+  // Demo convenience: on a fresh project, pre-curate the archive to match the
+  // built-in default story. Every asset the preset's beats reference becomes
+  // "must use"; the rest of the usable (non reference-only, non-rejected)
+  // archive becomes "maybe", so Archive → Story → Storyboard opens already
+  // selected and the storyboard shelf highlights the must-use set. Runs once,
+  // and only while the user has made no selections of their own — so it never
+  // clobbers real curation.
+  const autoSeeded = useRef(false);
+  useEffect(() => {
+    if (!hydrated || !preset || autoSeeded.current) return;
+    if (Object.keys(project.selections).length > 0) return;
+    autoSeeded.current = true;
+    const referenced = new Set(preset.beats.flatMap((b) => b.references ?? []));
+    const seeded: Record<string, AssetStatus> = {};
+    for (const a of place.assets) {
+      if (a.reference_only || a.status === "rejected") continue;
+      seeded[a.id] = referenced.has(a.id) ? "must_use" : "maybe";
+    }
+    if (Object.keys(seeded).length === 0) return;
+    update((prev) => ({ ...prev, selections: { ...seeded, ...prev.selections } }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hydrated, preset, project.selections]);
 
   const buckets = bucketByEra(place.assets, (a) => a.era);
   const approvedUploads = project.uploads.filter((u) => u.moderation === "approved");

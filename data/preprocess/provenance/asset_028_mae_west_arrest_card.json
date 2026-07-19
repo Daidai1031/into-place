@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_028_mae_west_arrest_card",
+  "assetId": "asset_028",
+  "role": "card",
+  "actualRole": "card",
+  "source": {
+    "file": "assets/archive/asset_028.jpg",
+    "sha256": "7eee77a770b8a2a1c14cf491c5f2c97877eaf0a1d6629061b5efae3631add4f6"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_028_mae_west_arrest_card.png",
+    "sha256": "1de6d4bf08009f52f4c203cf05f9b3218a3a7b6d4be99fe41b4f838eb538180a"
+  },
+  "cache": {
+    "sourceSha256": "7eee77a770b8a2a1c14cf491c5f2c97877eaf0a1d6629061b5efae3631add4f6",
+    "recipeSha256": "281746ccc7487302e7ce512ff302a2fbf69724c96c4fea587a469dd4a561ba89",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "27cd5a2f0cfdceb6963a323f6a33ab0046ff70c260147a14912987308cfdafcc",
+    "cacheKey": "509aca320cd8b5905915ab28434af6b957f63a3ec878535656c3644ff37ae5e1"
+  },
+  "selection": {
+    "tone": "source",
+    "edge": "torn"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "resize-inside:2400:without-enlargement",
+    "tone:source",
+    "edge:torn",
+    "white-border",
+    "shadow-behind-border"
+  ],
+  "mask": null,
+  "falCalls": [],
+  "qa": {
+    "width": 1200,
+    "height": 1339,
+    "opaquePixels": 1598592,
+    "coverage": 0.994891710231516,
+    "bbox": {
+      "left": 0,
+      "top": 0,
+      "width": 1200,
+      "height": 1339
+    },
+    "connectedComponents": 8,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.5,
+      "maxCoverage": 1,
+      "maxConnectedComponents": 128
+    },
+    "outputWidth": 1312,
+    "outputHeight": 1451
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "Mae West seated in the open rear doorway of a police van after the 1927 Sex raid",
+  "preserve": "The complete historical photograph, including Mae West, the police van, nearby officers, and street context.",
+  "exclude": "Nothing; the complete documentary frame is historically relevant.",
+  "qualityWarnings": [],
+  "createdAt": "2026-07-19T12:06:34.559Z"
+}

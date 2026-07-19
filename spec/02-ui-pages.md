@@ -4,11 +4,12 @@
 
 ## Page 0 — Atlas(`/`)
 
-风格化拼贴地图(inline SVG 撕纸大陆 + 海纹 + 虚线航线,非真实投影):
+2026-07-19 起,地图落地页的空间导航入口从风格化 SVG 拼贴地图换成 `react-globe.gl` 纸感地球(`components/atlas/AtlasHero.tsx` + `PaperGlobe.tsx`;旧的 `AtlasMap.tsx`/`PlaceMarker.tsx` 保留在仓库未删除,便于回退)。左列标题「EVERY PLACE HAS A HIDDEN LAYER / Turn local history into spatial collage stories.」+ `NewPlaceInput`;右列地球:
 
-- 标记来自 `data/places/*.json` 的 `map_marker{x,y}`(归一化坐标绝对定位);
-- `seeded` 地点(Roosevelt Island):红色菱形标记 + ping 动画,hover 出纸卡(名称/tagline/条目数),点击 → Archive;
-- `empty` 地点(`shaxi.json`、`camino.json`):半透明虚线圆 "?",hover "Be the first to contribute";
+- 地球材质纯色调(`THREE.MeshLambertMaterial`,非贴图),海洋用 `--color-sky` 一类褪色蓝灰;陆地是 `polygonsData`(Natural Earth 110m admin-0 国家,vendored 自 `three-globe` 例子数据,存于 `public/world/ne-110m-countries.geojson`,public domain)按国家名 hash 出的几档 sepia/paper 色,`polygonStrokeColor` 墨色描边;`showGraticules` 开经纬网格线;`showAtmosphere:false`(不要科技感蓝光);
+- 标记数据来自 `PlaceSummary.coordinates{lat,lng}`(真实经纬度,新增字段,见 `lib/types.ts`),经 `htmlElementsData` 渲染成纯 DOM(样式在 `app/globals.css` 的 `.globe-marker*` 规则,不走 Tailwind 扫描);`seeded` 地点(Roosevelt Island)红色菱形 + ping 动画,hover/focus 出纸卡标签(名称/地区);`empty` 地点(shaxi、camino)虚线圆 "?";
+- 首页只渲染 `listPlaces().slice(0, 3)`——目前正好是全部 3 个示例地点,未来地点变多时入口仍保持精简;
+- 地球缓慢 `autoRotate`,拖拽/点击时暂停,松手数秒后恢复;点击 `seeded` 标记 → `pointOfView` 飞向该地点并放大、标记放大、~1.5s 后浮现「Explore the hidden history →」链接(指向 Archive),同时把 `active` 传给 `CollageParallax` 触发背景拼贴碎片(旧地图残片、Nellie Bly/灯塔/Girl Puzzle 纪念像的撕边 cutout、循环播放 found-footage 的复古电视道具)的一次性"苏醒"位移;
 - `NewPlaceInput`:输入新地点名 → "new places open soon" 提示(不实做);
 - 底部平台陈述:人人可贡献,来源与署名永远保留。
 

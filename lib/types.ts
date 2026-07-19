@@ -38,6 +38,7 @@ export interface Place {
   region: string;
   status: "seeded" | "empty";
   map_marker: { x: number; y: number };
+  coordinates: { lat: number; lng: number };
   tagline: string;
   assets: PlaceAsset[];
 }
@@ -48,6 +49,7 @@ export interface PlaceSummary {
   region: string;
   status: "seeded" | "empty";
   map_marker: { x: number; y: number };
+  coordinates: { lat: number; lng: number };
   tagline: string;
   assetCount: number;
 }

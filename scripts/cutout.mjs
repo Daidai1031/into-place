@@ -200,6 +200,54 @@ async function replaceAlpha(rgbInput, alphaPng, width, height) {
     .toBuffer();
 }
 
+/**
+ * Build a local alpha mask for dark printed ink on a light scanned paper page.
+ * This preserves the source RGB and avoids uploading archival pages. The mask
+ * combines a global paper estimate with a broad local blur so both solid dark
+ * areas and fine engraved lines survive while low-contrast paper texture drops.
+ */
+export async function createPaperInkMask(sourceInput, options = {}) {
+  const oriented = await sharp(sourceInput).rotate().toColourspace("srgb").removeAlpha().png().toBuffer({ resolveWithObject: true });
+  const crop = normalizeCrop(options.crop);
+  const pixelCrop = cropToPixels(crop, oriented.info.width, oriented.info.height);
+  let image = sharp(oriented.data);
+  if (crop) image = image.extract(pixelCrop);
+  const maxSize = Number(options.maxSize ?? 0);
+  if (maxSize > 0) image = image.resize(maxSize, maxSize, { fit: "inside", withoutEnlargement: true, kernel: "lanczos3" });
+
+  const rgb = await image.toColourspace("srgb").removeAlpha().raw().toBuffer({ resolveWithObject: true });
+  const { width, height, channels } = rgb.info;
+  const luminance = Buffer.allocUnsafe(width * height);
+  for (let index = 0, pixel = 0; pixel < luminance.length; pixel++, index += channels) {
+    luminance[pixel] = Math.round(0.2126 * rgb.data[index] + 0.7152 * rgb.data[index + 1] + 0.0722 * rgb.data[index + 2]);
+  }
+
+  const sampleStep = Math.max(1, Math.floor(luminance.length / 120000));
+  const sample = [];
+  for (let index = 0; index < luminance.length; index += sampleStep) sample.push(luminance[index]);
+  sample.sort((a, b) => a - b);
+  const percentile = Math.max(0.5, Math.min(0.98, Number(options.paperPercentile ?? 0.82)));
+  const paperLuma = sample[Math.min(sample.length - 1, Math.floor(sample.length * percentile))];
+  const blurSigma = Math.max(1, Number(options.blurSigma ?? 18));
+  const localPaper = await sharp(luminance, { raw: { width, height, channels: 1 } })
+    .blur(blurSigma)
+    .raw()
+    .toBuffer();
+
+  const transparentThreshold = Number(options.transparentThreshold ?? 14);
+  const opaqueThreshold = Math.max(transparentThreshold + 1, Number(options.opaqueThreshold ?? 78));
+  const alpha = Buffer.allocUnsafe(width * height);
+  for (let index = 0; index < alpha.length; index++) {
+    const globalDark = paperLuma - luminance[index];
+    const localDark = localPaper[index] - luminance[index];
+    const score = Math.max(globalDark * 0.82, localDark * 1.65);
+    const normalized = Math.max(0, Math.min(1, (score - transparentThreshold) / (opaqueThreshold - transparentThreshold)));
+    const eased = normalized * normalized * (3 - 2 * normalized);
+    alpha[index] = eased < 0.055 ? 0 : Math.round(eased * 255);
+  }
+  return sharp(alpha, { raw: { width, height, channels: 1 } }).toColourspace("b-w").png().toBuffer();
+}
+
 /** Hard, lightly anti-aliased edge suitable for scissors/cutout subjects. */
 export async function applyScissorEdge(alphaPng, { threshold = 128, antialias = 0.45 } = {}) {
   assertFinite(threshold, "threshold");

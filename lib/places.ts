@@ -16,6 +16,7 @@ export function listPlaces(): PlaceSummary[] {
         region: p.region,
         status: p.status,
         map_marker: p.map_marker,
+        coordinates: p.coordinates,
         tagline: p.tagline,
         assetCount: p.assets?.length ?? 0,
       };

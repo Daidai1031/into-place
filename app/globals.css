@@ -1,32 +1,55 @@
 @import "tailwindcss";
 
 @theme {
-  /* Collage palette: aged paper, archival ink, stamp red, tape amber */
-  --color-paper: #f3ecdd;
+  /* Collage palette — aligned to the Figma redesign spec.
+     Background #EDE6D9, cards #F6F1E7, ink #1E1A16, secondary #5A5248,
+     accent orange #B5622E, dark footer #15130F. Stamp red / tape amber /
+     survey green kept for the archival collage props. */
+  --color-paper: #ede6d9;
   --color-paper-deep: #e7dcc4;
   --color-paper-shadow: #d8cbae;
-  --color-ink: #2b2620;
-  --color-ink-soft: #5b5348;
+  --color-card: #f6f1e7;
+  --color-ink: #1e1a16;
+  --color-ink-soft: #5a5248;
+  --color-orange: #b5622e;
+  --color-footer: #15130f;
   --color-stamp: #a5432c;
   --color-tape: #e9d8a6;
   --color-accent: #31572c;
   --color-sky: #b8c8cf;
 
-  --font-display: "Georgia", "Times New Roman", serif;
-  --font-hand: "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
-  --font-typewriter: "Courier New", "Courier", monospace;
+  /* Type system used site-wide — three families:
+       display → Freckle Face (page titles / headings)
+       body    → Chelsea Market (reading copy)
+       ui      → Inria Sans (microcopy / labels / buttons)
+     Legacy tokens are remapped onto these so no other typeface
+     (Darumadrop / Courier / Segoe Print) renders anywhere:
+       hand → Chelsea Market, typewriter → Inria, sans → Inria. */
+  --font-display: var(--font-freckle), "Georgia", "Times New Roman", serif;
+  --font-body: var(--font-chelsea), "Georgia", "Times New Roman", serif;
+  --font-ui: var(--font-inria), "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: var(--font-inria), "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-hand: var(--font-chelsea), "Georgia", "Times New Roman", serif;
+  --font-typewriter: var(--font-inria), "Segoe UI", "Helvetica Neue", Arial, sans-serif;
 }
 
 body {
   background-color: var(--color-paper);
   color: var(--color-ink);
-  font-family: var(--font-typewriter);
+  font-family: var(--font-ui);
   /* Paper grain: inline SVG turbulence, zero binary assets */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.17 0 0 0 0 0.15 0 0 0 0 0.12 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-h1, h2, h3, .font-display {
+/* Freckle Face is heavy — reserve it for the true page-level title (h1)
+   and give it extra tracking so the display face can breathe. h2/h3 and the
+   (now widely reused, mostly small) .font-display class fall back to Chelsea. */
+h1 {
   font-family: var(--font-display);
+  letter-spacing: 0.045em;
+}
+h2, h3, .font-display {
+  font-family: var(--font-body);
 }
 
 .font-hand {
@@ -69,4 +92,143 @@ h1, h2, h3, .font-display {
 }
 .animate-float-in {
   animation: float-in 0.4s ease-out both;
+}
+
+/* Respect reduced-motion: kill entrance/parallax motion, keep content visible. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-stamp-in,
+  .animate-float-in {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  [data-depth] {
+    transform: none !important;
+  }
+}
+
+/* Paper globe markers — plain DOM built by PaperGlobe.tsx for
+   react-globe.gl's htmlElementsData layer, styled here since they live
+   outside the component tree Tailwind's class-scanner would otherwise
+   dead-code-eliminate against. */
+.globe-marker {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: auto;
+}
+.globe-marker--live {
+  cursor: pointer;
+}
+.globe-marker-pin {
+  position: relative;
+  display: flex;
+  height: 22px;
+  width: 22px;
+  align-items: center;
+  justify-content: center;
+}
+.globe-marker-pin--lit .globe-marker-dot {
+  display: block;
+  height: 13px;
+  width: 13px;
+  transform: rotate(45deg);
+  background: var(--color-stamp);
+  box-shadow: 1px 1px 0 rgb(43 38 32 / 0.4);
+  transition: transform 250ms ease;
+}
+.globe-marker.is-focused .globe-marker-dot {
+  transform: rotate(45deg) scale(1.9);
+}
+.globe-marker-ping {
+  position: absolute;
+  inset: -6px;
+  border-radius: 9999px;
+  background: rgb(165 67 44 / 0.3);
+  animation: globe-marker-ping 2.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes globe-marker-ping {
+  75%, 100% {
+    transform: scale(2.1);
+    opacity: 0;
+  }
+}
+.globe-marker-pin--empty {
+  height: 20px;
+  width: 20px;
+  border-radius: 9999px;
+  border: 2px dashed rgb(91 83 72 / 0.5);
+  background: rgb(243 236 221 / 0.7);
+  font-family: var(--font-typewriter);
+  font-size: 10px;
+  color: var(--color-ink-soft);
+  opacity: 0.65;
+  transition: opacity 200ms ease;
+}
+.globe-marker:hover .globe-marker-pin--empty {
+  opacity: 1;
+}
+.globe-marker-tag {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  z-index: 30;
+  min-width: 150px;
+  transform: translate(-50%, 4px);
+  background: #faf6ec;
+  padding: 6px 10px;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0 1px 2px rgb(43 38 32 / 0.35), 0 6px 14px rgb(43 38 32 / 0.18);
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+.globe-marker:hover .globe-marker-tag,
+.globe-marker.is-focused .globe-marker-tag {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+.globe-marker-tag-name {
+  font-family: var(--font-display);
+  font-size: 13px;
+  line-height: 1.2;
+  color: var(--color-ink);
+}
+.globe-marker-tag-region {
+  margin-top: 2px;
+  font-family: var(--font-typewriter);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+}
+.globe-marker-cta {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  z-index: 30;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-typewriter);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  padding: 6px 12px;
+  box-shadow: 2px 2px 0 rgb(43 38 32 / 0.25);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 400ms ease;
+}
+.globe-marker.is-revealed .globe-marker-cta {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .globe-marker-ping {
+    animation: none !important;
+    opacity: 0 !important;
+  }
 }

@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_028_mae_west_arrest_cutout",
+  "assetId": "asset_028",
+  "role": "cutout",
+  "actualRole": "cutout",
+  "source": {
+    "file": "assets/archive/asset_028.jpg",
+    "sha256": "7eee77a770b8a2a1c14cf491c5f2c97877eaf0a1d6629061b5efae3631add4f6"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_028_mae_west_arrest_cutout.png",
+    "sha256": "f2294cdd4b0ae0bfd9f08f8e61da6a010bdd37ce06231e62b1046218b4f41d78"
+  },
+  "cache": {
+    "sourceSha256": "7eee77a770b8a2a1c14cf491c5f2c97877eaf0a1d6629061b5efae3631add4f6",
+    "recipeSha256": "0f4dd64e3ef714f2806593556fd9823dbfbef242a813f29d409fce5f243e414a",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "ada972a34555fc5e2e86c50ae5849815e2b36e4d0270d9a15deea9a554d7f1c6",
+    "cacheKey": "953a874b71225fc67133a682db68c54f0053fa2bc88f34baf4f6a09399166601"
+  },
+  "selection": {
+    "tone": "source",
+    "edge": "scissor"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "resize-inside:2400:without-enlargement",
+    "tone:source",
+    "local-alpha-mask-only",
+    "edge:scissor",
+    "white-border",
+    "shadow-behind-border"
+  ],
+  "mask": {
+    "provider": "rembg:silueta",
+    "file": null,
+    "sha256": null,
+    "cacheKey": "78b642edbf934ef58f9f7fef29d2035c76acfc7ea33b52ee4138fce92c812d66",
+    "fallback": "fal_failed:All 2 fal mask attempts failed QA for asset_028_mae_west_arrest_cutout"
+  },
+  "falCalls": [
+    {
+      "attempt": 1,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f7a4d-b94d-7b63-9b89-a2750521408a",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "Mae West's complete visible figure seated in the police van doorway, including all shawl fringe, crossed legs, shoes, and dress",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true,
+        "point_prompts": [
+          {
+            "x": 470,
+            "y": 350,
+            "label": 1,
+            "object_id": 1
+          },
+          {
+            "x": 490,
+            "y": 610,
+            "label": 1,
+            "object_id": 1
+          },
+          {
+            "x": 640,
+            "y": 790,
+            "label": 1,
+            "object_id": 1
+          },
+          {
+            "x": 690,
+            "y": 930,
+            "label": 1,
+            "object_id": 1
+          },
+          {
+            "x": 860,
+            "y": 560,
+            "label": 0,
+            "object_id": 1
+          },
+          {
+            "x": 100,
+            "y": 560,
+            "label": 0,
+            "object_id": 1
+          }
+        ]
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "failed",
+      "submitted_at": "2026-07-19T12:15:41.694Z",
+      "error": "fal result did not contain masks[0].url",
+      "completed_at": "2026-07-19T12:15:43.837Z",
+      "schema_checked_at": "2026-07-18",
+      "price_checked_at": "2026-07-18",
+      "unit_price_usd": 0.005,
+      "pricing_unit": "request"
+    },
+    {
+      "attempt": 2,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f7a4d-c116-7f31-9949-114e15717e37",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "Mae West alone, the woman in the fringed shawl seated at the left side of the open van doorway",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "failed",
+      "submitted_at": "2026-07-19T12:15:43.839Z",
+      "error": "fal result did not contain masks[0].url",
+      "completed_at": "2026-07-19T12:15:50.744Z",
+      "schema_checked_at": "2026-07-18",
+      "price_checked_at": "2026-07-18",
+      "unit_price_usd": 0.005,
+      "pricing_unit": "request"
+    }
+  ],
+  "qa": {
+    "width": 1200,
+    "height": 1339,
+    "opaquePixels": 139379,
+    "coverage": 0.08674321633059497,
+    "bbox": {
+      "left": 307,
+      "top": 243,
+      "width": 475,
+      "height": 785
+    },
+    "connectedComponents": 1,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.06,
+      "maxCoverage": 0.25,
+      "maxConnectedComponents": 64
+    },
+    "outputWidth": 1312,
+    "outputHeight": 1451
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "Mae West seated in the police van doorway after the 1927 Sex raid",
+  "preserve": "Mae West's complete visible figure, including hair, face, shawl fringe, hands, crossed legs, shoes, and dress.",
+  "exclude": "The police van, the other passenger, officers, bystanders, steps, and street background.",
+  "qualityWarnings": [],
+  "createdAt": "2026-07-19T12:15:59.840Z"
+}

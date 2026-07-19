@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_031_girl_puzzle_statue_cutout",
+  "assetId": "asset_031",
+  "role": "cutout",
+  "actualRole": "cutout",
+  "source": {
+    "file": "assets/archive/asset_031.jpg",
+    "sha256": "82c6cc5c4cd84d32837be64d5b6d6c8c5030feb371187af841ae3bedb9cffa85"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_031_girl_puzzle_statue_cutout.png",
+    "sha256": "6160a7df4c119aac1a367b9fc788105a534eaadf5bfc6a3f98442fac2737c1a1"
+  },
+  "cache": {
+    "sourceSha256": "82c6cc5c4cd84d32837be64d5b6d6c8c5030feb371187af841ae3bedb9cffa85",
+    "recipeSha256": "8715662f952f7980d7ab4b168b9acb8da6cfa3cf5e884d66d29840db6b099628",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "ada972a34555fc5e2e86c50ae5849815e2b36e4d0270d9a15deea9a554d7f1c6",
+    "cacheKey": "192b0a4fb624ee0e7f81507ef88fb09a4e910092cf9d12fd83fcc6e82d6e1c45"
+  },
+  "selection": {
+    "tone": "source",
+    "edge": "scissor"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "normalized-crop:0.33,0.08,0.42,0.78",
+    "resize-inside:2400:without-enlargement",
+    "tone:source",
+    "cached-mask-alpha-only",
+    "edge:scissor",
+    "white-border",
+    "shadow-behind-border"
+  ],
+  "mask": {
+    "provider": "fal-cache",
+    "file": "data/preprocess/masks/asset_031_girl_puzzle_statue_cutout.png",
+    "sha256": "fdd664bc0f7d3f79ec0621f7220b5e9cadb81c61be75b9b7f75d86b6f19884bb",
+    "cacheKey": "164a96c00d499beb4de4f0133377bd8ffef5ea5692a1d2cd7d30192762b7c3c0",
+    "fallback": null
+  },
+  "falCalls": [
+    {
+      "attempt": 1,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f7a5b-1932-7de0-9e58-a986111e93f4",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "the central monumental Nellie Bly bronze head and neck together with its inscribed rectangular THE GIRL PUZZLE NELLIE BLY pedestal",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "failed",
+      "submitted_at": "2026-07-19T12:30:18.168Z",
+      "error": "fal result did not contain masks[0].url",
+      "completed_at": "2026-07-19T12:30:20.346Z",
+      "schema_checked_at": "2026-07-18",
+      "price_checked_at": "2026-07-18",
+      "unit_price_usd": 0.005,
+      "pricing_unit": "request"
+    },
+    {
+      "attempt": 2,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f7a5b-210e-7cc3-9530-d60e1fbdd02e",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "the complete main Nellie Bly statue, including the large bronze head, neck, and named rectangular plinth",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true,
+        "point_prompts": [
+          {
+            "x": 610,
+            "y": 680,
+            "label": 1,
+            "object_id": 1
+          },
+          {
+            "x": 670,
+            "y": 1430,
+            "label": 1,
+            "object_id": 1
+          },
+          {
+            "x": 610,
+            "y": 1830,
+            "label": 1,
+            "object_id": 1
+          },
+          {
+            "x": 1180,
+            "y": 1280,
+            "label": 0,
+            "object_id": 1
+          },
+          {
+            "x": 100,
+            "y": 200,
+            "label": 0,
+            "object_id": 1
+          }
+        ]
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "completed",
+      "submitted_at": "2026-07-19T12:30:20.349Z",
+      "qa": {
+        "valid": true,
+        "coverage": 0.2978621008447218,
+        "minCoverage": 0.12,
+        "maxCoverage": 0.75
+      },
+      "result": {
+        "mask_url": "(redacted fal result URL)",
+        "score": 0.9583637118339539,
+        "box": [
+          0.5135194082108755,
+          0.4103794691496853,
+          0.5770338754805308,
+          0.6530606711673792
+        ],
+        "width": 1260,
+        "height": 2129
+      },
+      "completed_at": "2026-07-19T12:30:22.431Z",
+      "schema_checked_at": "2026-07-18",
+      "price_checked_at": "2026-07-18",
+      "unit_price_usd": 0.005,
+      "pricing_unit": "request"
+    }
+  ],
+  "qa": {
+    "width": 1260,
+    "height": 2129,
+    "opaquePixels": 799027,
+    "coverage": 0.2978621008447218,
+    "bbox": {
+      "left": 286,
+      "top": 180,
+      "width": 723,
+      "height": 1386
+    },
+    "connectedComponents": 1,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.12,
+      "maxCoverage": 0.75,
+      "maxConnectedComponents": 64
+    },
+    "outputWidth": 1372,
+    "outputHeight": 2241
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "The central bronze Nellie Bly head and neck sculpture in The Girl Puzzle monument",
+  "preserve": "The complete large bronze Nellie Bly head and neck sculpture.",
+  "exclude": "The inscribed pedestal, skyline, river, sky, bridge, silver sphere, smaller sculpted heads and plaques, railings, ground, and surrounding concrete walls.",
+  "qualityWarnings": [],
+  "createdAt": "2026-07-19T12:35:37.517Z"
+}

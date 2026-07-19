@@ -11,7 +11,8 @@
   "name": "Roosevelt Island",
   "region": "New York, USA",
   "status": "seeded",              // seeded(已播种,可进入)| empty(待共创,地图上半透明)
-  "map_marker": { "x": 0.72, "y": 0.38 },   // 风格化 SVG 地图上的归一化坐标
+  "map_marker": { "x": 0.72, "y": 0.38 },   // 旧风格化 SVG 地图坐标,AtlasMap.tsx 保留未删,未来若回退仍可用
+  "coordinates": { "lat": 40.7601, "lng": -73.9500 },  // 真实经纬度,2026-07-19 起 Atlas 纸感地球(react-globe.gl)用这个定位标记
   "tagline": "An island the city built to hide people, now a place people choose to live.",
   "assets": [ /* Asset[],见 §3。种子内容 + 用户贡献共存 */ ]
 }
