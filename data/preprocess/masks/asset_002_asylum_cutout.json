@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "recipeId": "asset_002_asylum_cutout",
+  "model": "fal-ai/sam-3/image",
+  "cache": {
+    "sourceSha256": "2638137d152561b5e05167cfbc3c45f11182e26d6d5471e6fc42f5fae4205167",
+    "recipeSha256": "d899d3c73bc5c0888ba4d189bdf8985b770ccf57ee5f4bf8567897e7d943dbe4",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "maskConfigSha256": "c8322391d5037f2d565e0fff4e443e54b3ba9010990b5cf5926fdb034279f883",
+    "cacheKey": "c566de6f4fa65b3444a50196917476cbc7a61c6c0c8298560ea4920ffb3ac1cf"
+  },
+  "sourceInput": {
+    "file": "assets/archive/asset_002.jpg",
+    "crop": null,
+    "uploaded": true,
+    "uploadedUrl": "(redacted uploaded cropped source)",
+    "width": 3840,
+    "height": 2542
+  },
+  "verification": {
+    "schemaCheckedAt": "2026-07-18",
+    "pricingCheckedAt": "2026-07-18",
+    "unitPriceUsd": 0.005,
+    "unit": "request"
+  },
+  "calls": [
+    {
+      "attempt": 1,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f785c-8284-7c13-b9cb-fccb170e8481",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "the complete lunatic asylum building complex",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "rejected_by_qa",
+      "submitted_at": "2026-07-19T03:12:36.184Z",
+      "qa": {
+        "valid": false,
+        "reason": "mask coverage 0.0467 is outside 0.06..0.85",
+        "coverage": 0.04674171829923945,
+        "minCoverage": 0.06,
+        "maxCoverage": 0.85
+      },
+      "result": {
+        "mask_url": "(redacted fal result URL)",
+        "score": 0.9445633292198181,
+        "box": [
+          0.5539971675359334,
+          0.46795978243388825,
+          0.4922799744734385,
+          0.255302974155971
+        ],
+        "width": 3840,
+        "height": 2542
+      },
+      "completed_at": "2026-07-19T03:12:42.129Z"
+    },
+    {
+      "attempt": 2,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f785c-98d5-7cb1-aa0d-dbd2aad19c35",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "all connected asylum buildings",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "failed",
+      "submitted_at": "2026-07-19T03:12:42.132Z",
+      "error": "fal result did not contain masks[0].url",
+      "completed_at": "2026-07-19T03:12:45.666Z"
+    }
+  ],
+  "updatedAt": "2026-07-19T03:12:45.666Z"
+}

@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_018_octagon_modern_card",
+  "assetId": "asset_018",
+  "role": "card",
+  "actualRole": "card",
+  "source": {
+    "file": "assets/archive/asset_018.jpg",
+    "sha256": "31d7e17cd3ddfb769fc70244fd8c9f5c53a21137758ffe00504559043e493c3f"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_018_octagon_modern_card.png",
+    "sha256": "2413b01236b28f6af3b29d64e56e3d338205f314539524eb3f641ad73dfb0b13"
+  },
+  "cache": {
+    "sourceSha256": "31d7e17cd3ddfb769fc70244fd8c9f5c53a21137758ffe00504559043e493c3f",
+    "recipeSha256": "ba7de591dfbadb0f0646bc120aefc9b740429ffb1a256d39ba72af286cbb68c5",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "27cd5a2f0cfdceb6963a323f6a33ab0046ff70c260147a14912987308cfdafcc",
+    "cacheKey": "7ef77b072c9eefcd2effa1155202929fc93b1e060bc527a6cfddfc23c48526ae"
+  },
+  "selection": {
+    "tone": "source",
+    "edge": "torn"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "normalized-crop:0.03,0.05,0.9,0.94",
+    "resize-inside:2400:without-enlargement",
+    "tone:source",
+    "edge:torn",
+    "white-border",
+    "shadow-behind-border"
+  ],
+  "mask": null,
+  "falCalls": [],
+  "qa": {
+    "width": 1928,
+    "height": 2400,
+    "opaquePixels": 4616988,
+    "coverage": 0.9977930497925311,
+    "bbox": {
+      "left": 0,
+      "top": 0,
+      "width": 1928,
+      "height": 2400
+    },
+    "connectedComponents": 1,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.5,
+      "maxCoverage": 1,
+      "maxConnectedComponents": 128
+    },
+    "outputWidth": 2040,
+    "outputHeight": 2512
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "Contemporary Octagon Tower on Roosevelt Island, cropped documentary card",
+  "preserve": "The Octagon Tower and connected facade in their photographic context.",
+  "exclude": "The narrow outer margin outside the reviewed region of interest.",
+  "qualityWarnings": [],
+  "createdAt": "2026-07-19T03:46:01.464Z"
+}

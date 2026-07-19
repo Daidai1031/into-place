@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_015_asylum1999_card",
+  "assetId": "asset_015",
+  "role": "card",
+  "actualRole": "card",
+  "source": {
+    "file": "assets/archive/asset_015.jpg",
+    "sha256": "a02556a53c6c5b5cf2ba21c53eddc3a3cc10db1ef50a602148f1217e249b0879"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_015_asylum1999_card.png",
+    "sha256": "a3f7c074f69aa494ece193627f042b26bc7dfe8beb27a388cfe97c8f9e574dfb"
+  },
+  "cache": {
+    "sourceSha256": "a02556a53c6c5b5cf2ba21c53eddc3a3cc10db1ef50a602148f1217e249b0879",
+    "recipeSha256": "38ea325e42e7b0c404eada49f52ec8f56502566f0da81b55fb133466893da665",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "f38ab54d965f7af5b2d91cc6d9a45115bd60959313c02a521101c6b62ce731c1",
+    "cacheKey": "c4a70acfadaa9b563210c7eb91914079ec6138a6954be488a66f0bf878abc793"
+  },
+  "selection": {
+    "tone": "mono",
+    "edge": "torn"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "resize-inside:2400:without-enlargement",
+    "tone:mono",
+    "edge:torn",
+    "white-border",
+    "shadow-behind-border"
+  ],
+  "mask": null,
+  "falCalls": [],
+  "qa": {
+    "width": 2400,
+    "height": 1721,
+    "opaquePixels": 4119633,
+    "coverage": 0.9973932306798373,
+    "bbox": {
+      "left": 0,
+      "top": 0,
+      "width": 2400,
+      "height": 1721
+    },
+    "connectedComponents": 3,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.5,
+      "maxCoverage": 1,
+      "maxConnectedComponents": 128
+    },
+    "outputWidth": 2512,
+    "outputHeight": 1833
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "1999 HABS east-side view of the former Insane Asylum",
+  "preserve": "The complete HABS photograph.",
+  "exclude": "Nothing.",
+  "qualityWarnings": [],
+  "createdAt": "2026-07-19T03:45:54.881Z"
+}

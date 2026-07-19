@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_009_bridgeplan_card",
+  "assetId": "asset_009",
+  "role": "card",
+  "actualRole": "card",
+  "source": {
+    "file": "assets/archive/asset_009.jpg",
+    "sha256": "680a26a8bee23d2a550a1af02801c6f78dc23b8d2473510caea7dd65061c34ee"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_009_bridgeplan_card.png",
+    "sha256": "e34d45a125fcf6a9c5725d2e9478450e566c20d14f77d68acf3788a2239e0be0"
+  },
+  "cache": {
+    "sourceSha256": "680a26a8bee23d2a550a1af02801c6f78dc23b8d2473510caea7dd65061c34ee",
+    "recipeSha256": "798d523b3ae352ec1b3cf2cce403b1d64a91724ca3c694fab4cd8e7077dd2237",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "f38ab54d965f7af5b2d91cc6d9a45115bd60959313c02a521101c6b62ce731c1",
+    "cacheKey": "dfe65dd909c2ae320d22c1205978bea8ae50ca9ca817e67ec904f850224b1eff"
+  },
+  "selection": {
+    "tone": "mono",
+    "edge": "torn"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "normalized-crop:0.035,0.02,0.93,0.77",
+    "resize-inside:2400:without-enlargement",
+    "tone:mono",
+    "edge:torn",
+    "white-border",
+    "shadow-behind-border"
+  ],
+  "mask": null,
+  "falCalls": [],
+  "qa": {
+    "width": 2400,
+    "height": 1711,
+    "opaquePixels": 4093719,
+    "coverage": 0.9969118936294564,
+    "bbox": {
+      "left": 0,
+      "top": 0,
+      "width": 2400,
+      "height": 1711
+    },
+    "connectedComponents": 8,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.5,
+      "maxCoverage": 1,
+      "maxConnectedComponents": 128
+    },
+    "outputWidth": 2512,
+    "outputHeight": 1823
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "1838 suspension bridge plan across the East River at Blackwell's Island",
+  "preserve": "The complete printed plan and its printed title.",
+  "exclude": "The outer calibration strip and scan-bed clutter.",
+  "qualityWarnings": [],
+  "createdAt": "2026-07-19T03:45:42.050Z"
+}

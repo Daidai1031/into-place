@@ -1,0 +1,95 @@
+"use client";
+
+import type { Place } from "@/lib/types";
+import type { ProjectState } from "@/lib/local-store";
+import { PaperCard } from "@/components/ui/PaperCard";
+import { Stamp } from "@/components/ui/Stamp";
+
+/**
+ * Full provenance of the film: every archive source, every community
+ * contributor, and an explicit register of everything a model touched.
+ * Generated material is never presented as archive.
+ */
+export function JourneyBook({
+  place,
+  project,
+}: {
+  place: Place;
+  project: ProjectState;
+}) {
+  const usedIds = new Set(
+    Object.values(project.layouts).flatMap((l) => l.items.map((i) => i.assetId)),
+  );
+  const usedAssets = place.assets.filter((a) => usedIds.has(a.id));
+  const usedUploads = project.uploads.filter((u) => usedIds.has(u.id));
+  const aiTransitions = Object.entries(project.transitions).filter(([, t]) => t.note);
+
+  return (
+    <PaperCard edge="scissor" className="p-6">
+      <div className="flex items-center justify-between">
+        <h3 className="text-2xl">Journey Book</h3>
+        <Stamp text="Provenance" color="ink" />
+      </div>
+      <p className="mt-1 font-typewriter text-xs text-ink-soft">
+        Where every pixel came from, and what the machines were allowed to do.
+      </p>
+
+      <h4 className="mt-5 font-typewriter text-xs uppercase tracking-widest text-accent">
+        Archive sources ({usedAssets.length})
+      </h4>
+      <ul className="mt-2 space-y-1.5">
+        {usedAssets.map((a) => (
+          <li key={a.id} className="font-typewriter text-xs leading-snug">
+            <span className="font-display text-sm">{a.title}</span>{" "}
+            <span className="text-ink-soft">({a.era})</span> —{" "}
+            <a href={a.source_url} target="_blank" rel="noreferrer" className="underline decoration-dotted hover:text-stamp">
+              {a.source}
+            </a>{" "}
+            <span className="text-ink-soft">· {a.license.split("(")[0].trim()}</span>
+          </li>
+        ))}
+      </ul>
+
+      {usedUploads.length > 0 && (
+        <>
+          <h4 className="mt-4 font-typewriter text-xs uppercase tracking-widest text-stamp">
+            Community contributions ({usedUploads.length})
+          </h4>
+          <ul className="mt-2 space-y-1.5">
+            {usedUploads.map((u) => (
+              <li key={u.id} className="font-typewriter text-xs">
+                <span className="font-display text-sm">{u.title}</span>{" "}
+                <span className="text-ink-soft">({u.era}) — contributed by you, today</span>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+
+      <h4 className="mt-4 font-typewriter text-xs uppercase tracking-widest text-ink-soft">
+        What the models did
+      </h4>
+      <ul className="mt-2 space-y-1 font-typewriter text-xs leading-relaxed text-ink-soft">
+        <li>
+          · Story beats drafted by an LLM from the curated archive — every line
+          user-editable, edits kept.
+        </li>
+        <li>
+          · Collage layouts proposed as AI reference drafts, then placed as
+          untouched archive pixels. Reference drafts are never shown as output.
+        </li>
+        {aiTransitions.length > 0 && (
+          <li>· {aiTransitions.length} transition note{aiTransitions.length > 1 ? "s" : ""} steering the cuts between scenes.</li>
+        )}
+        <li>
+          · Parallax camera shots are deterministic renders — archive pixels
+          pass through unchanged.
+        </li>
+        <li className="text-stamp">
+          · Any generated frames in the film are labeled as generated. Nothing
+          generated is ever presented as archive.
+        </li>
+      </ul>
+    </PaperCard>
+  );
+}

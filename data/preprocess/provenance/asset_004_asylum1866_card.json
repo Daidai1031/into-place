@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_004_asylum1866_card",
+  "assetId": "asset_004",
+  "role": "card",
+  "actualRole": "card",
+  "source": {
+    "file": "assets/archive/asset_004.jpg",
+    "sha256": "84293a673acef79950feba399a16e9666190f2f3607f1945c0d6caab801c7476"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_004_asylum1866_card.png",
+    "sha256": "e13edb1485f0ac3fb20982ced526eed029c1cbd7f9cef059c92dbafb85b28ae2"
+  },
+  "cache": {
+    "sourceSha256": "84293a673acef79950feba399a16e9666190f2f3607f1945c0d6caab801c7476",
+    "recipeSha256": "b59ac7337f462fa63e92606db15d78e8fb08aa1f9d66ea768c5062e79a3b2d97",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "f38ab54d965f7af5b2d91cc6d9a45115bd60959313c02a521101c6b62ce731c1",
+    "cacheKey": "f2829fa898890b8cfb5027bd25809c81ac514d4ad59f8df7f13035e62af5bf41"
+  },
+  "selection": {
+    "tone": "mono",
+    "edge": "torn"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "normalized-crop:0.205,0.035,0.58,0.56",
+    "resize-inside:2400:without-enlargement",
+    "tone:mono",
+    "edge:torn",
+    "white-border",
+    "shadow-behind-border"
+  ],
+  "mask": null,
+  "falCalls": [],
+  "qa": {
+    "width": 1922,
+    "height": 1139,
+    "opaquePixels": 2181097,
+    "coverage": 0.9963177623542933,
+    "bbox": {
+      "left": 0,
+      "top": 0,
+      "width": 1922,
+      "height": 1139
+    },
+    "connectedComponents": 3,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.5,
+      "maxCoverage": 1,
+      "maxConnectedComponents": 128
+    },
+    "outputWidth": 2034,
+    "outputHeight": 1251
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "1866 Harper's wood engraving of Blackwell's Island Lunatic Asylum",
+  "preserve": "The main engraved illustration.",
+  "exclude": "Outer scan bed, publication margins, and calibration material.",
+  "qualityWarnings": [],
+  "createdAt": "2026-07-19T03:45:31.949Z"
+}

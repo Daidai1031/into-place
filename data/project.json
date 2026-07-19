@@ -1,0 +1,212 @@
+{
+  "slug": "roosevelt-island",
+  "selections": {},
+  "tuning": {},
+  "uploads": [],
+  "story": {
+    "directions": [
+      {
+        "id": "dir_1",
+        "title": "The Stone Remembers",
+        "premise": "A block of gneiss narrates."
+      }
+    ],
+    "chosenDirectionId": "dir_1",
+    "beats": [
+      {
+        "id": "beat_1",
+        "act": "Stasis",
+        "text": "A quiet farming island in the East River."
+      },
+      {
+        "id": "beat_2",
+        "act": "Turn",
+        "text": "Quarried stone stacks into asylum walls."
+      },
+      {
+        "id": "beat_3",
+        "act": "Depth",
+        "text": "A century of confinement forms a corridor."
+      },
+      {
+        "id": "beat_4",
+        "act": "Recognition",
+        "text": "Through a doorway into the Renwick ruin today."
+      },
+      {
+        "id": "beat_5",
+        "act": "Release",
+        "text": "Pull back to the wall of archives."
+      }
+    ]
+  },
+  "layouts": {
+    "beat_1": {
+      "items": [
+        {
+          "assetId": "asset_003",
+          "cutout": "/cutouts/asset_003_map_bg.png",
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 3,
+          "rotation": 0,
+          "z": 0
+        },
+        {
+          "assetId": "asset_001",
+          "cutout": "/cutouts/asset_001_smallpox_card.png",
+          "x": 0.4,
+          "y": 0.45,
+          "scale": 1.1,
+          "rotation": -3,
+          "z": 1
+        },
+        {
+          "assetId": "asset_002",
+          "cutout": "/cutouts/asset_002_asylum_card.png",
+          "x": 0.68,
+          "y": 0.55,
+          "scale": 0.9,
+          "rotation": 4,
+          "z": 2
+        }
+      ],
+      "brushDataUrl": null
+    },
+    "beat_2": {
+      "items": [
+        {
+          "assetId": "asset_003",
+          "cutout": "/cutouts/asset_003_map_bg.png",
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 3,
+          "rotation": 0,
+          "z": 0
+        },
+        {
+          "assetId": "asset_001",
+          "cutout": "/cutouts/asset_001_smallpox_card.png",
+          "x": 0.4,
+          "y": 0.45,
+          "scale": 1.1,
+          "rotation": -3,
+          "z": 1
+        },
+        {
+          "assetId": "asset_002",
+          "cutout": "/cutouts/asset_002_asylum_card.png",
+          "x": 0.68,
+          "y": 0.55,
+          "scale": 0.9,
+          "rotation": 4,
+          "z": 2
+        }
+      ],
+      "brushDataUrl": null
+    },
+    "beat_3": {
+      "items": [
+        {
+          "assetId": "asset_003",
+          "cutout": "/cutouts/asset_003_map_bg.png",
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 3,
+          "rotation": 0,
+          "z": 0
+        },
+        {
+          "assetId": "asset_001",
+          "cutout": "/cutouts/asset_001_smallpox_card.png",
+          "x": 0.4,
+          "y": 0.45,
+          "scale": 1.1,
+          "rotation": -3,
+          "z": 1
+        },
+        {
+          "assetId": "asset_002",
+          "cutout": "/cutouts/asset_002_asylum_card.png",
+          "x": 0.68,
+          "y": 0.55,
+          "scale": 0.9,
+          "rotation": 4,
+          "z": 2
+        }
+      ],
+      "brushDataUrl": null
+    },
+    "beat_4": {
+      "items": [
+        {
+          "assetId": "asset_003",
+          "cutout": "/cutouts/asset_003_map_bg.png",
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 3,
+          "rotation": 0,
+          "z": 0
+        },
+        {
+          "assetId": "asset_001",
+          "cutout": "/cutouts/asset_001_smallpox_card.png",
+          "x": 0.4,
+          "y": 0.45,
+          "scale": 1.1,
+          "rotation": -3,
+          "z": 1
+        },
+        {
+          "assetId": "asset_002",
+          "cutout": "/cutouts/asset_002_asylum_card.png",
+          "x": 0.68,
+          "y": 0.55,
+          "scale": 0.9,
+          "rotation": 4,
+          "z": 2
+        }
+      ],
+      "brushDataUrl": null
+    },
+    "beat_5": {
+      "items": [
+        {
+          "assetId": "asset_003",
+          "cutout": "/cutouts/asset_003_map_bg.png",
+          "x": 0.5,
+          "y": 0.5,
+          "scale": 3,
+          "rotation": 0,
+          "z": 0
+        },
+        {
+          "assetId": "asset_001",
+          "cutout": "/cutouts/asset_001_smallpox_card.png",
+          "x": 0.4,
+          "y": 0.45,
+          "scale": 1.1,
+          "rotation": -3,
+          "z": 1
+        },
+        {
+          "assetId": "asset_002",
+          "cutout": "/cutouts/asset_002_asylum_card.png",
+          "x": 0.68,
+          "y": 0.55,
+          "scale": 0.9,
+          "rotation": 4,
+          "z": 2
+        }
+      ],
+      "brushDataUrl": null
+    }
+  },
+  "transitions": {
+    "beat_1->beat_2": {
+      "type": "match_cut",
+      "note": "stone to wall"
+    }
+  },
+  "updatedAt": "2026-07-19T04:31:46.353Z"
+}

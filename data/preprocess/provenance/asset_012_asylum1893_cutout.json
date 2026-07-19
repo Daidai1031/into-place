@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_012_asylum1893_cutout",
+  "assetId": "asset_012",
+  "role": "cutout",
+  "actualRole": "cutout",
+  "source": {
+    "file": "assets/archive/asset_012.jpg",
+    "sha256": "debe446856e4210aa005726085ae95ed73820f5404197bf13c53af0d0cf4edd9"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_012_asylum1893_cutout.png",
+    "sha256": "e3b194491b70e0271acc29fcebdefc860fc92dd1c2d394f61893ce4141e81271",
+    "published": false
+  },
+  "cache": {
+    "sourceSha256": "debe446856e4210aa005726085ae95ed73820f5404197bf13c53af0d0cf4edd9",
+    "recipeSha256": "8dc41467c93f87e114344e346a2881d1e7feb5c58b3a23dbdc42c6be51963efb",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "fd36bddb936b42bd21987d00938f54b3d2b3fbd007aa0c26df03fd6f7db7ce9d",
+    "cacheKey": "4aec9e9039dfca1fe3981148685145cf44f480d1b0b5fc0369ab01b14e0862ba"
+  },
+  "selection": {
+    "tone": "mono",
+    "edge": "scissor"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "resize-inside:2400:without-enlargement",
+    "tone:mono",
+    "cached-mask-alpha-only",
+    "edge:scissor",
+    "white-border",
+    "shadow-behind-border"
+  ],
+  "mask": {
+    "provider": "fal-cache",
+    "file": "data/preprocess/masks/asset_012_asylum1893_cutout.png",
+    "sha256": "1c08db803dea2cd84862ad01373bb7eaa856d6b61f8288f1bc893b27de586d62",
+    "cacheKey": "be354833975fb7339876128b1e3d0011d4677f6b69e5e1fc51bf56ebd704f820",
+    "fallback": null
+  },
+  "falCalls": [
+    {
+      "attempt": 1,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f785c-d73b-7000-8fb2-d6173d2992b3",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "the complete asylum building",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "failed",
+      "submitted_at": "2026-07-19T03:12:57.937Z",
+      "error": "fal result did not contain masks[0].url",
+      "completed_at": "2026-07-19T03:13:01.799Z",
+      "schema_checked_at": "2026-07-18",
+      "price_checked_at": "2026-07-18",
+      "unit_price_usd": 0.005,
+      "pricing_unit": "request"
+    },
+    {
+      "attempt": 2,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f785c-e5a8-7c83-a64f-f94e1880cc9a",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "the long institutional building including its roofline",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "completed",
+      "submitted_at": "2026-07-19T03:13:01.801Z",
+      "qa": {
+        "valid": true,
+        "coverage": 0.17283571593509248,
+        "minCoverage": 0.08,
+        "maxCoverage": 0.9
+      },
+      "result": {
+        "mask_url": "(redacted fal result URL)",
+        "score": 0.9266818165779114,
+        "box": [
+          0.4815945332718528,
+          0.5325642235671417,
+          0.8584309826245158,
+          0.6372583365138573
+        ],
+        "width": 1206,
+        "height": 632
+      },
+      "completed_at": "2026-07-19T03:13:05.442Z",
+      "schema_checked_at": "2026-07-18",
+      "price_checked_at": "2026-07-18",
+      "unit_price_usd": 0.005,
+      "pricing_unit": "request"
+    }
+  ],
+  "qa": {
+    "width": 1206,
+    "height": 632,
+    "opaquePixels": 131734,
+    "coverage": 0.17283571593509248,
+    "bbox": {
+      "left": 67,
+      "top": 135,
+      "width": 1030,
+      "height": 402
+    },
+    "connectedComponents": 24,
+    "outputWidth": 1318,
+    "outputHeight": 744
+  },
+  "review": {
+    "source": "approved",
+    "visual": "rejected",
+    "reviewedAt": "2026-07-18",
+    "notes": "Contact-sheet review found fragmented architecture, large holes, and floating components; use the reviewed card fallback."
+  },
+  "identity": "The asylum building in the 1893 halftone print",
+  "preserve": "The complete building and roofline.",
+  "exclude": "Sky, foreground, and printed caption.",
+  "qualityWarnings": [
+    "source_is_1206x632_no_upscale"
+  ],
+  "createdAt": "2026-07-19T03:13:05.998Z",
+  "published": false
+}

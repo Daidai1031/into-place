@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "recipeId": "asset_015_asylum1999_cutout",
+  "model": "fal-ai/sam-3/image",
+  "cache": {
+    "sourceSha256": "a02556a53c6c5b5cf2ba21c53eddc3a3cc10db1ef50a602148f1217e249b0879",
+    "recipeSha256": "c173b5297be445d9922f2bfbb2d0c31872a2b25650e550b23762dde8ed1fc962",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "maskConfigSha256": "3486c9bf54a325a721f0bb14096538bc44c17ecbf20500a5f26609d84b5b8443",
+    "cacheKey": "6c250b052b1db99501842659acd5ddeef3e38ec5c31fd1cd2001a76442c19fc7"
+  },
+  "sourceInput": {
+    "file": "assets/archive/asset_015.jpg",
+    "crop": [
+      0.4,
+      0.03,
+      0.48,
+      0.88
+    ],
+    "uploaded": true,
+    "uploadedUrl": "(redacted uploaded cropped source)",
+    "width": 1826,
+    "height": 2400
+  },
+  "verification": {
+    "schemaCheckedAt": "2026-07-18",
+    "pricingCheckedAt": "2026-07-18",
+    "unitPriceUsd": 0.005,
+    "unit": "request"
+  },
+  "calls": [
+    {
+      "attempt": 1,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f785d-1768-7f10-8cb6-8b90ea2d6737",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "the complete main asylum building",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "completed",
+      "submitted_at": "2026-07-19T03:13:14.535Z",
+      "qa": {
+        "valid": true,
+        "coverage": 0.3546659364731654,
+        "minCoverage": 0.08,
+        "maxCoverage": 0.88
+      },
+      "result": {
+        "mask_url": "(redacted fal result URL)",
+        "score": 0.5090101957321167,
+        "box": [
+          0.4297078876268296,
+          0.46706992095371463,
+          0.8494319972537813,
+          0.7747109467128538
+        ],
+        "width": 1826,
+        "height": 2400
+      },
+      "completed_at": "2026-07-19T03:13:19.938Z"
+    }
+  ],
+  "updatedAt": "2026-07-19T03:13:19.942Z",
+  "mask": {
+    "file": "data/preprocess/masks/asset_015_asylum1999_cutout.png",
+    "sha256": "afbf7ea0d430c95cb1c41884122ad49dd471c2dc8b294b68dc17fb4391ccc828",
+    "width": 1826,
+    "height": 2400,
+    "coverage": 0.3546659364731654
+  }
+}

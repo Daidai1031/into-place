@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_014_lighthouse1970_card",
+  "assetId": "asset_014",
+  "role": "card",
+  "actualRole": "card",
+  "source": {
+    "file": "assets/archive/asset_014.tif",
+    "sha256": "caa4a708a839cb52e978a9f4c49129c419d39955ec11152c7640d28cb7a04298"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_014_lighthouse1970_card.png",
+    "sha256": "7e6189f7d5ff14ea0f68405272d0546c2ea0a64701c5f2d4d9a1f39fd9844895"
+  },
+  "cache": {
+    "sourceSha256": "caa4a708a839cb52e978a9f4c49129c419d39955ec11152c7640d28cb7a04298",
+    "recipeSha256": "24e86727286efe9ff0deb1255bcc4835cd6b44eb9b2456e8306345a8d50ea6ff",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "f38ab54d965f7af5b2d91cc6d9a45115bd60959313c02a521101c6b62ce731c1",
+    "cacheKey": "7d21ab2b7d9167e0de448cee062e7be211f2a46d90feeefc397b036b02768c6a"
+  },
+  "selection": {
+    "tone": "mono",
+    "edge": "torn"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "resize-inside:2400:without-enlargement",
+    "tone:mono",
+    "edge:torn",
+    "white-border",
+    "shadow-behind-border"
+  ],
+  "mask": null,
+  "falCalls": [],
+  "qa": {
+    "width": 1727,
+    "height": 2400,
+    "opaquePixels": 4134225,
+    "coverage": 0.9974486103068906,
+    "bbox": {
+      "left": 0,
+      "top": 0,
+      "width": 1727,
+      "height": 2400
+    },
+    "connectedComponents": 2,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.5,
+      "maxCoverage": 1,
+      "maxConnectedComponents": 128
+    },
+    "outputWidth": 1839,
+    "outputHeight": 2512
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "1970 HABS general view of the Welfare Island Lighthouse entrance",
+  "preserve": "The complete HABS photograph.",
+  "exclude": "Nothing.",
+  "qualityWarnings": [],
+  "createdAt": "2026-07-19T03:59:28.130Z"
+}

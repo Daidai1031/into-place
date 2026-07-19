@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "recipeId": "asset_017_lighthouse_modern_cutout",
+  "model": "fal-ai/sam-3/image",
+  "cache": {
+    "sourceSha256": "c23748bb73d392a7bf26cc91981f41c502c69fa3f07d1f0e2dbc00f7497b6f83",
+    "recipeSha256": "5c1be5cda61b007608e55241fd14e9134592a67471519a9d18a81290c2a8eb53",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "maskConfigSha256": "b28544c80a0e176da55ce0eb5136fb57ea03f86d0da31abec0ad377af2cd6ba7",
+    "cacheKey": "aec0fd9c787bc3380d1922a7a57abd8f6fbe67c5f54b77ae79ff8648d739c37d"
+  },
+  "sourceInput": {
+    "file": "assets/archive/asset_017.jpg",
+    "crop": null,
+    "uploaded": true,
+    "uploadedUrl": "(redacted uploaded cropped source)",
+    "width": 1351,
+    "height": 2400
+  },
+  "verification": {
+    "schemaCheckedAt": "2026-07-18",
+    "pricingCheckedAt": "2026-07-18",
+    "unitPriceUsd": 0.005,
+    "unit": "request"
+  },
+  "calls": [
+    {
+      "attempt": 1,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f785d-3919-7a20-b331-c1b1b4c4da56",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "the complete lighthouse",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "completed",
+      "submitted_at": "2026-07-19T03:13:23.157Z",
+      "qa": {
+        "valid": true,
+        "coverage": 0.3397563533185295,
+        "minCoverage": 0.03,
+        "maxCoverage": 0.75
+      },
+      "result": {
+        "mask_url": "(redacted fal result URL)",
+        "score": 0.6919266581535339,
+        "box": [
+          0.4238625556703598,
+          0.5010298239592398,
+          0.5667976954626659,
+          0.9937164875330837
+        ],
+        "width": 1351,
+        "height": 2400
+      },
+      "completed_at": "2026-07-19T03:13:29.723Z"
+    }
+  ],
+  "updatedAt": "2026-07-19T03:13:29.726Z",
+  "mask": {
+    "file": "data/preprocess/masks/asset_017_lighthouse_modern_cutout.png",
+    "sha256": "6ae156aac5e74d09eafa3775c373f7903843f1025a9af662692d759c411795d6",
+    "width": 1351,
+    "height": 2400,
+    "coverage": 0.3397563533185295
+  }
+}

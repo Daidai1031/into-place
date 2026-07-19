@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_017_lighthouse_modern_cutout",
+  "assetId": "asset_017",
+  "role": "cutout",
+  "actualRole": "cutout",
+  "source": {
+    "file": "assets/archive/asset_017.jpg",
+    "sha256": "c23748bb73d392a7bf26cc91981f41c502c69fa3f07d1f0e2dbc00f7497b6f83"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_017_lighthouse_modern_cutout.png",
+    "sha256": "8ecff7f9e3d3581f495b8c84d2c01fd0be0e9879017dfe4d4db92f5b54432676"
+  },
+  "cache": {
+    "sourceSha256": "c23748bb73d392a7bf26cc91981f41c502c69fa3f07d1f0e2dbc00f7497b6f83",
+    "recipeSha256": "5c1be5cda61b007608e55241fd14e9134592a67471519a9d18a81290c2a8eb53",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "ada972a34555fc5e2e86c50ae5849815e2b36e4d0270d9a15deea9a554d7f1c6",
+    "cacheKey": "73ad924edb05596b17311a18f5f7de35059b880175160902fc213501c55e7672"
+  },
+  "selection": {
+    "tone": "source",
+    "edge": "scissor"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "resize-inside:2400:without-enlargement",
+    "tone:source",
+    "cached-mask-alpha-only",
+    "edge:scissor",
+    "white-border",
+    "shadow-behind-border"
+  ],
+  "mask": {
+    "provider": "fal-cache",
+    "file": "data/preprocess/masks/asset_017_lighthouse_modern_cutout.png",
+    "sha256": "6ae156aac5e74d09eafa3775c373f7903843f1025a9af662692d759c411795d6",
+    "cacheKey": "aec0fd9c787bc3380d1922a7a57abd8f6fbe67c5f54b77ae79ff8648d739c37d",
+    "fallback": null
+  },
+  "falCalls": [
+    {
+      "attempt": 1,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f785d-3919-7a20-b331-c1b1b4c4da56",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "the complete lighthouse",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "completed",
+      "submitted_at": "2026-07-19T03:13:23.157Z",
+      "qa": {
+        "valid": true,
+        "coverage": 0.3397563533185295,
+        "minCoverage": 0.03,
+        "maxCoverage": 0.75
+      },
+      "result": {
+        "mask_url": "(redacted fal result URL)",
+        "score": 0.6919266581535339,
+        "box": [
+          0.4238625556703598,
+          0.5010298239592398,
+          0.5667976954626659,
+          0.9937164875330837
+        ],
+        "width": 1351,
+        "height": 2400
+      },
+      "completed_at": "2026-07-19T03:13:29.723Z",
+      "schema_checked_at": "2026-07-18",
+      "price_checked_at": "2026-07-18",
+      "unit_price_usd": 0.005,
+      "pricing_unit": "request"
+    }
+  ],
+  "qa": {
+    "width": 1351,
+    "height": 2400,
+    "opaquePixels": 1101626,
+    "coverage": 0.3397563533185295,
+    "bbox": {
+      "left": 190,
+      "top": 0,
+      "width": 763,
+      "height": 2400
+    },
+    "connectedComponents": 1,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.03,
+      "maxCoverage": 0.75,
+      "maxConnectedComponents": 64
+    },
+    "outputWidth": 1463,
+    "outputHeight": 2512
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "Contemporary Roosevelt Island Lighthouse",
+  "preserve": "The complete lighthouse structure.",
+  "exclude": "Sky, river, and peripheral landscape.",
+  "qualityWarnings": [],
+  "createdAt": "2026-07-19T03:59:31.988Z"
+}

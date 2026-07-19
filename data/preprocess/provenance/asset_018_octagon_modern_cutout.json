@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_018_octagon_modern_cutout",
+  "assetId": "asset_018",
+  "role": "cutout",
+  "actualRole": "cutout",
+  "source": {
+    "file": "assets/archive/asset_018.jpg",
+    "sha256": "31d7e17cd3ddfb769fc70244fd8c9f5c53a21137758ffe00504559043e493c3f"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_018_octagon_modern_cutout.png",
+    "sha256": "0286f2a8e723f51130b213f1aec91edf12d80d5e0e354eee6f3a5bd9067ab55c",
+    "published": false
+  },
+  "cache": {
+    "sourceSha256": "31d7e17cd3ddfb769fc70244fd8c9f5c53a21137758ffe00504559043e493c3f",
+    "recipeSha256": "d299609f88f96dcf6dab77ab1b141d782089ff36951ed5e643390a8a3002527e",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "ada972a34555fc5e2e86c50ae5849815e2b36e4d0270d9a15deea9a554d7f1c6",
+    "cacheKey": "51bbc6dbd8e20f5ff3e067cfabed7f6e164ed5b30c44186a966ac51d8c186fc3"
+  },
+  "selection": {
+    "tone": "source",
+    "edge": "scissor"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "normalized-crop:0.03,0.05,0.9,0.94",
+    "resize-inside:2400:without-enlargement",
+    "tone:source",
+    "cached-mask-alpha-only",
+    "edge:scissor",
+    "white-border",
+    "shadow-behind-border"
+  ],
+  "mask": {
+    "provider": "fal-cache",
+    "file": "data/preprocess/masks/asset_018_octagon_modern_cutout.png",
+    "sha256": "fcd56c6519bd7f4f4377e5e0049e6b1ee1c0d7a1635090b0bc8515f84d46e1b5",
+    "cacheKey": "58ed23b5e5226605439c60f2a4873aaca5745caf0e29059d84c769d0a80fc19b",
+    "fallback": null
+  },
+  "falCalls": [
+    {
+      "attempt": 1,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f785d-5dd2-7e00-9a46-ed6f60d49a8b",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "the complete Octagon Tower building",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "failed",
+      "submitted_at": "2026-07-19T03:13:32.419Z",
+      "error": "fal result did not contain masks[0].url",
+      "completed_at": "2026-07-19T03:13:37.857Z",
+      "schema_checked_at": "2026-07-18",
+      "price_checked_at": "2026-07-18",
+      "unit_price_usd": 0.005,
+      "pricing_unit": "request"
+    },
+    {
+      "attempt": 2,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f785d-7282-74d1-aa04-d2d8b704a5a4",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "the octagonal brick tower and connected main facade",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "completed",
+      "submitted_at": "2026-07-19T03:13:37.859Z",
+      "qa": {
+        "valid": true,
+        "coverage": 0.2915233834716459,
+        "minCoverage": 0.06,
+        "maxCoverage": 0.88
+      },
+      "result": {
+        "mask_url": "(redacted fal result URL)",
+        "score": 0.6425140500068665,
+        "box": [
+          0.43166918035537477,
+          0.5020740767399153,
+          0.7946868661850218,
+          0.6637453117218626
+        ],
+        "width": 1928,
+        "height": 2400
+      },
+      "completed_at": "2026-07-19T03:13:41.508Z",
+      "schema_checked_at": "2026-07-18",
+      "price_checked_at": "2026-07-18",
+      "unit_price_usd": 0.005,
+      "pricing_unit": "request"
+    }
+  ],
+  "qa": {
+    "width": 1928,
+    "height": 2400,
+    "opaquePixels": 1348937,
+    "coverage": 0.2915233834716459,
+    "bbox": {
+      "left": 73,
+      "top": 415,
+      "width": 1507,
+      "height": 1574
+    },
+    "connectedComponents": 49,
+    "outputWidth": 2040,
+    "outputHeight": 2512
+  },
+  "review": {
+    "source": "approved",
+    "visual": "rejected",
+    "reviewedAt": "2026-07-18",
+    "notes": "Removing shrubs exposes severe holes across the porch and lower facade and leaves detached components; use the cropped modern card fallback."
+  },
+  "identity": "Contemporary Octagon Tower on Roosevelt Island",
+  "preserve": "The complete Octagon Tower and connected principal facade.",
+  "exclude": "Shrubs, road, streetlight, sky, and unrelated foreground.",
+  "qualityWarnings": [],
+  "createdAt": "2026-07-19T03:13:43.479Z",
+  "published": false
+}

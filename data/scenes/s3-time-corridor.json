@@ -18,7 +18,7 @@
       "shadow": true
     },
     {
-      "asset": "assets/cutouts/asset_012_asylum1893.png",
+      "asset": "assets/cutouts/asset_012_asylum1893_card.png",
       "z": 0.5,
       "x": 0,
       "y": 0.06,
@@ -26,7 +26,7 @@
       "shadow": true
     },
     {
-      "asset": "assets/cutouts/asset_015_asylum1999.png",
+      "asset": "assets/cutouts/asset_015_asylum1999_card.png",
       "z": 0.42,
       "x": 1.3,
       "y": 0.02,

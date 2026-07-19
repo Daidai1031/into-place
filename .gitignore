@@ -8,3 +8,12 @@ dist/
 renders/
 clips/
 final/
+
+# sync-public.mjs 从 assets/ 与 final/ 复制,勿手改;films 里提交的 demo 成片除外
+public/cutouts/
+public/films/*
+!public/films/roosevelt-island.mp4
+# 占位/正式成片仍保留在 final/(gitignore),但 demo 用的一部要进 git 供 Vercel 播放
+!final/roosevelt-island.mp4
+*.tsbuildinfo
+next-env.d.ts

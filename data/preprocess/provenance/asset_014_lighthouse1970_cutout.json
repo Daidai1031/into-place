@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_014_lighthouse1970_cutout",
+  "assetId": "asset_014",
+  "role": "cutout",
+  "actualRole": "cutout",
+  "source": {
+    "file": "assets/archive/asset_014.tif",
+    "sha256": "caa4a708a839cb52e978a9f4c49129c419d39955ec11152c7640d28cb7a04298"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_014_lighthouse1970_cutout.png",
+    "sha256": "8787d857c185cfc67254d464fd4a16360393a1f6c4b3bc259905a6f4707f1e3b"
+  },
+  "cache": {
+    "sourceSha256": "caa4a708a839cb52e978a9f4c49129c419d39955ec11152c7640d28cb7a04298",
+    "recipeSha256": "b23eec288559f7367e5dcf1fd7a8fd2135419d85636d2730bc1431a8148c8a41",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "fd36bddb936b42bd21987d00938f54b3d2b3fbd007aa0c26df03fd6f7db7ce9d",
+    "cacheKey": "de82e5336c19564e3b84061a082216b1878f036b61e3910453fd2be19cdcd460"
+  },
+  "selection": {
+    "tone": "mono",
+    "edge": "scissor"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "normalized-crop:0.055,0.03,0.9,0.95",
+    "resize-inside:2400:without-enlargement",
+    "tone:mono",
+    "cached-mask-alpha-only",
+    "edge:scissor",
+    "white-border",
+    "shadow-behind-border"
+  ],
+  "mask": {
+    "provider": "fal-cache",
+    "file": "data/preprocess/masks/asset_014_lighthouse1970_cutout.png",
+    "sha256": "351f107d7cbb6570ab8f34498dfbca08e3f7cfd3704a031cd32d3ee0593ef6cf",
+    "cacheKey": "ddd89d312c21a8ee58cb2a68c4289e39c1cfa1f65ddef840751e37ea466ebd48",
+    "fallback": null
+  },
+  "falCalls": [
+    {
+      "attempt": 1,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f785c-fb25-7bf1-956b-35b14ca149f4",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "the complete lighthouse and attached entrance structure",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "completed",
+      "submitted_at": "2026-07-19T03:13:07.299Z",
+      "qa": {
+        "valid": true,
+        "coverage": 0.117629380603097,
+        "minCoverage": 0.04,
+        "maxCoverage": 0.8
+      },
+      "result": {
+        "mask_url": "(redacted fal result URL)",
+        "score": 0.9725830554962158,
+        "box": [
+          0.6758286915128193,
+          0.5013639128957752,
+          0.26330875215076266,
+          0.6515723506367795
+        ],
+        "width": 1636,
+        "height": 2400
+      },
+      "completed_at": "2026-07-19T03:13:11.109Z",
+      "schema_checked_at": "2026-07-18",
+      "price_checked_at": "2026-07-18",
+      "unit_price_usd": 0.005,
+      "pricing_unit": "request"
+    }
+  ],
+  "qa": {
+    "width": 1636,
+    "height": 2400,
+    "opaquePixels": 461860,
+    "coverage": 0.11762938060309698,
+    "bbox": {
+      "left": 891,
+      "top": 422,
+      "width": 429,
+      "height": 1564
+    },
+    "connectedComponents": 1,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.04,
+      "maxCoverage": 0.8,
+      "maxConnectedComponents": 64
+    },
+    "outputWidth": 1748,
+    "outputHeight": 2512
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "Lighthouse and attached entrance structure in the 1970 HABS photograph",
+  "preserve": "The complete lighthouse and attached architectural entrance.",
+  "exclude": "Sky and peripheral vegetation outside the region of interest.",
+  "qualityWarnings": [],
+  "createdAt": "2026-07-19T03:59:30.537Z"
+}

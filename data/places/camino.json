@@ -1,0 +1,9 @@
+{
+  "slug": "camino",
+  "name": "Camino de Santiago",
+  "region": "Galicia, Spain",
+  "status": "empty",
+  "map_marker": { "x": 0.44, "y": 0.34 },
+  "tagline": "A thousand-year path remembered one pilgrim at a time.",
+  "assets": []
+}
