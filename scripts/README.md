@@ -1,6 +1,6 @@
 # 拼贴渲染工具链(Phase 0 提前写好,Phase 1 会直接复用)
 
-三个脚本,对应 spec/05 的预处理约定 + spec/04 的确定性引擎(Puppeteer 回退实现,格式和真正接 HyperFrames CLI 时一致)。
+这里的工具对应 spec/05 的预处理约定 + spec/04 的确定性引擎(Puppeteer 回退实现,格式和真正接 HyperFrames CLI 时一致)。
 
 **硬规则:分层文件(`assets/cutouts/*.png` + `data/scenes/*.json`)永远是场景的唯一源文件。**
 `render-scene.mjs` 只做单向渲染(层 → 拍平的帧),渲染出来的截图只能喂给 fal 当 start/end frame,或剪进最终成片——
@@ -13,20 +13,72 @@ npm install                      # 装 sharp / puppeteer / tsx / @fal-ai/client
 cp .env.local.example .env.local # 填 FAL_KEY=你的key,这个文件已在 .gitignore 里
 ```
 
-`assets/cutouts/*.png` 抠图如果输入还没有透明背景,需要本地能跑 `rembg`:
+fal mask 不可用时会回退本地 `rembg`/silueta,因此开发机建议准备:
 ```bash
 pip install rembg[cli] onnxruntime   # 第一次会下一个几十 MB 的分割模型,之后离线可用
 ```
-如果你已经在 Figma/Photoshop 里手工抠好透明 PNG,直接把那张图当 `--in` 传进去,脚本会自动跳过 rembg。
+手工透明 PNG 也可作为已审核 mask 输入;不得从拍平渲染帧反向分层。
 
-## 1. 抠图:`cutout.mjs`
+## 1. 预处理核心:`cutout.mjs`
 
-```bash
-node scripts/cutout.mjs --in assets/archive/asset_002.jpg --out assets/cutouts/asset_002_asylum.png
+```ts
+type TonePreset = "source" | "mono" | "sepia";
+type EdgeStyle = "scissor" | "torn" | "none";
+
+type PreprocessSelection = {
+  tone?: "defaults" | TonePreset;
+  edge?: "defaults" | EdgeStyle;
+  overrides?: Record<string, { tone?: TonePreset; edge?: EdgeStyle }>;
+};
+
+materializeCutout(recipeIdOrRecipe, selection = {}, context = {});
 ```
 
-做的事:抠图(必要时)→ 撕纸毛边(缩放阈值化制造锯齿,不是简单裁矩形)→ 投影 → 1-2px 白边(纸张厚度感)。
-默认参数是给中等大小图层调的,效果太糊/太碎用 `--no-torn-edge` / `--no-shadow` / `--no-border` 关掉某一步单独看。
+固定顺序:EXIF 摆正 → recipe crop → resize(只缩小)→ tone → 应用缓存 mask → edge → 白边/阴影 → QA。RGB 始终来自本地原图;fal mask 只替换 alpha。
+
+- `role:card`:保留 crop 内整幅内容,默认 `torn`;`role:cutout`:使用主体 alpha,默认 `scissor`;`role:bg`:默认 `none`,无边缘和阴影。
+- `source` 保留本地颜色;`mono` 做中性黑白和对比度归一;`sepia` 在 mono 上加固定暖调。历史素材默认 mono,现代照片默认 source。
+- `scissor` 是阈值化硬边加轻微抗锯齿;`torn` 用 recipe seed 产生可重复的多尺度撕裂边;`none` 不改边缘。
+- `maxSize` 只是长边上限,内部始终使用 `withoutEnlargement:true`;001、008、012 等低分辨率素材只报警,禁止超分。
+- 核心同时保留旧 `cutout()` 调用兼容层:`tone:none` 等价 `source`,`paper/auto` 对应 `card/cutout`,`--no-torn-edge` 对应 `scissor`;新代码一律使用 v2 名称。
+
+## 1.5 批量处理:`batch-cutout.mjs`
+
+```bash
+node --env-file-if-exists=.env.local scripts/batch-cutout.mjs --dry-run
+node --env-file-if-exists=.env.local scripts/batch-cutout.mjs
+node --env-file-if-exists=.env.local scripts/batch-cutout.mjs --only asset_001,asset_014
+node --env-file-if-exists=.env.local scripts/batch-cutout.mjs --force
+node --env-file-if-exists=.env.local scripts/batch-cutout.mjs --only asset_014 --refresh-mask
+node --env-file-if-exists=.env.local scripts/batch-cutout.mjs --tone sepia --edge scissor
+node scripts/preprocess-contact-sheet.mjs
+```
+
+分流计划统一放在 `data/preprocess/roosevelt-island.json`,不得在 batch 中另写 `JOBS`。recipe 记录素材定位、保留/排除内容、crop、role、默认 tone/edge、mask prompt/ROI、fallback、稳定 seed、source/recipe SHA-256 与审核状态。`asset_013` 是待人工选页的 PDF,明确 skip 且不产生输出。
+
+- `--dry-run` 只校验 recipe、源文件和预计动作,不写文件、不调用 fal。
+- `--only` 可按 asset id 或 recipe id 过滤;`--tone`/`--edge` 是本次全局选择,单素材 override 仍可由 `PreprocessSelection.overrides` 提供。CLI 的 `--edge` 接受 `scissor | torn`;`none` 由 bg recipe 或编程接口选择。
+- `--force` 只重做本地像素阶段,不会重新收费;只有 `--refresh-mask` 会重新请求 fal mask。
+- 缓存命中必须同时匹配 source hash、recipe hash、工具版本和 mask 配置。所有新输出先进入 staging,通过 QA 后原子发布。
+- fal SAM 请求显式 `apply_mask:false`,每个 mask 最多两次提示/ROI 尝试;失败回退 SAM → silueta/rembg → 裁剪纸卡。调用前必须用 fal MCP 核对 schema 和当日价格。
+- `data/places/roosevelt-island.json` 的 `cutouts` 是对象数组,记录 role、source/recipe/output hash、RGB/alpha 来源、操作链、fal request/model/parameters/price/cost、警告与 review 状态。逐 recipe provenance 写入 `data/preprocess/provenance/{recipeId}.json`;mask 与调用元数据写入 `data/preprocess/masks/{recipeId}.png` 和同 basename `.json`。
+- 输出统一为 `*_card.png`、`*_cutout.png`、`*_bg.png`;不再用无角色后缀的透明主体名。
+- 人工 contact sheet 拒绝的 recipe 使用 `review.visual: rejected` + `publish:false` + `fallbackRecipeId`;mask 与 provenance 留在 `data/preprocess/` 供追溯,正式 cutouts、manifest 和场景只包含通过审核的输出。review/publish 字段从 recipe hash 中规范化排除,因此审核决定不会导致重复付费。
+- `preprocess-contact-sheet.mjs` 默认写 `renders/preprocess-review/contact-sheet.png`,六栏展示 source/crop/mask/hard/torn/final;支持 `--only asset_id,recipe_id` 与 `--out path`,且绝不调用 fal/rembg。
+
+**云端容器跑 rembg 的办法**(网络策略只放行包管理源,GitHub/HF 的模型直链都被 403):
+npm 上 `@rmbg/model-*` 系列包把 rembg 官方权重按 4MB 分块打进了 npm 包,拼回去 md5 与 rembg 期望值完全一致:
+
+```bash
+# @rmbg/model-u2netp(4.6MB)与 @rmbg/model-silueta(43MB,质量接近 u2net 全量版,推荐)
+cd /tmp && npm pack @rmbg/model-silueta && tar xzf rmbg-model-silueta-*.tgz
+mkdir -p ~/.u2net && cat package/silueta-*.onnx > ~/.u2net/silueta.onnx   # 按 1..N 顺序拼接
+REMBG_MODEL=silueta node scripts/batch-cutout.mjs
+```
+
+`REMBG_MODEL` 环境变量选 rembg 模型(默认 `u2net`,本机已有缓存的话不用管)。
+抠形质量结论(2026-07-18 实测):**照片(含 1970/1999 HABS、现代照片)和半调印刷 → silueta 可作为 fallback;
+线刻版画 → 不可用**(模型对线刻无图底概念,输出晕影),版画按 recipe 使用 `role:card`。
 
 ## 2. 拼场景:手写 `data/scenes/*.json`
 
@@ -35,8 +87,8 @@ node scripts/cutout.mjs --in assets/archive/asset_002.jpg --out assets/cutouts/a
 ```jsonc
 {
   "planes": [
-    { "asset": "assets/cutouts/asset_010_torn_paper_fg.png", "z": 0.9, "x": 0, "y": 0.1, "scale": 1.2, "shadow": true },
-    { "asset": "assets/cutouts/asset_002_asylum.png", "z": 0.5, "x": 0, "y": 0, "scale": 1.0, "shadow": true },
+    { "asset": "assets/cutouts/asset_010_prison_card.png", "z": 0.9, "x": 0, "y": 0.1, "scale": 1.2, "shadow": true },
+    { "asset": "assets/cutouts/asset_014_lighthouse1970_cutout.png", "z": 0.5, "x": 0, "y": 0, "scale": 1.0, "shadow": true },
     { "asset": "assets/cutouts/asset_003_map_bg.png", "z": 0.1, "x": -0.1, "y": -0.1, "scale": 0.9, "shadow": false }
   ],
   "camera_path": { "from": { "z": 0, "x": 0, "y": 0 }, "to": { "z": 0.4, "x": 0.05, "y": 0 }, "easing": "ease-in-out" }

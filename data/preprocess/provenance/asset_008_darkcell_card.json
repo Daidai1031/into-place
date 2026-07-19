@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_008_darkcell_card",
+  "assetId": "asset_008",
+  "role": "card",
+  "actualRole": "card",
+  "source": {
+    "file": "assets/archive/asset_008.jpg",
+    "sha256": "ad9cf4048602ff0dd9e0a28cdc7824c48a7bc206f47043887f3b6145b061c3b7"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_008_darkcell_card.png",
+    "sha256": "15cd94e459668aa3cfc559b8d043d883da29775eb4f5a4e30395a1d5c733ee2c"
+  },
+  "cache": {
+    "sourceSha256": "ad9cf4048602ff0dd9e0a28cdc7824c48a7bc206f47043887f3b6145b061c3b7",
+    "recipeSha256": "400d40d019c1f8e0e56c9acd456a800bc79f4b5033a624bbc13a51a038ebd4c9",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "f38ab54d965f7af5b2d91cc6d9a45115bd60959313c02a521101c6b62ce731c1",
+    "cacheKey": "839515c0a74cfc7140f58e40727fa5977a17e19d6923c759dc41b7e21213245e"
+  },
+  "selection": {
+    "tone": "mono",
+    "edge": "torn"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "normalized-crop:0.305,0.075,0.305,0.5",
+    "resize-inside:2400:without-enlargement",
+    "tone:mono",
+    "edge:torn",
+    "white-border",
+    "shadow-behind-border"
+  ],
+  "mask": null,
+  "falCalls": [],
+  "qa": {
+    "width": 997,
+    "height": 907,
+    "opaquePixels": 900028,
+    "coverage": 0.99529901722809,
+    "bbox": {
+      "left": 0,
+      "top": 0,
+      "width": 997,
+      "height": 907
+    },
+    "connectedComponents": 3,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.5,
+      "maxCoverage": 1,
+      "maxConnectedComponents": 128
+    },
+    "outputWidth": 1109,
+    "outputHeight": 1019
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "1866 engraving, Workhouse on Blackwell's Island: The Dark Cell",
+  "preserve": "The central dark-cell illustration.",
+  "exclude": "Mount, collection stamp, margins, and grayscale strip.",
+  "qualityWarnings": [
+    "low_source_resolution_no_upscale"
+  ],
+  "createdAt": "2026-07-19T03:45:39.481Z"
+}

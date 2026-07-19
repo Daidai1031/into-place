@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_002_asylum_card",
+  "assetId": "asset_002",
+  "role": "card",
+  "actualRole": "card",
+  "source": {
+    "file": "assets/archive/asset_002.jpg",
+    "sha256": "2638137d152561b5e05167cfbc3c45f11182e26d6d5471e6fc42f5fae4205167"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_002_asylum_card.png",
+    "sha256": "308b176a5934b6f5e426ee3ffd8fae94b7d117d13331449403a483ae3edb39cd"
+  },
+  "cache": {
+    "sourceSha256": "2638137d152561b5e05167cfbc3c45f11182e26d6d5471e6fc42f5fae4205167",
+    "recipeSha256": "8f610937edaa5f9e1897fd11aca5c40fce322caa975202accb96ad238846a165",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "f38ab54d965f7af5b2d91cc6d9a45115bd60959313c02a521101c6b62ce731c1",
+    "cacheKey": "e0c7671a750243732cf562483de16392193a666222f1d06316b01c160939e490"
+  },
+  "selection": {
+    "tone": "mono",
+    "edge": "torn"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "resize-inside:3840:without-enlargement",
+    "tone:mono",
+    "edge:torn",
+    "white-border",
+    "shadow-behind-border"
+  ],
+  "mask": null,
+  "falCalls": [],
+  "qa": {
+    "width": 3840,
+    "height": 2542,
+    "opaquePixels": 9745290,
+    "coverage": 0.9983618951612904,
+    "bbox": {
+      "left": 0,
+      "top": 0,
+      "width": 3840,
+      "height": 2542
+    },
+    "connectedComponents": 5,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.5,
+      "maxCoverage": 1,
+      "maxConnectedComponents": 128
+    },
+    "outputWidth": 3952,
+    "outputHeight": 2654
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "1853 view of the Lunatic Asylum and Mad House",
+  "preserve": "The full archival print.",
+  "exclude": "Nothing; the complete composition is historically relevant.",
+  "qualityWarnings": [],
+  "createdAt": "2026-07-19T03:45:25.709Z"
+}

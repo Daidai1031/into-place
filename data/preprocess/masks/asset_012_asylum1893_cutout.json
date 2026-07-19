@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "recipeId": "asset_012_asylum1893_cutout",
+  "model": "fal-ai/sam-3/image",
+  "cache": {
+    "sourceSha256": "debe446856e4210aa005726085ae95ed73820f5404197bf13c53af0d0cf4edd9",
+    "recipeSha256": "8dc41467c93f87e114344e346a2881d1e7feb5c58b3a23dbdc42c6be51963efb",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "maskConfigSha256": "66cedcbf4ee1b46b4ce8a669804054233b211a162cd0bfd4d648f03aadcb9cee",
+    "cacheKey": "be354833975fb7339876128b1e3d0011d4677f6b69e5e1fc51bf56ebd704f820"
+  },
+  "sourceInput": {
+    "file": "assets/archive/asset_012.jpg",
+    "crop": null,
+    "uploaded": true,
+    "uploadedUrl": "(redacted uploaded cropped source)",
+    "width": 1206,
+    "height": 632
+  },
+  "verification": {
+    "schemaCheckedAt": "2026-07-18",
+    "pricingCheckedAt": "2026-07-18",
+    "unitPriceUsd": 0.005,
+    "unit": "request"
+  },
+  "calls": [
+    {
+      "attempt": 1,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f785c-d73b-7000-8fb2-d6173d2992b3",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "the complete asylum building",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "failed",
+      "submitted_at": "2026-07-19T03:12:57.937Z",
+      "error": "fal result did not contain masks[0].url",
+      "completed_at": "2026-07-19T03:13:01.799Z"
+    },
+    {
+      "attempt": 2,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f785c-e5a8-7c83-a64f-f94e1880cc9a",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "the long institutional building including its roofline",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "completed",
+      "submitted_at": "2026-07-19T03:13:01.801Z",
+      "qa": {
+        "valid": true,
+        "coverage": 0.17283571593509248,
+        "minCoverage": 0.08,
+        "maxCoverage": 0.9
+      },
+      "result": {
+        "mask_url": "(redacted fal result URL)",
+        "score": 0.9266818165779114,
+        "box": [
+          0.4815945332718528,
+          0.5325642235671417,
+          0.8584309826245158,
+          0.6372583365138573
+        ],
+        "width": 1206,
+        "height": 632
+      },
+      "completed_at": "2026-07-19T03:13:05.442Z"
+    }
+  ],
+  "updatedAt": "2026-07-19T03:13:05.444Z",
+  "mask": {
+    "file": "data/preprocess/masks/asset_012_asylum1893_cutout.png",
+    "sha256": "1c08db803dea2cd84862ad01373bb7eaa856d6b61f8288f1bc893b27de586d62",
+    "width": 1206,
+    "height": 632,
+    "coverage": 0.17283571593509248
+  }
+}

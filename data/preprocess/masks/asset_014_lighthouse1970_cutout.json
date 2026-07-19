@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "recipeId": "asset_014_lighthouse1970_cutout",
+  "model": "fal-ai/sam-3/image",
+  "cache": {
+    "sourceSha256": "caa4a708a839cb52e978a9f4c49129c419d39955ec11152c7640d28cb7a04298",
+    "recipeSha256": "b23eec288559f7367e5dcf1fd7a8fd2135419d85636d2730bc1431a8148c8a41",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "maskConfigSha256": "6e3a23c0ea200fdf2a0f0d27dbf68a6a365e525baae98fd119bb43cc8a0db2f3",
+    "cacheKey": "ddd89d312c21a8ee58cb2a68c4289e39c1cfa1f65ddef840751e37ea466ebd48"
+  },
+  "sourceInput": {
+    "file": "assets/archive/asset_014.tif",
+    "crop": [
+      0.055,
+      0.03,
+      0.9,
+      0.95
+    ],
+    "uploaded": true,
+    "uploadedUrl": "(redacted uploaded cropped source)",
+    "width": 1636,
+    "height": 2400
+  },
+  "verification": {
+    "schemaCheckedAt": "2026-07-18",
+    "pricingCheckedAt": "2026-07-18",
+    "unitPriceUsd": 0.005,
+    "unit": "request"
+  },
+  "calls": [
+    {
+      "attempt": 1,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f785c-fb25-7bf1-956b-35b14ca149f4",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "the complete lighthouse and attached entrance structure",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "completed",
+      "submitted_at": "2026-07-19T03:13:07.299Z",
+      "qa": {
+        "valid": true,
+        "coverage": 0.117629380603097,
+        "minCoverage": 0.04,
+        "maxCoverage": 0.8
+      },
+      "result": {
+        "mask_url": "(redacted fal result URL)",
+        "score": 0.9725830554962158,
+        "box": [
+          0.6758286915128193,
+          0.5013639128957752,
+          0.26330875215076266,
+          0.6515723506367795
+        ],
+        "width": 1636,
+        "height": 2400
+      },
+      "completed_at": "2026-07-19T03:13:11.109Z"
+    }
+  ],
+  "updatedAt": "2026-07-19T03:13:11.111Z",
+  "mask": {
+    "file": "data/preprocess/masks/asset_014_lighthouse1970_cutout.png",
+    "sha256": "351f107d7cbb6570ab8f34498dfbca08e3f7cfd3704a031cd32d3ee0593ef6cf",
+    "width": 1636,
+    "height": 2400,
+    "coverage": 0.117629380603097
+  }
+}

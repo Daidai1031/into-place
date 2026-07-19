@@ -1,0 +1,51 @@
+{
+  "_note": "Generated from user storyboard — beat \"Recognition\": Through a doorway into the Renwick ruin today.",
+  "beat_id": "beat_4",
+  "planes": [
+    {
+      "asset": "assets/cutouts/asset_003_map_bg.png",
+      "z": 0.05,
+      "x": 0,
+      "y": 0,
+      "scale": 1.05,
+      "rotation": 0,
+      "shadow": false
+    },
+    {
+      "asset": "assets/cutouts/asset_001_smallpox_card.png",
+      "z": 0.475,
+      "x": -0.1,
+      "y": -0.05,
+      "scale": 0.385,
+      "rotation": -3,
+      "shadow": true
+    },
+    {
+      "asset": "assets/cutouts/asset_002_asylum_card.png",
+      "z": 0.9,
+      "x": 0.18,
+      "y": 0.05,
+      "scale": 0.315,
+      "rotation": 4,
+      "shadow": true
+    }
+  ],
+  "brush_overlay": false,
+  "camera_path": {
+    "from": {
+      "z": 0,
+      "x": 0,
+      "y": 0
+    },
+    "to": {
+      "z": 0.25,
+      "x": 0,
+      "y": 0
+    },
+    "easing": "ease-in-out"
+  },
+  "transition_out": {
+    "type": "push_dissolve",
+    "note": ""
+  }
+}

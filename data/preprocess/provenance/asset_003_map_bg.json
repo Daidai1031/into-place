@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_003_map_bg",
+  "assetId": "asset_003",
+  "role": "bg",
+  "actualRole": "bg",
+  "source": {
+    "file": "assets/archive/asset_003.jpg",
+    "sha256": "ee255bab1fe05f5db3645b3c0e52580880ca217050dc6ca72ea2b32f29cc7542"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_003_map_bg.png",
+    "sha256": "c590fc311762c3fce7f32667e4b7e83df20bb6eb06ae78ac805a255d251bc3de"
+  },
+  "cache": {
+    "sourceSha256": "ee255bab1fe05f5db3645b3c0e52580880ca217050dc6ca72ea2b32f29cc7542",
+    "recipeSha256": "097b50b296fae85b9e0a0c9bf48eb2ee6b99d95a6b79dadbc20403896bb9d318",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "27d39dce1a36d9ef087718d3c707fc9766ef0f4000784e001ed2356ce33dbc55",
+    "cacheKey": "2ab5ccb1ed3a87eda52f557a803ba3005112f7ec724bee3ae719b269026a0ac4"
+  },
+  "selection": {
+    "tone": "source",
+    "edge": "none"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "resize-inside:3840:without-enlargement",
+    "tone:source",
+    "edge:none"
+  ],
+  "mask": null,
+  "falCalls": [],
+  "qa": {
+    "width": 3840,
+    "height": 1994,
+    "opaquePixels": 7656960,
+    "coverage": 1,
+    "bbox": {
+      "left": 0,
+      "top": 0,
+      "width": 3840,
+      "height": 1994
+    },
+    "connectedComponents": 1,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.5,
+      "maxCoverage": 1,
+      "maxConnectedComponents": 128
+    },
+    "outputWidth": 3840,
+    "outputHeight": 1994
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "1886 map of Blackwell's, Ward's, and Randall's Islands",
+  "preserve": "The full hand-colored archival map.",
+  "exclude": "Nothing.",
+  "qualityWarnings": [],
+  "createdAt": "2026-07-19T03:45:30.280Z"
+}

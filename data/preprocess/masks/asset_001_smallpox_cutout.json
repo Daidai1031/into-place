@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "recipeId": "asset_001_smallpox_cutout",
+  "model": "fal-ai/sam-3/image",
+  "cache": {
+    "sourceSha256": "91c55dd069824fae92c8974b138fb60e5a8d5f257f93f7c34a275071ed68a6bd",
+    "recipeSha256": "77418fdb22a7e71123ff3b53df917a8c6e17b8c7db44bf711ad567b2c07cdcdc",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "maskConfigSha256": "7351f0b5ab849aa4a95f82ab369146aa42684fc9b9f198da47a20d977a488a36",
+    "cacheKey": "528736bff7c5b1e576d1a771c2e02a6277cadf733d6a2c942746400ee22a7419"
+  },
+  "sourceInput": {
+    "file": "assets/archive/asset_001.jpg",
+    "crop": [
+      0.138,
+      0.12,
+      0.358,
+      0.654
+    ],
+    "uploaded": true,
+    "uploadedUrl": "(redacted uploaded cropped source)",
+    "width": 1058,
+    "height": 1168
+  },
+  "verification": {
+    "schemaCheckedAt": "2026-07-18",
+    "pricingCheckedAt": "2026-07-18",
+    "unitPriceUsd": 0.005,
+    "unit": "request"
+  },
+  "calls": [
+    {
+      "attempt": 1,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f785c-554d-77a0-9403-fc33b9eeafed",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "the complete stone hospital building",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "failed",
+      "submitted_at": "2026-07-19T03:12:24.658Z",
+      "error": "fal result did not contain masks[0].url",
+      "completed_at": "2026-07-19T03:12:28.489Z"
+    },
+    {
+      "attempt": 2,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f785c-6390-7e83-8bb3-a46b88f00468",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "the main building including its roofline and towers",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "completed",
+      "submitted_at": "2026-07-19T03:12:28.491Z",
+      "qa": {
+        "valid": true,
+        "coverage": 0.23354270787477016,
+        "minCoverage": 0.08,
+        "maxCoverage": 0.85
+      },
+      "result": {
+        "mask_url": "(redacted fal result URL)",
+        "score": 0.686592698097229,
+        "box": [
+          0.5247657336885967,
+          0.44411281369767097,
+          0.7772742528764028,
+          0.48162416799156277
+        ],
+        "width": 1058,
+        "height": 1168
+      },
+      "completed_at": "2026-07-19T03:12:32.296Z"
+    }
+  ],
+  "updatedAt": "2026-07-19T03:12:32.299Z",
+  "mask": {
+    "file": "data/preprocess/masks/asset_001_smallpox_cutout.png",
+    "sha256": "6adcf74f61f55c5bdca0d9e10fc21ba3761d8b6f5771e7e51e300b523b83fa3b",
+    "width": 1058,
+    "height": 1168,
+    "coverage": 0.23354270787477016
+  }
+}

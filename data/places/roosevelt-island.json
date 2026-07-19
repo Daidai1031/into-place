@@ -3,7 +3,10 @@
   "name": "Roosevelt Island",
   "region": "New York, USA",
   "status": "seeded",
-  "map_marker": { "x": 0.72, "y": 0.38 },
+  "map_marker": {
+    "x": 0.72,
+    "y": 0.38
+  },
   "tagline": "An island the city built to hide people, now a place people choose to live.",
   "assets": [
     {
@@ -21,7 +24,70 @@
       "upload_role": null,
       "status": "must_use",
       "file": "assets/archive/asset_001.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "recipe_id": "asset_001_smallpox_card",
+          "file": "assets/cutouts/asset_001_smallpox_card.png",
+          "role": "card",
+          "requested_role": "card",
+          "tone": "mono",
+          "edge": "torn",
+          "source_sha256": "91c55dd069824fae92c8974b138fb60e5a8d5f257f93f7c34a275071ed68a6bd",
+          "recipe_sha256": "2cdcea5ad78b3048e37ef857bcd098413d3346598cd5538c203fd93a5cb7e515",
+          "output_sha256": "ac3c1baa2b0c7ab338a94bd42d2404b756e443c58bf8da754ae227eafd76c674",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "normalized-crop:0.138,0.12,0.358,0.654",
+            "resize-inside:2400:without-enlargement",
+            "tone:mono",
+            "edge:torn",
+            "white-border",
+            "shadow-behind-border"
+          ],
+          "fal_calls": [],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 1058,
+            "height": 1168,
+            "opaquePixels": 1230923,
+            "coverage": 0.996098706528213,
+            "bbox": {
+              "left": 0,
+              "top": 0,
+              "width": 1058,
+              "height": 1168
+            },
+            "connectedComponents": 3,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.5,
+              "maxCoverage": 1,
+              "maxConnectedComponents": 128
+            },
+            "outputWidth": 1170,
+            "outputHeight": 1280
+          },
+          "quality_warnings": [
+            "low_source_resolution_no_upscale"
+          ]
+        }
+      ]
     },
     {
       "id": "asset_002",
@@ -38,7 +104,67 @@
       "upload_role": null,
       "status": "must_use",
       "file": "assets/archive/asset_002.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "recipe_id": "asset_002_asylum_card",
+          "file": "assets/cutouts/asset_002_asylum_card.png",
+          "role": "card",
+          "requested_role": "card",
+          "tone": "mono",
+          "edge": "torn",
+          "source_sha256": "2638137d152561b5e05167cfbc3c45f11182e26d6d5471e6fc42f5fae4205167",
+          "recipe_sha256": "8f610937edaa5f9e1897fd11aca5c40fce322caa975202accb96ad238846a165",
+          "output_sha256": "308b176a5934b6f5e426ee3ffd8fae94b7d117d13331449403a483ae3edb39cd",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "resize-inside:3840:without-enlargement",
+            "tone:mono",
+            "edge:torn",
+            "white-border",
+            "shadow-behind-border"
+          ],
+          "fal_calls": [],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 3840,
+            "height": 2542,
+            "opaquePixels": 9745290,
+            "coverage": 0.9983618951612904,
+            "bbox": {
+              "left": 0,
+              "top": 0,
+              "width": 3840,
+              "height": 2542
+            },
+            "connectedComponents": 5,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.5,
+              "maxCoverage": 1,
+              "maxConnectedComponents": 128
+            },
+            "outputWidth": 3952,
+            "outputHeight": 2654
+          },
+          "quality_warnings": []
+        }
+      ]
     },
     {
       "id": "asset_003",
@@ -55,7 +181,65 @@
       "upload_role": null,
       "status": "must_use",
       "file": "assets/archive/asset_003.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "recipe_id": "asset_003_map_bg",
+          "file": "assets/cutouts/asset_003_map_bg.png",
+          "role": "bg",
+          "requested_role": "bg",
+          "tone": "source",
+          "edge": "none",
+          "source_sha256": "ee255bab1fe05f5db3645b3c0e52580880ca217050dc6ca72ea2b32f29cc7542",
+          "recipe_sha256": "097b50b296fae85b9e0a0c9bf48eb2ee6b99d95a6b79dadbc20403896bb9d318",
+          "output_sha256": "c590fc311762c3fce7f32667e4b7e83df20bb6eb06ae78ac805a255d251bc3de",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "resize-inside:3840:without-enlargement",
+            "tone:source",
+            "edge:none"
+          ],
+          "fal_calls": [],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 3840,
+            "height": 1994,
+            "opaquePixels": 7656960,
+            "coverage": 1,
+            "bbox": {
+              "left": 0,
+              "top": 0,
+              "width": 3840,
+              "height": 1994
+            },
+            "connectedComponents": 1,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.5,
+              "maxCoverage": 1,
+              "maxConnectedComponents": 128
+            },
+            "outputWidth": 3840,
+            "outputHeight": 1994
+          },
+          "quality_warnings": []
+        }
+      ]
     },
     {
       "id": "asset_004",
@@ -72,7 +256,68 @@
       "upload_role": null,
       "status": "maybe",
       "file": "assets/archive/asset_004.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "recipe_id": "asset_004_asylum1866_card",
+          "file": "assets/cutouts/asset_004_asylum1866_card.png",
+          "role": "card",
+          "requested_role": "card",
+          "tone": "mono",
+          "edge": "torn",
+          "source_sha256": "84293a673acef79950feba399a16e9666190f2f3607f1945c0d6caab801c7476",
+          "recipe_sha256": "b59ac7337f462fa63e92606db15d78e8fb08aa1f9d66ea768c5062e79a3b2d97",
+          "output_sha256": "e13edb1485f0ac3fb20982ced526eed029c1cbd7f9cef059c92dbafb85b28ae2",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "normalized-crop:0.205,0.035,0.58,0.56",
+            "resize-inside:2400:without-enlargement",
+            "tone:mono",
+            "edge:torn",
+            "white-border",
+            "shadow-behind-border"
+          ],
+          "fal_calls": [],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 1922,
+            "height": 1139,
+            "opaquePixels": 2181097,
+            "coverage": 0.9963177623542933,
+            "bbox": {
+              "left": 0,
+              "top": 0,
+              "width": 1922,
+              "height": 1139
+            },
+            "connectedComponents": 3,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.5,
+              "maxCoverage": 1,
+              "maxConnectedComponents": 128
+            },
+            "outputWidth": 2034,
+            "outputHeight": 1251
+          },
+          "quality_warnings": []
+        }
+      ]
     },
     {
       "id": "asset_005",
@@ -89,7 +334,68 @@
       "upload_role": null,
       "status": "maybe",
       "file": "assets/archive/asset_005.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "recipe_id": "asset_005_workhouse_card",
+          "file": "assets/cutouts/asset_005_workhouse_card.png",
+          "role": "card",
+          "requested_role": "card",
+          "tone": "mono",
+          "edge": "torn",
+          "source_sha256": "2f5b33b9d5f8998169cfe01efe125308523664f7203dd043545e0979f0e94b53",
+          "recipe_sha256": "e1f5e3c1aeac37a900d78773493f2b7386694a1d7314f5436f098f88993698e6",
+          "output_sha256": "a63ed054940a0da98c61a3c22ff4428a5f95eb481834b57bca52ed88705225d3",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "normalized-crop:0.108,0.04,0.755,0.56",
+            "resize-inside:2400:without-enlargement",
+            "tone:mono",
+            "edge:torn",
+            "white-border",
+            "shadow-behind-border"
+          ],
+          "fal_calls": [],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 2400,
+            "height": 1260,
+            "opaquePixels": 3015240,
+            "coverage": 0.9971031746031747,
+            "bbox": {
+              "left": 0,
+              "top": 0,
+              "width": 2400,
+              "height": 1260
+            },
+            "connectedComponents": 4,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.5,
+              "maxCoverage": 1,
+              "maxConnectedComponents": 128
+            },
+            "outputWidth": 2512,
+            "outputHeight": 1372
+          },
+          "quality_warnings": []
+        }
+      ]
     },
     {
       "id": "asset_006",
@@ -106,7 +412,68 @@
       "upload_role": null,
       "status": "must_use",
       "file": "assets/archive/asset_006.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "recipe_id": "asset_006_penitentiary_card",
+          "file": "assets/cutouts/asset_006_penitentiary_card.png",
+          "role": "card",
+          "requested_role": "card",
+          "tone": "mono",
+          "edge": "torn",
+          "source_sha256": "0a230dc88bf6dcf50976f27ceff9e53c990f7c3e6a2ee0ba47ec2bb67b5cd749",
+          "recipe_sha256": "0e5600dca33d7aa3d7be9c2a08cbda70d451b29d3df5e6f7cc86e03ae84e819f",
+          "output_sha256": "fd2416c289d512b925ef121e55b2e0a3e3acdd568ed04ee1f92a392ccb80675e",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "normalized-crop:0.075,0.035,0.85,0.68",
+            "resize-inside:2400:without-enlargement",
+            "tone:mono",
+            "edge:torn",
+            "white-border",
+            "shadow-behind-border"
+          ],
+          "fal_calls": [],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 2399,
+            "height": 1722,
+            "opaquePixels": 4118658,
+            "coverage": 0.9969935208195052,
+            "bbox": {
+              "left": 0,
+              "top": 0,
+              "width": 2399,
+              "height": 1722
+            },
+            "connectedComponents": 4,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.5,
+              "maxCoverage": 1,
+              "maxConnectedComponents": 128
+            },
+            "outputWidth": 2511,
+            "outputHeight": 1834
+          },
+          "quality_warnings": []
+        }
+      ]
     },
     {
       "id": "asset_007",
@@ -123,7 +490,68 @@
       "upload_role": null,
       "status": "maybe",
       "file": "assets/archive/asset_007.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "recipe_id": "asset_007_almshouse_card",
+          "file": "assets/cutouts/asset_007_almshouse_card.png",
+          "role": "card",
+          "requested_role": "card",
+          "tone": "mono",
+          "edge": "torn",
+          "source_sha256": "d02ad10548e64634ed0cd64e2346b2d49f652420dda6ef1f3e9a9e1f0204e85f",
+          "recipe_sha256": "df03333bbb31ffde34ffd6c08f9494c6da4a75a3c47b8a8c90ac55915b55ac36",
+          "output_sha256": "6205c79893d965b7d41c45cf0249a98968a1ddd7a3a7fbc470cda12908e1ce65",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "normalized-crop:0.195,0.055,0.6,0.52",
+            "resize-inside:2400:without-enlargement",
+            "tone:mono",
+            "edge:torn",
+            "white-border",
+            "shadow-behind-border"
+          ],
+          "fal_calls": [],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 1963,
+            "height": 1087,
+            "opaquePixels": 2125630,
+            "coverage": 0.9961800203488549,
+            "bbox": {
+              "left": 0,
+              "top": 0,
+              "width": 1963,
+              "height": 1087
+            },
+            "connectedComponents": 8,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.5,
+              "maxCoverage": 1,
+              "maxConnectedComponents": 128
+            },
+            "outputWidth": 2075,
+            "outputHeight": 1199
+          },
+          "quality_warnings": []
+        }
+      ]
     },
     {
       "id": "asset_008",
@@ -140,7 +568,70 @@
       "upload_role": null,
       "status": "maybe",
       "file": "assets/archive/asset_008.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "recipe_id": "asset_008_darkcell_card",
+          "file": "assets/cutouts/asset_008_darkcell_card.png",
+          "role": "card",
+          "requested_role": "card",
+          "tone": "mono",
+          "edge": "torn",
+          "source_sha256": "ad9cf4048602ff0dd9e0a28cdc7824c48a7bc206f47043887f3b6145b061c3b7",
+          "recipe_sha256": "400d40d019c1f8e0e56c9acd456a800bc79f4b5033a624bbc13a51a038ebd4c9",
+          "output_sha256": "15cd94e459668aa3cfc559b8d043d883da29775eb4f5a4e30395a1d5c733ee2c",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "normalized-crop:0.305,0.075,0.305,0.5",
+            "resize-inside:2400:without-enlargement",
+            "tone:mono",
+            "edge:torn",
+            "white-border",
+            "shadow-behind-border"
+          ],
+          "fal_calls": [],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 997,
+            "height": 907,
+            "opaquePixels": 900028,
+            "coverage": 0.99529901722809,
+            "bbox": {
+              "left": 0,
+              "top": 0,
+              "width": 997,
+              "height": 907
+            },
+            "connectedComponents": 3,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.5,
+              "maxCoverage": 1,
+              "maxConnectedComponents": 128
+            },
+            "outputWidth": 1109,
+            "outputHeight": 1019
+          },
+          "quality_warnings": [
+            "low_source_resolution_no_upscale"
+          ]
+        }
+      ]
     },
     {
       "id": "asset_009",
@@ -157,7 +648,68 @@
       "upload_role": null,
       "status": "maybe",
       "file": "assets/archive/asset_009.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "recipe_id": "asset_009_bridgeplan_card",
+          "file": "assets/cutouts/asset_009_bridgeplan_card.png",
+          "role": "card",
+          "requested_role": "card",
+          "tone": "mono",
+          "edge": "torn",
+          "source_sha256": "680a26a8bee23d2a550a1af02801c6f78dc23b8d2473510caea7dd65061c34ee",
+          "recipe_sha256": "798d523b3ae352ec1b3cf2cce403b1d64a91724ca3c694fab4cd8e7077dd2237",
+          "output_sha256": "e34d45a125fcf6a9c5725d2e9478450e566c20d14f77d68acf3788a2239e0be0",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "normalized-crop:0.035,0.02,0.93,0.77",
+            "resize-inside:2400:without-enlargement",
+            "tone:mono",
+            "edge:torn",
+            "white-border",
+            "shadow-behind-border"
+          ],
+          "fal_calls": [],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 2400,
+            "height": 1711,
+            "opaquePixels": 4093719,
+            "coverage": 0.9969118936294564,
+            "bbox": {
+              "left": 0,
+              "top": 0,
+              "width": 2400,
+              "height": 1711
+            },
+            "connectedComponents": 8,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.5,
+              "maxCoverage": 1,
+              "maxConnectedComponents": 128
+            },
+            "outputWidth": 2512,
+            "outputHeight": 1823
+          },
+          "quality_warnings": []
+        }
+      ]
     },
     {
       "id": "asset_010",
@@ -174,7 +726,67 @@
       "upload_role": null,
       "status": "must_use",
       "file": "assets/archive/asset_010.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "recipe_id": "asset_010_prison_card",
+          "file": "assets/cutouts/asset_010_prison_card.png",
+          "role": "card",
+          "requested_role": "card",
+          "tone": "mono",
+          "edge": "torn",
+          "source_sha256": "53df4b55ffb822ece40b598e4e2607e69bd10410157a2194080e1bbaacfb4dfb",
+          "recipe_sha256": "804c8e26943d2ef22b806da8a406a9774b78bdc7c478ebb21ab34e28d3a72277",
+          "output_sha256": "beec18b7af7519e393c31d91e5782e85f07f06f8025c9f58756b7e1b274deca3",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "resize-inside:2400:without-enlargement",
+            "tone:mono",
+            "edge:torn",
+            "white-border",
+            "shadow-behind-border"
+          ],
+          "fal_calls": [],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 2246,
+            "height": 1302,
+            "opaquePixels": 2915955,
+            "coverage": 0.9971490535144917,
+            "bbox": {
+              "left": 0,
+              "top": 0,
+              "width": 2246,
+              "height": 1302
+            },
+            "connectedComponents": 3,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.5,
+              "maxCoverage": 1,
+              "maxConnectedComponents": 128
+            },
+            "outputWidth": 2358,
+            "outputHeight": 1414
+          },
+          "quality_warnings": []
+        }
+      ]
     },
     {
       "id": "asset_011",
@@ -191,7 +803,67 @@
       "upload_role": null,
       "status": "must_use",
       "file": "assets/archive/asset_011.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "recipe_id": "asset_011_penitentiary1834_card",
+          "file": "assets/cutouts/asset_011_penitentiary1834_card.png",
+          "role": "card",
+          "requested_role": "card",
+          "tone": "mono",
+          "edge": "torn",
+          "source_sha256": "07a421cf3bdf1b8ad73f90012cb26f4801b38fa79ff55b07bcffab1ab963b41e",
+          "recipe_sha256": "24414e52e4a0cddf99674231c2fdba5ffcead29e7b88a4a8a174d491309c9117",
+          "output_sha256": "3af32e6c38d74561857e7da90156a43ba273a8952abf704c988fe29a8b56b693",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "resize-inside:2400:without-enlargement",
+            "tone:mono",
+            "edge:torn",
+            "white-border",
+            "shadow-behind-border"
+          ],
+          "fal_calls": [],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 2400,
+            "height": 1588,
+            "opaquePixels": 3801195,
+            "coverage": 0.9973748425692696,
+            "bbox": {
+              "left": 0,
+              "top": 0,
+              "width": 2400,
+              "height": 1588
+            },
+            "connectedComponents": 3,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.5,
+              "maxCoverage": 1,
+              "maxConnectedComponents": 128
+            },
+            "outputWidth": 2512,
+            "outputHeight": 1700
+          },
+          "quality_warnings": []
+        }
+      ]
     },
     {
       "id": "asset_012",
@@ -208,7 +880,69 @@
       "upload_role": null,
       "status": "must_use",
       "file": "assets/archive/asset_012.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "recipe_id": "asset_012_asylum1893_card",
+          "file": "assets/cutouts/asset_012_asylum1893_card.png",
+          "role": "card",
+          "requested_role": "card",
+          "tone": "mono",
+          "edge": "torn",
+          "source_sha256": "debe446856e4210aa005726085ae95ed73820f5404197bf13c53af0d0cf4edd9",
+          "recipe_sha256": "0d573a4d292a9c437daa9af8b174d9cc4114c2835db65687f6f18fe8319d8ed5",
+          "output_sha256": "b9a565c01fb0c57c48c89a96ad80c9b2f22d821f9ccc99f040c41fbfca5b3b1a",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "resize-inside:2400:without-enlargement",
+            "tone:mono",
+            "edge:torn",
+            "white-border",
+            "shadow-behind-border"
+          ],
+          "fal_calls": [],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 1206,
+            "height": 632,
+            "opaquePixels": 758973,
+            "coverage": 0.9957766547011777,
+            "bbox": {
+              "left": 0,
+              "top": 0,
+              "width": 1206,
+              "height": 632
+            },
+            "connectedComponents": 5,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.5,
+              "maxCoverage": 1,
+              "maxConnectedComponents": 128
+            },
+            "outputWidth": 1318,
+            "outputHeight": 744
+          },
+          "quality_warnings": [
+            "source_is_1206x632_no_upscale"
+          ]
+        }
+      ]
     },
     {
       "id": "asset_013",
@@ -242,7 +976,169 @@
       "upload_role": null,
       "status": "must_use",
       "file": "assets/archive/asset_014.tif",
-      "cutouts": []
+      "cutouts": [
+        {
+          "recipe_id": "asset_014_lighthouse1970_card",
+          "file": "assets/cutouts/asset_014_lighthouse1970_card.png",
+          "role": "card",
+          "requested_role": "card",
+          "tone": "mono",
+          "edge": "torn",
+          "source_sha256": "caa4a708a839cb52e978a9f4c49129c419d39955ec11152c7640d28cb7a04298",
+          "recipe_sha256": "24e86727286efe9ff0deb1255bcc4835cd6b44eb9b2456e8306345a8d50ea6ff",
+          "output_sha256": "7e6189f7d5ff14ea0f68405272d0546c2ea0a64701c5f2d4d9a1f39fd9844895",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "resize-inside:2400:without-enlargement",
+            "tone:mono",
+            "edge:torn",
+            "white-border",
+            "shadow-behind-border"
+          ],
+          "fal_calls": [],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 1727,
+            "height": 2400,
+            "opaquePixels": 4134225,
+            "coverage": 0.9974486103068906,
+            "bbox": {
+              "left": 0,
+              "top": 0,
+              "width": 1727,
+              "height": 2400
+            },
+            "connectedComponents": 2,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.5,
+              "maxCoverage": 1,
+              "maxConnectedComponents": 128
+            },
+            "outputWidth": 1839,
+            "outputHeight": 2512
+          },
+          "quality_warnings": []
+        },
+        {
+          "recipe_id": "asset_014_lighthouse1970_cutout",
+          "file": "assets/cutouts/asset_014_lighthouse1970_cutout.png",
+          "role": "cutout",
+          "requested_role": "cutout",
+          "tone": "mono",
+          "edge": "scissor",
+          "source_sha256": "caa4a708a839cb52e978a9f4c49129c419d39955ec11152c7640d28cb7a04298",
+          "recipe_sha256": "b23eec288559f7367e5dcf1fd7a8fd2135419d85636d2730bc1431a8148c8a41",
+          "output_sha256": "8787d857c185cfc67254d464fd4a16360393a1f6c4b3bc259905a6f4707f1e3b",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "normalized-crop:0.055,0.03,0.9,0.95",
+            "resize-inside:2400:without-enlargement",
+            "tone:mono",
+            "cached-mask-alpha-only",
+            "edge:scissor",
+            "white-border",
+            "shadow-behind-border"
+          ],
+          "fal_calls": [
+            {
+              "attempt": 1,
+              "model": "fal-ai/sam-3/image",
+              "request_id": "019f785c-fb25-7bf1-956b-35b14ca149f4",
+              "input": {
+                "image_url": "(uploaded cropped source)",
+                "prompt": "the complete lighthouse and attached entrance structure",
+                "apply_mask": false,
+                "return_multiple_masks": false,
+                "output_format": "png",
+                "include_scores": true,
+                "include_boxes": true
+              },
+              "estimated_cost_usd": 0.005,
+              "status": "completed",
+              "submitted_at": "2026-07-19T03:13:07.299Z",
+              "qa": {
+                "valid": true,
+                "coverage": 0.117629380603097,
+                "minCoverage": 0.04,
+                "maxCoverage": 0.8
+              },
+              "result": {
+                "mask_url": "(redacted fal result URL)",
+                "score": 0.9725830554962158,
+                "box": [
+                  0.6758286915128193,
+                  0.5013639128957752,
+                  0.26330875215076266,
+                  0.6515723506367795
+                ],
+                "width": 1636,
+                "height": 2400
+              },
+              "completed_at": "2026-07-19T03:13:11.109Z",
+              "schema_checked_at": "2026-07-18",
+              "price_checked_at": "2026-07-18",
+              "unit_price_usd": 0.005,
+              "pricing_unit": "request"
+            }
+          ],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 1636,
+            "height": 2400,
+            "opaquePixels": 461860,
+            "coverage": 0.11762938060309698,
+            "bbox": {
+              "left": 891,
+              "top": 422,
+              "width": 429,
+              "height": 1564
+            },
+            "connectedComponents": 1,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.04,
+              "maxCoverage": 0.8,
+              "maxConnectedComponents": 64
+            },
+            "outputWidth": 1748,
+            "outputHeight": 2512
+          },
+          "quality_warnings": []
+        }
+      ]
     },
     {
       "id": "asset_015",
@@ -259,7 +1155,67 @@
       "upload_role": null,
       "status": "must_use",
       "file": "assets/archive/asset_015.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "recipe_id": "asset_015_asylum1999_card",
+          "file": "assets/cutouts/asset_015_asylum1999_card.png",
+          "role": "card",
+          "requested_role": "card",
+          "tone": "mono",
+          "edge": "torn",
+          "source_sha256": "a02556a53c6c5b5cf2ba21c53eddc3a3cc10db1ef50a602148f1217e249b0879",
+          "recipe_sha256": "38ea325e42e7b0c404eada49f52ec8f56502566f0da81b55fb133466893da665",
+          "output_sha256": "a3f7c074f69aa494ece193627f042b26bc7dfe8beb27a388cfe97c8f9e574dfb",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "resize-inside:2400:without-enlargement",
+            "tone:mono",
+            "edge:torn",
+            "white-border",
+            "shadow-behind-border"
+          ],
+          "fal_calls": [],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 2400,
+            "height": 1721,
+            "opaquePixels": 4119633,
+            "coverage": 0.9973932306798373,
+            "bbox": {
+              "left": 0,
+              "top": 0,
+              "width": 2400,
+              "height": 1721
+            },
+            "connectedComponents": 3,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.5,
+              "maxCoverage": 1,
+              "maxConnectedComponents": 128
+            },
+            "outputWidth": 2512,
+            "outputHeight": 1833
+          },
+          "quality_warnings": []
+        }
+      ]
     },
     {
       "id": "asset_016",
@@ -276,7 +1232,68 @@
       "upload_role": null,
       "status": "maybe",
       "file": "assets/archive/asset_016.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "recipe_id": "asset_016_farmhouse_card",
+          "file": "assets/cutouts/asset_016_farmhouse_card.png",
+          "role": "card",
+          "requested_role": "card",
+          "tone": "mono",
+          "edge": "torn",
+          "source_sha256": "95fe50c3bd3fd68589e4f59c35a91cdd47c7a01dfac1eb631cff30eb6f6fbd5a",
+          "recipe_sha256": "b878e0a0142f37a177a582f70dc187077d20f5a55e6008e01da67ca454ffc875",
+          "output_sha256": "6f7529b0ed09d6bb2d7f3436a9494f3eda8cc4c24af5573b4ca7925d6137b422",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "normalized-crop:0.015,0.02,0.96,0.96",
+            "resize-inside:2400:without-enlargement",
+            "tone:mono",
+            "edge:torn",
+            "white-border",
+            "shadow-behind-border"
+          ],
+          "fal_calls": [],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 2400,
+            "height": 1718,
+            "opaquePixels": 4113759,
+            "coverage": 0.9977102735739232,
+            "bbox": {
+              "left": 0,
+              "top": 0,
+              "width": 2400,
+              "height": 1718
+            },
+            "connectedComponents": 4,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.5,
+              "maxCoverage": 1,
+              "maxConnectedComponents": 128
+            },
+            "outputWidth": 2512,
+            "outputHeight": 1830
+          },
+          "quality_warnings": []
+        }
+      ]
     },
     {
       "id": "asset_017",
@@ -293,7 +1310,109 @@
       "upload_role": null,
       "status": "maybe",
       "file": "assets/archive/asset_017.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "recipe_id": "asset_017_lighthouse_modern_cutout",
+          "file": "assets/cutouts/asset_017_lighthouse_modern_cutout.png",
+          "role": "cutout",
+          "requested_role": "cutout",
+          "tone": "source",
+          "edge": "scissor",
+          "source_sha256": "c23748bb73d392a7bf26cc91981f41c502c69fa3f07d1f0e2dbc00f7497b6f83",
+          "recipe_sha256": "5c1be5cda61b007608e55241fd14e9134592a67471519a9d18a81290c2a8eb53",
+          "output_sha256": "8ecff7f9e3d3581f495b8c84d2c01fd0be0e9879017dfe4d4db92f5b54432676",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "resize-inside:2400:without-enlargement",
+            "tone:source",
+            "cached-mask-alpha-only",
+            "edge:scissor",
+            "white-border",
+            "shadow-behind-border"
+          ],
+          "fal_calls": [
+            {
+              "attempt": 1,
+              "model": "fal-ai/sam-3/image",
+              "request_id": "019f785d-3919-7a20-b331-c1b1b4c4da56",
+              "input": {
+                "image_url": "(uploaded cropped source)",
+                "prompt": "the complete lighthouse",
+                "apply_mask": false,
+                "return_multiple_masks": false,
+                "output_format": "png",
+                "include_scores": true,
+                "include_boxes": true
+              },
+              "estimated_cost_usd": 0.005,
+              "status": "completed",
+              "submitted_at": "2026-07-19T03:13:23.157Z",
+              "qa": {
+                "valid": true,
+                "coverage": 0.3397563533185295,
+                "minCoverage": 0.03,
+                "maxCoverage": 0.75
+              },
+              "result": {
+                "mask_url": "(redacted fal result URL)",
+                "score": 0.6919266581535339,
+                "box": [
+                  0.4238625556703598,
+                  0.5010298239592398,
+                  0.5667976954626659,
+                  0.9937164875330837
+                ],
+                "width": 1351,
+                "height": 2400
+              },
+              "completed_at": "2026-07-19T03:13:29.723Z",
+              "schema_checked_at": "2026-07-18",
+              "price_checked_at": "2026-07-18",
+              "unit_price_usd": 0.005,
+              "pricing_unit": "request"
+            }
+          ],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 1351,
+            "height": 2400,
+            "opaquePixels": 1101626,
+            "coverage": 0.3397563533185295,
+            "bbox": {
+              "left": 190,
+              "top": 0,
+              "width": 763,
+              "height": 2400
+            },
+            "connectedComponents": 1,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.03,
+              "maxCoverage": 0.75,
+              "maxConnectedComponents": 64
+            },
+            "outputWidth": 1463,
+            "outputHeight": 2512
+          },
+          "quality_warnings": []
+        }
+      ]
     },
     {
       "id": "asset_018",
@@ -310,7 +1429,68 @@
       "upload_role": null,
       "status": "maybe",
       "file": "assets/archive/asset_018.jpg",
-      "cutouts": []
+      "cutouts": [
+        {
+          "recipe_id": "asset_018_octagon_modern_card",
+          "file": "assets/cutouts/asset_018_octagon_modern_card.png",
+          "role": "card",
+          "requested_role": "card",
+          "tone": "source",
+          "edge": "torn",
+          "source_sha256": "31d7e17cd3ddfb769fc70244fd8c9f5c53a21137758ffe00504559043e493c3f",
+          "recipe_sha256": "ba7de591dfbadb0f0646bc120aefc9b740429ffb1a256d39ba72af286cbb68c5",
+          "output_sha256": "2413b01236b28f6af3b29d64e56e3d338205f314539524eb3f641ad73dfb0b13",
+          "pixel_origin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+          "operations": [
+            "exif-auto-orient",
+            "normalized-crop:0.03,0.05,0.9,0.94",
+            "resize-inside:2400:without-enlargement",
+            "tone:source",
+            "edge:torn",
+            "white-border",
+            "shadow-behind-border"
+          ],
+          "fal_calls": [],
+          "review": {
+            "source": "approved",
+            "visual": "approved",
+            "reviewedAt": null,
+            "notes": null
+          },
+          "qa": {
+            "width": 1928,
+            "height": 2400,
+            "opaquePixels": 4616988,
+            "coverage": 0.9977930497925311,
+            "bbox": {
+              "left": 0,
+              "top": 0,
+              "width": 1928,
+              "height": 2400
+            },
+            "connectedComponents": 1,
+            "valid": true,
+            "checks": {
+              "alphaNonEmpty": true,
+              "coverageInRange": true,
+              "bboxInsideCanvas": true,
+              "connectedRegionsMeasured": true,
+              "withoutEnlargement": true,
+              "outputDimensionsValid": true,
+              "rgbOriginLocal": true
+            },
+            "reasons": [],
+            "limits": {
+              "minCoverage": 0.5,
+              "maxCoverage": 1,
+              "maxConnectedComponents": 128
+            },
+            "outputWidth": 2040,
+            "outputHeight": 2512
+          },
+          "quality_warnings": []
+        }
+      ]
     }
   ]
 }

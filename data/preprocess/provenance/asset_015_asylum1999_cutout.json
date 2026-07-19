@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_015_asylum1999_cutout",
+  "assetId": "asset_015",
+  "role": "cutout",
+  "actualRole": "cutout",
+  "source": {
+    "file": "assets/archive/asset_015.jpg",
+    "sha256": "a02556a53c6c5b5cf2ba21c53eddc3a3cc10db1ef50a602148f1217e249b0879"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_015_asylum1999_cutout.png",
+    "sha256": "f01e77ac2b0d3fd137437c5ff8f49e2993eba596d1bfbe945d28e686ce91d9b0",
+    "published": false
+  },
+  "cache": {
+    "sourceSha256": "a02556a53c6c5b5cf2ba21c53eddc3a3cc10db1ef50a602148f1217e249b0879",
+    "recipeSha256": "c173b5297be445d9922f2bfbb2d0c31872a2b25650e550b23762dde8ed1fc962",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "fd36bddb936b42bd21987d00938f54b3d2b3fbd007aa0c26df03fd6f7db7ce9d",
+    "cacheKey": "0eb66d372d2211e7d3acbe0d83cfce877d930e71e4b5a938de40159141c1eb67"
+  },
+  "selection": {
+    "tone": "mono",
+    "edge": "scissor"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "normalized-crop:0.4,0.03,0.48,0.88",
+    "resize-inside:2400:without-enlargement",
+    "tone:mono",
+    "cached-mask-alpha-only",
+    "edge:scissor",
+    "white-border",
+    "shadow-behind-border"
+  ],
+  "mask": {
+    "provider": "fal-cache",
+    "file": "data/preprocess/masks/asset_015_asylum1999_cutout.png",
+    "sha256": "afbf7ea0d430c95cb1c41884122ad49dd471c2dc8b294b68dc17fb4391ccc828",
+    "cacheKey": "6c250b052b1db99501842659acd5ddeef3e38ec5c31fd1cd2001a76442c19fc7",
+    "fallback": null
+  },
+  "falCalls": [
+    {
+      "attempt": 1,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f785d-1768-7f10-8cb6-8b90ea2d6737",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "the complete main asylum building",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "completed",
+      "submitted_at": "2026-07-19T03:13:14.535Z",
+      "qa": {
+        "valid": true,
+        "coverage": 0.3546659364731654,
+        "minCoverage": 0.08,
+        "maxCoverage": 0.88
+      },
+      "result": {
+        "mask_url": "(redacted fal result URL)",
+        "score": 0.5090101957321167,
+        "box": [
+          0.4297078876268296,
+          0.46706992095371463,
+          0.8494319972537813,
+          0.7747109467128538
+        ],
+        "width": 1826,
+        "height": 2400
+      },
+      "completed_at": "2026-07-19T03:13:19.938Z",
+      "schema_checked_at": "2026-07-18",
+      "price_checked_at": "2026-07-18",
+      "unit_price_usd": 0.005,
+      "pricing_unit": "request"
+    }
+  ],
+  "qa": {
+    "width": 1826,
+    "height": 2400,
+    "opaquePixels": 1554288,
+    "coverage": 0.3546659364731654,
+    "bbox": {
+      "left": 25,
+      "top": 194,
+      "width": 1531,
+      "height": 1846
+    },
+    "connectedComponents": 19,
+    "outputWidth": 1938,
+    "outputHeight": 2512
+  },
+  "review": {
+    "source": "approved",
+    "visual": "rejected",
+    "reviewedAt": "2026-07-18",
+    "notes": "The mask excludes vehicles and the ghost image but leaves a large tree-shaped hole and detached fragments; use the reviewed card fallback."
+  },
+  "identity": "Octagon/asylum building in the 1999 HABS photograph",
+  "preserve": "The complete principal building on the right side.",
+  "exclude": "Vehicles, the left-side ghost image, sky, and unrelated foreground.",
+  "qualityWarnings": [],
+  "createdAt": "2026-07-19T03:13:22.227Z",
+  "published": false
+}

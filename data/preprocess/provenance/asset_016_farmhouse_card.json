@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_016_farmhouse_card",
+  "assetId": "asset_016",
+  "role": "card",
+  "actualRole": "card",
+  "source": {
+    "file": "assets/archive/asset_016.jpg",
+    "sha256": "95fe50c3bd3fd68589e4f59c35a91cdd47c7a01dfac1eb631cff30eb6f6fbd5a"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_016_farmhouse_card.png",
+    "sha256": "6f7529b0ed09d6bb2d7f3436a9494f3eda8cc4c24af5573b4ca7925d6137b422"
+  },
+  "cache": {
+    "sourceSha256": "95fe50c3bd3fd68589e4f59c35a91cdd47c7a01dfac1eb631cff30eb6f6fbd5a",
+    "recipeSha256": "b878e0a0142f37a177a582f70dc187077d20f5a55e6008e01da67ca454ffc875",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "f38ab54d965f7af5b2d91cc6d9a45115bd60959313c02a521101c6b62ce731c1",
+    "cacheKey": "3c36479b8c21d0337f27623bb2d1c17372a0941167a922d6bff9e48f068e5cdf"
+  },
+  "selection": {
+    "tone": "mono",
+    "edge": "torn"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "normalized-crop:0.015,0.02,0.96,0.96",
+    "resize-inside:2400:without-enlargement",
+    "tone:mono",
+    "edge:torn",
+    "white-border",
+    "shadow-behind-border"
+  ],
+  "mask": null,
+  "falCalls": [],
+  "qa": {
+    "width": 2400,
+    "height": 1718,
+    "opaquePixels": 4113759,
+    "coverage": 0.9977102735739232,
+    "bbox": {
+      "left": 0,
+      "top": 0,
+      "width": 2400,
+      "height": 1718
+    },
+    "connectedComponents": 4,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.5,
+      "maxCoverage": 1,
+      "maxConnectedComponents": 128
+    },
+    "outputWidth": 2512,
+    "outputHeight": 1830
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "HABS west-front view of the Welfare Island Farmhouse",
+  "preserve": "The photograph and its documentary framing.",
+  "exclude": "Only the narrow outer scan margin.",
+  "qualityWarnings": [],
+  "createdAt": "2026-07-19T03:45:57.990Z"
+}

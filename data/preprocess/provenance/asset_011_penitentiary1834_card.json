@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_011_penitentiary1834_card",
+  "assetId": "asset_011",
+  "role": "card",
+  "actualRole": "card",
+  "source": {
+    "file": "assets/archive/asset_011.jpg",
+    "sha256": "07a421cf3bdf1b8ad73f90012cb26f4801b38fa79ff55b07bcffab1ab963b41e"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_011_penitentiary1834_card.png",
+    "sha256": "3af32e6c38d74561857e7da90156a43ba273a8952abf704c988fe29a8b56b693"
+  },
+  "cache": {
+    "sourceSha256": "07a421cf3bdf1b8ad73f90012cb26f4801b38fa79ff55b07bcffab1ab963b41e",
+    "recipeSha256": "24414e52e4a0cddf99674231c2fdba5ffcead29e7b88a4a8a174d491309c9117",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "f38ab54d965f7af5b2d91cc6d9a45115bd60959313c02a521101c6b62ce731c1",
+    "cacheKey": "5c4a8f4fd507dd9b01770d52b0cd9fbcadd3d16ed519f0d7683f8a77ffbb8f01"
+  },
+  "selection": {
+    "tone": "mono",
+    "edge": "torn"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "resize-inside:2400:without-enlargement",
+    "tone:mono",
+    "edge:torn",
+    "white-border",
+    "shadow-behind-border"
+  ],
+  "mask": null,
+  "falCalls": [],
+  "qa": {
+    "width": 2400,
+    "height": 1588,
+    "opaquePixels": 3801195,
+    "coverage": 0.9973748425692696,
+    "bbox": {
+      "left": 0,
+      "top": 0,
+      "width": 2400,
+      "height": 1588
+    },
+    "connectedComponents": 3,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.5,
+      "maxCoverage": 1,
+      "maxConnectedComponents": 128
+    },
+    "outputWidth": 2512,
+    "outputHeight": 1700
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "1834 Penitentiary, Blackwell's Island",
+  "preserve": "The complete archival print.",
+  "exclude": "Nothing.",
+  "qualityWarnings": [],
+  "createdAt": "2026-07-19T03:45:46.346Z"
+}

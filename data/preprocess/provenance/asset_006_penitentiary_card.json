@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_006_penitentiary_card",
+  "assetId": "asset_006",
+  "role": "card",
+  "actualRole": "card",
+  "source": {
+    "file": "assets/archive/asset_006.jpg",
+    "sha256": "0a230dc88bf6dcf50976f27ceff9e53c990f7c3e6a2ee0ba47ec2bb67b5cd749"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_006_penitentiary_card.png",
+    "sha256": "fd2416c289d512b925ef121e55b2e0a3e3acdd568ed04ee1f92a392ccb80675e"
+  },
+  "cache": {
+    "sourceSha256": "0a230dc88bf6dcf50976f27ceff9e53c990f7c3e6a2ee0ba47ec2bb67b5cd749",
+    "recipeSha256": "0e5600dca33d7aa3d7be9c2a08cbda70d451b29d3df5e6f7cc86e03ae84e819f",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "f38ab54d965f7af5b2d91cc6d9a45115bd60959313c02a521101c6b62ce731c1",
+    "cacheKey": "4ba89518eaa9f857c869b1154c3f12a2a56c51bd667c525dca9be7dbea9e315b"
+  },
+  "selection": {
+    "tone": "mono",
+    "edge": "torn"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "normalized-crop:0.075,0.035,0.85,0.68",
+    "resize-inside:2400:without-enlargement",
+    "tone:mono",
+    "edge:torn",
+    "white-border",
+    "shadow-behind-border"
+  ],
+  "mask": null,
+  "falCalls": [],
+  "qa": {
+    "width": 2399,
+    "height": 1722,
+    "opaquePixels": 4118658,
+    "coverage": 0.9969935208195052,
+    "bbox": {
+      "left": 0,
+      "top": 0,
+      "width": 2399,
+      "height": 1722
+    },
+    "connectedComponents": 4,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.5,
+      "maxCoverage": 1,
+      "maxConnectedComponents": 128
+    },
+    "outputWidth": 2511,
+    "outputHeight": 1834
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "1853 view of the penitentiary at Blackwell's Island",
+  "preserve": "The architectural engraving and immediate foreground.",
+  "exclude": "Outer margins, scan bed, and calibration material.",
+  "qualityWarnings": [],
+  "createdAt": "2026-07-19T03:45:37.082Z"
+}

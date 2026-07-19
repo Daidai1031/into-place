@@ -61,11 +61,32 @@ export async function renderFrame({ scene: scenePath, out: outPath, t, width = 1
   const tmpHtmlPath = path.join(os.tmpdir(), `into-place-scene-${Date.now()}-${Math.random().toString(36).slice(2)}.html`);
   await writeFile(tmpHtmlPath, html, "utf-8");
 
-  const browser = await puppeteer.launch({ headless: !preview });
+  // 云端容器以 root 运行时 Chromium 拒绝带沙箱启动;只在这种情况下关沙箱(本机开发不受影响)
+  const browser = await puppeteer.launch({
+    headless: preview ? false : "shell",
+    timeout: 120_000,
+    args: preview
+      ? []
+      : [
+          "--no-sandbox",
+          "--disable-setuid-sandbox",
+          "--disable-gpu",
+          "--disable-gpu-compositing",
+          "--disable-software-rasterizer",
+          "--use-gl=disabled",
+          "--disable-dev-shm-usage",
+        ],
+  });
   try {
     const page = await browser.newPage();
     await page.setViewport({ width, height, deviceScaleFactor: 1 });
-    await page.goto(pathToFileURL(tmpHtmlPath).href, { waitUntil: "networkidle0" });
+    // file:// scenes have no useful network-idle signal, and large archival
+    // images can keep Chromium's bookkeeping busy long after they are ready.
+    await page.goto(pathToFileURL(tmpHtmlPath).href, { waitUntil: "load", timeout: 120_000 });
+    await page.waitForFunction(
+      () => [...document.images].every((image) => image.complete && image.naturalWidth > 0),
+      { timeout: 120_000 },
+    );
 
     if (preview) {
       console.log("Preview 模式:窗口已打开,肉眼检查构图,Ctrl+C 结束进程。");

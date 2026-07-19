@@ -1,0 +1,42 @@
+{
+  "_note": "S1 Stasis:天花医院。远景 1886 海图,中景 1850s 天花医院立体照片抠像,前景 1866 Dark Cell 版画纸卡压左下角。单一动作:缓慢 dolly-in。",
+  "planes": [
+    {
+      "asset": "assets/cutouts/asset_003_map_bg.png",
+      "z": 0.05,
+      "x": 0,
+      "y": -0.04,
+      "scale": 0.46,
+      "shadow": false
+    },
+    {
+      "asset": "assets/cutouts/asset_001_smallpox_card.png",
+      "z": 0.5,
+      "x": 0.12,
+      "y": 0.02,
+      "scale": 0.62,
+      "shadow": true
+    },
+    {
+      "asset": "assets/cutouts/asset_008_darkcell_card.png",
+      "z": 0.85,
+      "x": -0.42,
+      "y": 0.3,
+      "scale": 0.085,
+      "shadow": true
+    }
+  ],
+  "camera_path": {
+    "from": {
+      "z": 0,
+      "x": 0,
+      "y": 0
+    },
+    "to": {
+      "z": 0.3,
+      "x": 0.05,
+      "y": 0
+    },
+    "easing": "ease-in-out"
+  }
+}

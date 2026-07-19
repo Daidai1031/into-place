@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_002_asylum_cutout",
+  "assetId": "asset_002",
+  "role": "cutout",
+  "actualRole": "card",
+  "source": {
+    "file": "assets/archive/asset_002.jpg",
+    "sha256": "2638137d152561b5e05167cfbc3c45f11182e26d6d5471e6fc42f5fae4205167"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_002_asylum_cutout.png",
+    "sha256": "b83d26ac2887dba7597ad6ce02fbe2e332071b62500ab8feb78d3865d9251314",
+    "published": false
+  },
+  "cache": {
+    "sourceSha256": "2638137d152561b5e05167cfbc3c45f11182e26d6d5471e6fc42f5fae4205167",
+    "recipeSha256": "d899d3c73bc5c0888ba4d189bdf8985b770ccf57ee5f4bf8567897e7d943dbe4",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "fd36bddb936b42bd21987d00938f54b3d2b3fbd007aa0c26df03fd6f7db7ce9d",
+    "cacheKey": "1f78edf9b6fd35ad5db338b44bdda40a266f86731e6b4d07b203706b73cabb91"
+  },
+  "selection": {
+    "tone": "mono",
+    "edge": "scissor"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "resize-inside:3840:without-enlargement",
+    "tone:mono",
+    "edge:torn",
+    "white-border",
+    "shadow-behind-border"
+  ],
+  "mask": {
+    "provider": "none",
+    "file": null,
+    "sha256": null,
+    "cacheKey": "c566de6f4fa65b3444a50196917476cbc7a61c6c0c8298560ea4920ffb3ac1cf",
+    "fallback": "fal_failed:All 2 fal mask attempts failed QA for asset_002_asylum_cutout;rembg_failed:ENOENT: no such file or directory, open 'E:\\Cornell\\26summer\\into-place\\data\\preprocess\\masks\\asset_002_asylum_cutout.png'"
+  },
+  "falCalls": [
+    {
+      "attempt": 1,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f785c-8284-7c13-b9cb-fccb170e8481",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "the complete lunatic asylum building complex",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "rejected_by_qa",
+      "submitted_at": "2026-07-19T03:12:36.184Z",
+      "qa": {
+        "valid": false,
+        "reason": "mask coverage 0.0467 is outside 0.06..0.85",
+        "coverage": 0.04674171829923945,
+        "minCoverage": 0.06,
+        "maxCoverage": 0.85
+      },
+      "result": {
+        "mask_url": "(redacted fal result URL)",
+        "score": 0.9445633292198181,
+        "box": [
+          0.5539971675359334,
+          0.46795978243388825,
+          0.4922799744734385,
+          0.255302974155971
+        ],
+        "width": 3840,
+        "height": 2542
+      },
+      "completed_at": "2026-07-19T03:12:42.129Z",
+      "schema_checked_at": "2026-07-18",
+      "price_checked_at": "2026-07-18",
+      "unit_price_usd": 0.005,
+      "pricing_unit": "request"
+    },
+    {
+      "attempt": 2,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f785c-98d5-7cb1-aa0d-dbd2aad19c35",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "all connected asylum buildings",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "failed",
+      "submitted_at": "2026-07-19T03:12:42.132Z",
+      "error": "fal result did not contain masks[0].url",
+      "completed_at": "2026-07-19T03:12:45.666Z",
+      "schema_checked_at": "2026-07-18",
+      "price_checked_at": "2026-07-18",
+      "unit_price_usd": 0.005,
+      "pricing_unit": "request"
+    }
+  ],
+  "qa": {
+    "width": 3840,
+    "height": 2542,
+    "opaquePixels": 9748902,
+    "coverage": 0.998731928599528,
+    "bbox": {
+      "left": 0,
+      "top": 0,
+      "width": 3840,
+      "height": 2542
+    },
+    "connectedComponents": 5,
+    "outputWidth": 3952,
+    "outputHeight": 2654
+  },
+  "review": {
+    "source": "approved",
+    "visual": "rejected",
+    "reviewedAt": "2026-07-18",
+    "notes": "Both SAM attempts failed automatic QA and local silueta was too slow for the batch fallback; use the reviewed full card."
+  },
+  "identity": "The connected asylum buildings in the 1853 print",
+  "preserve": "All connected asylum buildings and their roofline.",
+  "exclude": "Sky, water, boats, foreground figures, border, and printed caption.",
+  "qualityWarnings": [],
+  "createdAt": "2026-07-19T03:12:57.161Z",
+  "published": false
+}
