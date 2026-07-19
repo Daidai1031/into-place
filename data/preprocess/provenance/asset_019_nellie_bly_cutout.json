@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 2,
+  "recipeId": "asset_019_nellie_bly_cutout",
+  "assetId": "asset_019",
+  "role": "cutout",
+  "actualRole": "cutout",
+  "source": {
+    "file": "assets/archive/asset_019.jpg",
+    "sha256": "35170f4363355ed3bba2b80af39e0fc2513ec8ab21668715a47b82a655c1fcc1"
+  },
+  "output": {
+    "file": "assets/cutouts/asset_019_nellie_bly_cutout.png",
+    "sha256": "7080d3284b25565f2adeec434bc79194462d9163ac1a9994a3131e9a7484a168"
+  },
+  "cache": {
+    "sourceSha256": "35170f4363355ed3bba2b80af39e0fc2513ec8ab21668715a47b82a655c1fcc1",
+    "recipeSha256": "f321634eebb17815829e1dcbfff6fae9c783d419766b08bb8a08878a6e0cc720",
+    "toolSha256": "d0585575d5aa1f48eafa68d2e21f531552baa8713a4bf427a639d4cd0217977a",
+    "selectionSha256": "fd36bddb936b42bd21987d00938f54b3d2b3fbd007aa0c26df03fd6f7db7ce9d",
+    "cacheKey": "52fb97b5ba86b11e9c79afeda56d24922ab349e3e489be3c18b436eb9ee71420"
+  },
+  "selection": {
+    "tone": "mono",
+    "edge": "scissor"
+  },
+  "pixelOrigin": "Original locally processed source RGB; fal/rembg may only determine alpha and never repaint archive pixels.",
+  "operations": [
+    "exif-auto-orient",
+    "resize-inside:2400:without-enlargement",
+    "tone:mono",
+    "cached-mask-alpha-only",
+    "edge:scissor",
+    "white-border",
+    "shadow-behind-border"
+  ],
+  "mask": {
+    "provider": "fal-cache",
+    "file": "data/preprocess/masks/asset_019_nellie_bly_cutout.png",
+    "sha256": "19c2f9e31617c2e4beb96a4793bb1fe5633495421557382a5b11c417a701de0c",
+    "cacheKey": "e93068a8ee73570230ea9021eeb5ae972c8109a270b2028208c40ed7c7bab6c8",
+    "fallback": null
+  },
+  "falCalls": [
+    {
+      "attempt": 1,
+      "model": "fal-ai/sam-3/image",
+      "request_id": "019f7905-f0d7-7b13-b4f6-b135a6321a38",
+      "input": {
+        "image_url": "(uploaded cropped source)",
+        "prompt": "Nellie Bly, the complete solid foreground portrait including all face skin, feathered hat, shoulders, and visible torso",
+        "apply_mask": false,
+        "return_multiple_masks": false,
+        "output_format": "png",
+        "include_scores": true,
+        "include_boxes": true,
+        "point_prompts": [
+          {
+            "x": 800,
+            "y": 1080,
+            "label": 1,
+            "object_id": 1
+          },
+          {
+            "x": 800,
+            "y": 460,
+            "label": 1,
+            "object_id": 1
+          },
+          {
+            "x": 800,
+            "y": 1900,
+            "label": 1,
+            "object_id": 1
+          },
+          {
+            "x": 100,
+            "y": 100,
+            "label": 0,
+            "object_id": 1
+          }
+        ]
+      },
+      "estimated_cost_usd": 0.005,
+      "status": "completed",
+      "submitted_at": "2026-07-19T06:17:39.858Z",
+      "qa": {
+        "valid": true,
+        "coverage": 0.6864953125,
+        "minCoverage": 0.35,
+        "maxCoverage": 0.9
+      },
+      "result": {
+        "mask_url": "(redacted fal result URL)",
+        "score": 0.8966039419174194,
+        "box": [
+          0.5014183670282364,
+          0.5024404607752644,
+          0.9978041350841522,
+          0.9956514406456518
+        ],
+        "width": 1600,
+        "height": 2400
+      },
+      "completed_at": "2026-07-19T06:17:45.428Z",
+      "schema_checked_at": "2026-07-18",
+      "price_checked_at": "2026-07-18",
+      "unit_price_usd": 0.005,
+      "pricing_unit": "request"
+    }
+  ],
+  "qa": {
+    "width": 1600,
+    "height": 2400,
+    "opaquePixels": 2636142,
+    "coverage": 0.6864953125,
+    "bbox": {
+      "left": 0,
+      "top": 41,
+      "width": 1600,
+      "height": 2359
+    },
+    "connectedComponents": 14,
+    "valid": true,
+    "checks": {
+      "alphaNonEmpty": true,
+      "coverageInRange": true,
+      "bboxInsideCanvas": true,
+      "connectedRegionsMeasured": true,
+      "withoutEnlargement": true,
+      "outputDimensionsValid": true,
+      "rgbOriginLocal": true
+    },
+    "reasons": [],
+    "limits": {
+      "minCoverage": 0.35,
+      "maxCoverage": 0.9,
+      "maxConnectedComponents": 64
+    },
+    "outputWidth": 1712,
+    "outputHeight": 2512
+  },
+  "review": {
+    "source": "approved",
+    "visual": "approved",
+    "reviewedAt": null,
+    "notes": null
+  },
+  "identity": "Nellie Bly portrait",
+  "preserve": "Nellie Bly from the top of her feathered hat through the visible shoulders and torso, including her scarf, blouse, brooch, and medal.",
+  "exclude": "The plain studio background only.",
+  "qualityWarnings": [],
+  "createdAt": "2026-07-19T06:17:48.149Z"
+}

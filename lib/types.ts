@@ -14,7 +14,7 @@ export interface CutoutRecord {
 export interface PlaceAsset {
   id: string;
   title: string;
-  type: "photo" | "print" | "map" | "pdf" | "audio";
+  type: "photo" | "print" | "map" | "pdf" | "audio" | "video";
   era: string;
   source: string;
   source_url: string;
@@ -27,6 +27,9 @@ export interface PlaceAsset {
   status: AssetStatus;
   file: string;
   cutouts: CutoutRecord[];
+  /** Reference-only records are visible in the archive but never selectable for a film. */
+  reference_only?: boolean;
+  description?: string;
 }
 
 export interface Place {

@@ -632,6 +632,46 @@
       "whiteBorder": true,
       "shadow": true,
       "edgeSeed": "asset_018_octagon_modern_card"
+    },
+    {
+      "id": "asset_019_nellie_bly_cutout",
+      "assetId": "asset_019",
+      "sourceSha256": "35170f4363355ed3bba2b80af39e0fc2513ec8ab21668715a47b82a655c1fcc1",
+      "recipeSha256": "f321634eebb17815829e1dcbfff6fae9c783d419766b08bb8a08878a6e0cc720",
+      "input": "assets/archive/asset_019.jpg",
+      "output": "assets/cutouts/asset_019_nellie_bly_cutout.png",
+      "identity": "Nellie Bly portrait",
+      "preserve": "Nellie Bly from the top of her feathered hat through the visible shoulders and torso, including her scarf, blouse, brooch, and medal.",
+      "exclude": "The plain studio background only.",
+      "review": "approved",
+      "role": "cutout",
+      "crop": null,
+      "maxSize": 2400,
+      "defaultTone": "mono",
+      "defaultEdge": "scissor",
+      "whiteBorder": true,
+      "shadow": true,
+      "edgeSeed": "asset_019_nellie_bly_cutout",
+      "mask": {
+        "provider": "fal",
+        "model": "fal-ai/sam-3/image",
+        "cacheFile": "data/preprocess/masks/asset_019_nellie_bly_cutout.png",
+        "metadataFile": "data/preprocess/masks/asset_019_nellie_bly_cutout.json",
+        "attempts": [
+          {
+            "prompt": "Nellie Bly, the complete solid foreground portrait including all face skin, feathered hat, shoulders, and visible torso",
+            "point_prompts": [
+              { "x": 800, "y": 1080, "label": 1, "object_id": 1 },
+              { "x": 800, "y": 460, "label": 1, "object_id": 1 },
+              { "x": 800, "y": 1900, "label": 1, "object_id": 1 },
+              { "x": 100, "y": 100, "label": 0, "object_id": 1 }
+            ]
+          },
+          { "prompt": "the entire foreground portrait subject from feathered hat through the bottom edge of her clothing" }
+        ],
+        "qa": { "minCoverage": 0.35, "maxCoverage": 0.9 },
+        "fallback": ["rembg:silueta", "card"]
+      }
     }
   ]
 }

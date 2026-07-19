@@ -33,9 +33,9 @@ test("Roosevelt Island v2 recipes are complete, named, and source-audited", asyn
   const config = JSON.parse(await readFile(path.join(root, "data/preprocess/roosevelt-island.json"), "utf8"));
   const place = JSON.parse(await readFile(path.join(root, "data/places/roosevelt-island.json"), "utf8"));
   assert.equal(validateConfig(config, place), true);
-  assert.equal(config.recipes.length, 23);
-  assert.equal(new Set(config.recipes.map((recipe) => recipe.assetId)).size, 17);
-  assert.equal(config.recipes.filter((recipe) => recipe.mask?.provider === "fal").length, 7);
+  assert.equal(config.recipes.length, 24);
+  assert.equal(new Set(config.recipes.map((recipe) => recipe.assetId)).size, 18);
+  assert.equal(config.recipes.filter((recipe) => recipe.mask?.provider === "fal").length, 8);
   assert.equal(config.recipes.filter((recipe) => recipe.publish === false).length, 5);
   assert.equal(config.recipes.some((recipe) => recipe.assetId === "asset_013"), false);
   for (const recipe of config.recipes) {
